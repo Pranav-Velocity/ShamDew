@@ -1,0 +1,58 @@
+
+
+body {
+  font-family: Arial;
+  padding: 10px;
+  background: #f1f1f1;
+}
+
+/* Header/Blog Title */
+.header {
+  padding: 20px;
+  text-align: center;
+  background: white;
+  border-bottom: 2px solid aqua;
+}
+#icon-img{
+  width: 280px;
+  height: 100px;
+}
+.header h1 {
+  font-size: 40px;
+}
+
+th {
+  font-size: 12px;
+}
+td {
+  font-size: 12px;
+}
+#leftrow{
+  margin:0px;
+  padding:0px;
+  
+  width:20%;
+  float: left;
+  
+}
+#rightrow{
+  margin:0px;
+  padding:0px;
+  
+  width:80%;
+  float:right;
+}
+.nav-link:hover {
+  background-color: rgb(111, 111, 230) !important
+}
+
+.nav-link .fa {
+  transition: all 1s
+}
+.sidebar1{
+  height: 100%;
+}
+#main_table{
+  width: 100%;
+}
+

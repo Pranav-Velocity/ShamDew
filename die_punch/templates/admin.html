@@ -1,0 +1,2718 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title%} {% endblock title %}
+{% block head %}
+
+{% endblock head %}
+
+{% block sidebaranchor %}
+{% if user.is_authenticated %}
+
+<a href="{% url 'admin' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <svg class="bi me-2" width="40" height="32">
+        <use xlink:href="#bootstrap"></use>
+    </svg>
+    <span class="fs-4">HOME</span>
+  </a> 
+  {% endif %}
+{% endblock sidebaranchor %}
+
+
+{% block sidebarlist %}
+{% if user.is_authenticated %}
+{% if data == "yes" %}
+<li class="nav-item">
+    <a href="{% url 'admin' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+        HOME
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'adduser' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+        ADD USER
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'add_data' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       ADD DATA
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'admindelete' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       DELETE DATA
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'add_customer' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       Add Customer
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'customerdetail' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       Customer Detail
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'userlog' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       User Log
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/logout" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+        LOGOUT
+    </a>
+  </li>
+  {% endif %}
+{% endif %}
+{% endblock sidebarlist %}
+
+
+{% block content %}
+{% if not user.is_authenticated %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'index1' %}">1st case</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'index2' %}">2nd case</a>
+                </li>
+               
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'admin' %}">admin</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endif %}
+
+<!-- <div class="alert alert-primary text-center" role="alert" style="font-size: 25px;">
+    {% now "jS F Y" %}
+    {{current_time}}
+</div> -->
+{% if user.is_authenticated %}
+{% if data == "yes" %}
+{% if update != "yes" and view != "yes" %}
+
+
+<table class="table table-dark " id="table_id2">
+    <thead>
+      <tr>
+        <th scope="col">Order Date</th>
+        <th scope="col">Order Number</th>
+        <th scope="col">Client Name</th>
+        <th scope="col">MOC</th>
+        <th scope="col">Tool Type / M.C</th>
+        <th scope="col">Shape</th>
+        <th scope="col">Tablet Size</th>
+        <th scope="col">U1</th>
+        <th scope="col">U2</th>
+        <th scope="col">L1</th>
+        <th scope="col">L2</th>
+        <th scope="col">D</th>
+        <th scope="col">Set</th>
+        <th scope="col">Plating Type</th>
+        <th scope="col">Value</th>
+        <th scope="col">Remarks</th>
+        
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in tabledata %}
+      <tr>
+        <td>{{data.orderdate}}</td>
+        <td>{{data.ordernumber}}</td>
+        <td>{{data.clientname}}</td>
+        <td>{{data.moc}}</td>
+        <td>{{data.tooltype}}</td>
+        <td>{{data.shape}}</td>
+        <td>{{data.tabletsize}}</td>
+        <td>{{data.u1}}</td>
+        <td>{{data.u2}}</td>
+        <td>{{data.l1}}</td>
+        <td>{{data.l2}}</td>
+        <td>{{data.d}}</td>
+        <td>{{data.set}}</td>
+        <td>{{data.platingtype}}</td>
+        <td>{{data.value}}</td>
+        <td>{{data.remarks}}</td>
+        <td>{{data.status}}</td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if user.is_authenticated %}
+{% if view == "yes" %}
+<div class="container mt-5">
+    
+</div>
+{% endif %}
+{% endif %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <!-- {% if user.is_authenticated %}
+            {% if data == "yes" %}
+            <h1>Welcome : {{name}}</h1>
+            {% endif %}
+            {% endif %} -->
+        </div>
+    </div>
+    {% if not user.is_authenticated %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-3">
+                Username<input type="text" class="form-control" name="username" placeholder="" required />
+            </div>
+            <div class="col-sm-3">
+                Password<input type="password" class="form-control" name="password" required />
+            </div>
+            <div class="col-sm-3 mt-3">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+    
+
+    {% if data == "yes" %}
+    {% if user.is_authenticated %}
+    {% if update == "yes" %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="row" style="background-color: peru;">
+            <div class="col-sm-5">
+
+            </div>
+            <div class="col-sm-7">
+                <h2>Main Stage</h2>
+            </div>
+        </div>
+        {% for i in updateplaceholder %}
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="orderdate" id="floatingInput1" placeholder=""
+                        value="{{i.update_orderdate}}">
+                    <label for="floatingInput1">Order Date</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="ordernumber" id="floatingInput2" placeholder=""
+                        value="{{i.update_ordernumber}}">
+                    <label for="floatingInput2">Order Number</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="clientname" aria-label="Default select example"
+                        id="floatingInput3">
+                        <option selected value="{{i.update_clientname}}">{{i.update_clientname}}</option>
+                        {% for i in placeholder.clientname %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput3">Name of Client</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="number" min="1" class="form-control" name="value" id="floatingInput4" placeholder=""
+                        value="{{i.update_value}}">
+                    <label for="floatingInput4">Value</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="moc" aria-label="Default select example" id="floatingInput5">
+                        <option selected value="{{i.update_moc}}">{{i.update_moc}}</option>
+                        {% for i in placeholder.moc %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput5">MOC</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="tooltype" aria-label="Default select example" id="floatingInput6">
+                        <option selected value="{{i.update_tooltype}}">{{i.update_tooltype}}</option>
+                        {% for i in placeholder.tooltype %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput6">Tool Type / M.C</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="shape" aria-label="Default select example" id="floatingInput7">
+                        <option selected value="{{i.update_shape}}">{{i.update_shape}}</option>
+                        {% for i in placeholder.shape %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput7">Shape</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="tabletsize" aria-label="Default select example"
+                        id="floatingInput8">
+                        <option selected value="{{i.update_tabletsize}}">{{i.update_tabletsize}}</option>
+                        {% for i in placeholder.tabletsize %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput8">Tablet Size</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="u1" aria-label="Default select example" id="floatingInput9">
+                        <option selected value="{{i.update_u1}}">{{i.update_u1}}</option>
+                        {% for i in placeholder.u1 %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput9">U1</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="u2" aria-label="Default select example" id="floatingInput10">
+                        <option selected value="{{i.update_u2}}">{{i.update_u2}}</option>
+                        {% for i in placeholder.u2 %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput10">U2</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="l1" aria-label="Default select example" id="floatingInput11">
+                        <option selected value="{{i.update_l1}}">{{i.update_l1}}</option>
+                        {% for i in placeholder.l1 %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput11">L1</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="l2" aria-label="Default select example" id="floatingInput12">
+                        <option selected value="{{i.update_l2}}">{{i.update_l2}}</option>
+                        {% for i in placeholder.l2 %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput12">L2</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="d" aria-label="Default select example" id="floatingInput13">
+                        <option selected value="{{i.update_d}}">{{i.update_d}}</option>
+                        {% for i in placeholder.d %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput13">D</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="set" aria-label="Default select example" id="floatingInput14">
+                        <option selected value="{{i.update_set}}">{{i.update_set}}</option>
+                        {% for i in placeholder.set %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput14">SET</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="platingtype" aria-label="Default select example"
+                        id="floatingInput15">
+                        <option selected value="{{i.update_platingtype}}">{{i.update_platingtype}}</option>
+                        {% for i in placeholder.platingtype %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput15">Plating Type</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="rawmaterial" aria-label="Default select example"
+                        id="floatingInput16">
+                        <option selected value="{{i.update_rawmaterial}}">{{i.update_rawmaterial}}</option>
+                        {% for i in placeholder.rawmaterial %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput12">Raw Material</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <!--blank-->
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="priority" id="floatingInput17" placeholder=""
+                        value="{{i.update_priority}}">
+                    <label for="floatingInput17">Priority</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" style="background-color: {{i.bgcolor}};" disabled name="status" id="floatingInput18" placeholder=""
+                        value="{{i.update_status}}">
+                    <label for="floatingInput18">Status</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <!--blank-->
+            </div>
+        </div>
+        <div class="row" style="background-color: peru;">
+            <div class="col-sm-5">
+
+            </div>
+            <div class="col-sm-7">
+                <h2>Planning Stage</h2>
+            </div>
+        </div>
+        <!-- row2 -->
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="dwgnumber" id="floatingInput5" placeholder=""
+                        value="{{i.update_dwgnumber}}">
+                    <label for="floatingInput5">DWG Number</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="drgdate" id="floatingInput6" placeholder=""
+                        value="{{i.update_drgdate}}">
+                    <label for="floatingInput6">DRG Date</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="approvaldate" id="floatingInput6" placeholder=""
+                        value="{{i.update_approvalDate}}">
+                    <label for="floatingInput6">Approval Date</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="master" aria-label="Default select example" id="floatingInput3">
+                        <option selected value="{{i.update_master}}">{{i.update_master}}</option>
+                        <option value="YES">YES</option>
+                        <option value="NO">NO</option>
+                    </select>
+                    <label for="floatingInput3">MASTER</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="masterout" id="floatingInput5" placeholder=""
+                        value="{{i.update_masterOut}}">
+                    <label for="floatingInput5">Master Out</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="masterin" id="floatingInput6" placeholder=""
+                        value="{{i.update_masterIn}}">
+                    <label for="floatingInput6">Master In</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" disabled name="punchblank" id="floatingInput6" placeholder=""
+                        value="{{i.update_punchBlankUsed}}">
+                    <label for="floatingInput6">Punch Blank Used</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" disabled name="dieblank" id="floatingInput6" placeholder=""
+                        value="{{i.update_dieBlankUsed}}">
+                    <label for="floatingInput6">Die Blank Used</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="htdate" id="floatingInput5" placeholder=""
+                        value="{{i.update_hitDate}}">
+                    <label for="floatingInput5">HT Date</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="estimateddelivery" id="floatingInput6" placeholder=""
+                        value="{{i.update_estimatedDelivery}}">
+                    <label for="floatingInput6">Estimated Delivery Date</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="planningout" id="floatingInput6" placeholder=""
+                        value="{{i.update_planningOut}}">
+                    <label for="floatingInput6">Planning Out</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="planningin" id="floatingInput6" placeholder=""
+                        value="{{i.update_planningIn}}">
+                    <label for="floatingInput6">Planning In</label>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="background-color: peru;">
+            <div class="col-sm-5">
+
+            </div>
+            <div class="col-sm-7">
+                <h2>Manufacturing Stage</h2>
+            </div>
+        </div>
+        <!--row3-->
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="blank" aria-label="Default select example" id="floatingInput3">
+                        <option selected value="">{{i.update_blank}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.blank %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput3">Blank</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="process" aria-label="Default select example" id="floatingInput3">
+                        <option selected value="">{{i.update_process}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.process %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <label for="floatingInput3">Process</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="bodytipping" aria-label="Default select example"
+                        id="floatingInput3">
+                        <option selected value="">{{i.update_bodytipping}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.bodyTipMachining %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <label for="floatingInput3">Body & Tipping Machine</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="headmachine" aria-label="Default select example"
+                        id="floatingInput3">
+                        <option selected value="">{{i.update_headmachining}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.headMachining %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <label for="floatingInput3">Head Machine</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="keyway" aria-label="Default select example" id="floatingInput3">
+                        <option selected value="">{{i.update_keyway}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.keywayTaperFinish %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="floatingInput3">Keyway Tapper Finish</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="ht" aria-label="Default select example" id="floatingInput3">
+                        <option selected value="">{{i.update_ht}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.ht %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <label for="floatingInput3">HT</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="grinding" aria-label="Default select example" id="floatingInput3">
+                        <option selected value="">{{i.update_grinding}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.grinding %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <label for="floatingInput3">Grinding</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="hardchrome" aria-label="Default select example"
+                        id="floatingInput3">
+                        <option selected value="">{{i.update_hardchrome}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.hardChrome %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <label for="floatingInput3">Hard Chrome</label>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-sm-3">
+                <!--blank-->
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="qualitycheck" aria-label="Default select example"
+                        id="floatingInput3">
+                        <option selected value="">{{i.update_qualitycheck}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.qualityCheck %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <label for="floatingInput3">Quality Check</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="packingdispach" aria-label="Default select example"
+                        id="floatingInput3">
+                        <option selected value="">{{i.update_packingDispach}}</option>
+                        <option value="0.0"></option>
+                        {% for i in placeholder.packingDispach %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <label for="floatingInput3">Packing Dispatch</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <!--blank-->
+            </div>
+        </div>
+        <div class="row" style="background-color: peru;">
+            <div class="col-sm-5">
+
+            </div>
+            <div class="col-sm-7">
+                <h2>Dispatch Stage</h2>
+            </div>
+        </div>
+        <!--row4-->
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="edd" id="floatingInput1" placeholder=""
+                        value="{{i.update_eed}}">
+                    <label for="floatingInput1">Estimate Delivery Date</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="actualdeliverydate" id="floatingInput1" placeholder=""
+                        value="{{i.update_actual}}">
+                    <label for="floatingInput1">Actual Delivery Date</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="modeofdispatch" aria-label="Default select example"
+                        id="floatingInput3">
+                        {% if i.update_dispatchmode == "NULL" %}
+                        <option selected value="">Select Dispatch Mode</option>
+                        {% else %}
+                        <option selected value="{{i.update_dispatchmode}}">{{i.update_dispatchmode}}</option>
+                        {% endif %}
+                        {% for i in placeholder.dispatchlist %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <label for="floatingInput3">Mode of Dispatch</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating mb-3">
+                    {% if i.update_courierno == "NULL"%}
+                    <input type="text" class="form-control" name="couriernumber" id="floatingInput1" placeholder="">
+                    <label for="floatingInput1">Transport Courier Number</label>
+                    {% else %}
+                    <input type="text" class="form-control" name="couriernumber" id="floatingInput1" placeholder=""
+                        value="{{i.update_courierno}}">
+                    <label for="floatingInput1">Transport Courier Number</label>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" style="background-color: peru;">
+            <div class="col-sm-5">
+
+            </div>
+            <div class="col-sm-7">
+                <h2>Remarks</h2>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-6">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="remarks" id="floatingInput1" placeholder=""
+                    value="{{i.update_remarks}}">
+                    <label for="floatingInput1">Remarks</label>
+                </div>
+            </div>   
+            <div class="col-sm-3">
+
+            </div>         
+        </div>
+        {% endfor %}
+        <!--submit-->
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-success" type="submit">Submit</button>
+            </div>
+        </div>
+
+    </form>
+    {% endif %}
+</div>
+
+
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingAdd">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseAdd" aria-expanded="false" aria-controls="flush-collapseAdd">
+                            Add Records
+                        </button>
+                    </h2>
+                    <div id="flush-collapseAdd" class="accordion-collapse collapse" aria-labelledby="flush-headingAdd"
+                        data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <form action="" method="POST" autocomplete="off">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addlientname"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add Client Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addmoc"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add MOC</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addtooltype"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add Tool Type</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addshape"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add Shape</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addtabletsize"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add Tablet Size</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addtooltype"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add U1</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addu2"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add U2</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addl1"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add L1</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addl2"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add L2</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addd"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add D</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addset"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add SET</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addplatingtype"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add Plating Type</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="addrawmaterial"
+                                                id="floatingInput18" placeholder="">
+                                            <label for="floatingInput18">Add Raw Material</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <button type="submit" class="btn btn-primary">Add Data</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endif %}
+{% endif %}
+
+
+{% if errlogin == "invalid" %}
+<h1 class="d-flex justify-content-center" style="color: red;">Error login.. UserName or Password not matched!!</h1>
+{% endif %}
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="" method="POST" autocomplete="off" id ="testform">
+                {% csrf_token %}
+                <div class="row" style="background-color: peru;">
+                    <div class="col-sm-5">
+              
+                    </div>
+                    <div class="col-sm-7">
+                      <h2>Main Stage</h2>
+                    </div>
+                  </div>       
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="orderdate" id="orderdate" placeholder=""
+                          value="{{i.update_orderdate}}">
+                        <label for="orderdate">Order Date</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="ordernumber" id="ordernumber" placeholder=""
+                          value="{{i.update_ordernumber}}">
+                        <label for="ordernumber">Order Number</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="clientname" aria-label="Default select example" id="clientname">
+                          <option id="clientnamelabel" selected value="{{i.update_clientname}}">{{i.update_clientname}}</option>
+                          {% for i in placeholder.clientname %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="clientname">Name of Client</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="number" min="1" class="form-control" name="value" id="value" placeholder=""
+                          value="{{i.update_value}}">
+                        <label for="value">Value</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="moc" aria-label="Default select example" id="moc">
+                          <option id="moclabel" selected value="{{i.update_moc}}">{{i.update_moc}}</option>
+                          {% for i in placeholder.moc %}
+              
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="moc">MOC</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="tooltype" aria-label="Default select example" id="tooltype">
+                          <option id="tooltypelabel" selected value="{{i.update_tooltype}}">{{i.update_tooltype}}</option>
+                          {% for i in placeholder.tooltype %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="tooltype">Tool Type / M.C</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="shape" aria-label="Default select example" id="shape">
+                          <option id="shapelabel" selected value="{{i.update_shape}}">{{i.update_shape}}</option>
+                          {% for i in placeholder.shape %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="shape">Shape</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="tabletsize" aria-label="Default select example" id="tabletsize">
+                          <option id="tabletsizelabel" selected value="{{i.update_tabletsize}}">{{i.update_tabletsize}}</option>
+                          {% for i in placeholder.tabletsize %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="tabletsize">Tablet Size</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px;">   
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="u1" aria-label="Default select example" id="u1">
+                          <option id="u1label" selected value="{{i.update_u1}}">{{i.update_u1}}</option>
+                          {% for i in placeholder.u1 %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="u1">U1</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select  class="form-select" name="u2" aria-label="Default select example" id="u2">
+                          <option id="u2label" selected value="{{i.update_u2}}">{{i.update_u2}}</option>
+                          {% for i in placeholder.u2 %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="u2">U2</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="l1" aria-label="Default select example" id="l1">
+                          <option id="l1label" selected value="{{i.update_l1}}">{{i.update_l1}}</option>
+                          {% for i in placeholder.l1 %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="l1">L1</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="l2" aria-label="Default select example" id="l2">
+                          <option id="l2label" selected value="{{i.update_l2}}">{{i.update_l2}}</option>
+                          {% for i in placeholder.l2 %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="l2">L2</label>
+                      </div>
+                    </div>
+                  </div>  
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="d" aria-label="Default select example" id="d">
+                          <option id="dlabel" selected value="{{i.update_d}}">{{i.update_d}}</option>
+                          {% for i in placeholder.d %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="d">D</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="set" aria-label="Default select example" id="set">
+                          <option id="setlabel" selected value="{{i.update_set}}">{{i.update_set}}</option>
+                          {% for i in placeholder.set %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="set">SET</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="platingtype" aria-label="Default select example" id="platingtype">
+                          <option id="platingtypelabel" selected value="{{i.update_platingtype}}">{{i.update_platingtype}}</option>
+                          {% for i in placeholder.platingtype %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="platingtype">Plating Type</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="orderremark" id="orderremark" placeholder=""
+                          value="{{i.update_orderremarks}}">
+                        <label for="orderremark">Remarks</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" style="background-color: peru;">
+                    <div class="col-sm-5">
+              
+                    </div>
+                    <div class="col-sm-7">
+                      <h2>Planning Stage</h2>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+              
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="rawmaterial" aria-label="Default select example" id="rawmaterial">
+                          <option id="rawmateriallabel" selected value="{{i.update_rawmaterial}}">{{i.update_rawmaterial}}</option>
+                          {% for i in placeholder.rawmaterial %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="rawmaterial">Raw Material</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+              
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" name="priority" id="priority" placeholder=""
+                            value="{{i.update_priority}}">
+                          <label for="priority">Priority</label>
+                        </div>
+              
+                    </div>
+                    <div class="col-sm-3">
+              
+                    </div>
+                    
+                  </div>
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="dwgnumber" id="dwgnumber" placeholder="" 
+                          value="{{i.update_dwgnumber}}">
+                        <label for="dwgnumber">DWG Number</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="drgdate" id="drgdate" placeholder="" 
+                          value="{{i.update_drgdate}}">
+                        <label for="drgdate">DRG Date</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="approvaldate" id="approvaldate" placeholder="" 
+                          value="{{i.update_approvalDate}}">
+                        <label for="approvaldate">Approval Date</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="master" aria-label="Default select example" id="master"
+                          >
+                          <option id="masterlabel" selected value="{{i.update_master}}" >{{i.update_master}}</option>
+                          <option value="YES" >YES</option>
+                          <option value="NO" >NO</option>
+                        </select>
+                        <label for="master">MASTER</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="masterout" id="masterout"  placeholder=""
+                          value="{{i.update_masterOut}}">
+                        <label for="masterout">Master Out</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="masterin" id="masterin"  placeholder=""
+                          value="{{i.update_masterIn}}">
+                        <label for="masterin">Master In</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="punchblank" id="punchblank" disabled placeholder=""
+                          value="{{i.update_punchBlankUsed}}">
+                        <label for="punchblank">Punch Blank Used</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="dieblank" id="dieblank" disabled placeholder=""
+                          value="{{i.update_dieBlankUsed}}">
+                        <label for="dieblank">Die Blank Used</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+              
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="htdate" id="htdate"  placeholder=""
+                          value="{{i.update_hitDate}}">
+                        <label for="htdate">HT Date</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="estimateddelivery"  id="estimateddelivery" placeholder=""
+                          value="{{i.update_estimatedDelivery}}">
+                        <label for="estimateddelivery">Estimated Delivery Date</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="planningout" id="planningout"  placeholder=""
+                          value="{{i.update_planningOut}}">
+                        <label for="planningout"  placeholder="">Planning Out</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="planningin" id="planningin"  placeholder=""
+                          value="{{i.update_planningIn}}">
+                        <label for="planningin">Planning In</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="background-color: peru;">
+                    <div class="col-sm-5">
+              
+                    </div>
+                    <div class="col-sm-7">
+                      <h2>Manufacturing Stage</h2>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="blank" aria-label="Default select example" id="blank">
+                          <!-- <option selected value="{{i.update_master}}" >{{i.update_master}}</option> -->
+                          <option id="blanklabel" selected value="" >{{i.update_blank}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.blank %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="blank">Blank</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="process" aria-label="Default select example" id="process">
+                          <option id="processlabel" selected value="" >{{i.update_process}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.process %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+              
+                        </select>
+                        <label for="process">Process</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="bodytipping" aria-label="Default select example" id="bodytipping">
+                          <option id="bodytippinglabel" selected value="" >{{i.update_bodytipping}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.bodyTipMachining %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+              
+                        </select>
+                        <label for="bodytipping">Body & Tipping Machine</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="headmachine" aria-label="Default select example" id="headmachine">
+                          <option id="headmachinelabel" selected value="" >{{i.update_headmachining}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.headMachining %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+              
+                        </select>
+                        <label for="headmachine">Head Machine</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="keyway" aria-label="Default select example" id="keyway">
+                          <option id="keywaylabel" selected value="" >{{i.update_keyway}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.keywayTaperFinish %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="keyway">Keyway Tapper Finish</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="ht" aria-label="Default select example" id="ht">
+                          <option id="htlabel" selected value="" >{{i.update_ht}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.ht %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+              
+                        </select>
+                        <label for="ht">HT</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="grinding" aria-label="Default select example" id="grinding">
+                          <option id="grindinglabel" selected value="" >{{i.update_grinding}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.grinding %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+              
+                        </select>
+                        <label for="grinding">Grinding</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="hardchrome" aria-label="Default select example" id="hardchrome">
+                          <option id="hardchromelabel" selected value="" >{{i.update_hardchrome}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.hardChrome %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+              
+                        </select>
+                        <label for="hardchrome">Hard Chrome</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+              
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="qualitycheck" aria-label="Default select example" id="qualitycheck">
+                          <option id="qualitychecklabel" selected value="" >{{i.update_qualitycheck}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.qualityCheck %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+              
+                        </select>
+                        <label for="qualitycheck">Quality Check</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="packingdispach" aria-label="Default select example" id="packingdispach">
+                          <option id="packingdispachlabel" selected value="" >{{i.update_packingDispach}}</option>
+                          <option value="0.0">None</option>
+                          {% for i in placeholder.packingDispach %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+              
+                        </select>
+                        <label for="packingdispach">Packing Dispatch</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+              
+                    </div>
+                  </div>
+
+                  <div class="row" style="background-color: peru;">
+                    <div class="col-sm-5">
+              
+                    </div>
+                    <div class="col-sm-7">
+                      <h2>Dispatch Stage</h2>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+                      <!-- <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="edd" id="floatingInput1" placeholder=""
+                          value="{{i.update_eed}}">
+                        <label for="floatingInput1">Estimate Delivery Date</label>
+                      </div> -->
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" name="actualdeliverydate" id="actualdeliverydate" placeholder=""
+                          value="{{i.update_actual}}">
+                        <label for="actualdeliverydate">Actual Delivery Date</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                        <select class="form-select" name="modeofdispatch" aria-label="Default select example" id="modeofdispatch">
+                          
+                          <option id="modeofdispatchlabel" selected value="{{i.update_dispatchmode}}" disabled>{{i.update_dispatchmode}}</option>
+                          {% for i in placeholder.dispatchlist %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+              
+                        </select>
+                        <label for="modeofdispatch">Mode of Dispatch</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-floating mb-3">
+                      {% if i.update_courierno == None %}
+                      <input type="text" class="form-control" name="couriernumber" id="couriernumber" placeholder=""
+                          value="">
+                        <label for="couriernumber">Transport Courier Number</label>
+                      </div>
+                      {% else %}
+                      <div class="form-floating mb-3">
+                      <input type="text" class="form-control" name="couriernumber" id="couriernumber" placeholder=""
+                          value="{{i.update_courierno}}">
+                        <label for="couriernumber">Transport Courier Number</label>
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  
+                  
+                  <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-3">
+              
+                    </div>
+                    <div class="col-sm-3">
+                      <button class="btn btn-success" type="submit">Submit</button>
+                    </div>
+                    <div class="col-sm-3">
+              
+                    </div>
+                  </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal 1 -->
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Main Stage</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addlientname" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Client Name</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addmoc" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add MOC</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addtooltype" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Tool Type</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addshape" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Shape</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addtabletsize" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Tablet Size</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addu1" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add U1</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addu2" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add U2</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addl1" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add L1</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addl2" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add L2</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addd" id="floatingInput18" placeholder="">
+                                <label for="floatingInput18">Add D</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addset" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add SET</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addplatingtype" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Plating Type</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addrawmaterial" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Raw Material</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary">Add Data</button>
+                        </div>
+                        <div class="col-sm-3">
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal 2 -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addpunchblank" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Punch Blank Used</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="adddieblank" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Die Blank Used</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                        <div class="col-sm-3">
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal 3 -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addblank" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Blank</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addprocess" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Process</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addbodytipping" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Body-Tipping-Machine</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addheadmachining" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Head Machining</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addkeyway" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Keyway-Tapper-Finish</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addht" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add HT</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addgrinding" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Gringing</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addhardchrome" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Hard Chrome</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addqualitycheck" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Quality Check</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="addpackaging" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Packaging Dispatch</label>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+
+                        </div>
+                        <div class="col-sm-7">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal 4 -->
+<div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="adddispachmode" id="floatingInput18"
+                                    placeholder="">
+                                <label for="floatingInput18">Add Dispach Mode</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script> -->
+    <div class="modal fade" id="UpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="something1"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container" id = "container4">
+      
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id = "something">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<script type="text/javascript">
+    $(document).on('click', '#confirm-delete', function () {
+        return confirm('Are you sure you want to delete this??');
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#table_id2').DataTable({
+            scrollX:true,
+            'rowCallback': function(row, data, index){
+        if(data[5] == 'MULTI-3-SET'){
+                $(row).find('td:eq(0)').css('background-color', 'deeppink');
+                $(row).find('td:eq(1)').css('background-color', 'deeppink');
+                $(row).find('td:eq(2)').css('background-color', 'deeppink');
+                $(row).find('td:eq(3)').css('background-color', 'deeppink');
+                $(row).find('td:eq(4)').css('background-color', 'deeppink');
+                $(row).find('td:eq(5)').css('background-color', 'deeppink');
+                $(row).find('td:eq(6)').css('background-color', 'deeppink');
+                $(row).find('td:eq(7)').css('background-color', 'deeppink');
+                $(row).find('td:eq(8)').css('background-color', 'deeppink');
+                $(row).find('td:eq(9)').css('background-color', 'deeppink');
+                $(row).find('td:eq(10)').css('background-color', 'deeppink');
+                $(row).find('td:eq(11)').css('background-color', 'deeppink');
+                $(row).find('td:eq(12)').css('background-color', 'deeppink'); 
+                $(row).find('td:eq(14)').css('background-color', 'deeppink'); 
+                $(row).find('td:eq(15)').css('background-color', 'deeppink'); 
+               
+                
+            }
+            if(data[5] == 'BULLET'){
+                $(row).find('td:eq(0)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(1)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(2)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(3)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(4)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(5)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(6)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(7)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(8)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(9)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(10)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(11)').css('background-color', 'LightSkyBlue');
+                $(row).find('td:eq(12)').css('background-color', 'LightSkyBlue'); 
+                $(row).find('td:eq(14)').css('background-color', 'LightSkyBlue'); 
+                $(row).find('td:eq(15)').css('background-color', 'LightSkyBlue'); 
+                
+            }
+            if(data[5] == 'CAPSULE'){
+                $(row).find('td:eq(0)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(1)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(2)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(3)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(4)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(5)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(6)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(7)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(8)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(9)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(10)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(11)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(12)').css('background-color', 'MediumTurquoise');
+                $(row).find('td:eq(14)').css('background-color', 'MediumTurquoise'); 
+                $(row).find('td:eq(15)').css('background-color', 'MediumTurquoise'); 
+               
+            }
+            if(data[5] == 'ROUND'){
+                $(row).find('td:eq(0)').css('background-color', 'MintCream');
+                $(row).find('td:eq(1)').css('background-color', 'MintCream');
+                $(row).find('td:eq(2)').css('background-color', 'MintCream');
+                $(row).find('td:eq(3)').css('background-color', 'MintCream');
+                $(row).find('td:eq(4)').css('background-color', 'MintCream');
+                $(row).find('td:eq(5)').css('background-color', 'MintCream');
+                $(row).find('td:eq(6)').css('background-color', 'MintCream');
+                $(row).find('td:eq(7)').css('background-color', 'MintCream');
+                $(row).find('td:eq(8)').css('background-color', 'MintCream');
+                $(row).find('td:eq(9)').css('background-color', 'MintCream');
+                $(row).find('td:eq(10)').css('background-color', 'MintCream');
+                $(row).find('td:eq(11)').css('background-color', 'MintCream');
+                $(row).find('td:eq(12)').css('background-color', 'MintCream');
+                $(row).find('td:eq(14)').css('background-color', 'MintCream'); 
+                $(row).find('td:eq(15)').css('background-color', 'MintCream'); 
+               
+
+                $(row).find('td:eq(0)').css('color', 'black');
+                $(row).find('td:eq(1)').css('color', 'black');
+                $(row).find('td:eq(2)').css('color', 'black');
+                $(row).find('td:eq(3)').css('color', 'black');
+                $(row).find('td:eq(4)').css('color', 'black');
+                $(row).find('td:eq(5)').css('color', 'black');
+                $(row).find('td:eq(6)').css('color', 'black');
+                $(row).find('td:eq(7)').css('color', 'black');
+                $(row).find('td:eq(8)').css('color', 'black');
+                $(row).find('td:eq(9)').css('color', 'black');
+                $(row).find('td:eq(10)').css('color', 'black');
+                $(row).find('td:eq(11)').css('color', 'black');
+                $(row).find('td:eq(12)').css('color', 'black');
+                $(row).find('td:eq(14)').css('color', 'black');
+                $(row).find('td:eq(15)').css('color', 'black');
+                $(row).find('td:eq(16)').css('color', 'black');
+                
+            }
+            if(data[5] == 'OVAL'){
+                $(row).find('td:eq(0)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(1)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(2)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(3)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(4)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(5)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(6)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(7)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(8)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(9)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(10)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(11)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(12)').css('background-color', 'RoyalBlue');
+                $(row).find('td:eq(14)').css('background-color', 'RoyalBlue'); 
+                $(row).find('td:eq(15)').css('background-color', 'RoyalBlue'); 
+             
+
+                $(row).find('td:eq(0)').css('color', 'black');
+                $(row).find('td:eq(1)').css('color', 'black');
+                $(row).find('td:eq(2)').css('color', 'black');
+                $(row).find('td:eq(3)').css('color', 'black');
+                $(row).find('td:eq(4)').css('color', 'black');
+                $(row).find('td:eq(5)').css('color', 'black');
+                $(row).find('td:eq(6)').css('color', 'black');
+                $(row).find('td:eq(7)').css('color', 'black');
+                $(row).find('td:eq(8)').css('color', 'black');
+                $(row).find('td:eq(9)').css('color', 'black');
+                $(row).find('td:eq(10)').css('color', 'black');
+                $(row).find('td:eq(11)').css('color', 'black');
+                $(row).find('td:eq(12)').css('color', 'black');
+                $(row).find('td:eq(14)').css('color', 'black'); 
+                $(row).find('td:eq(15)').css('color', 'black'); 
+                $(row).find('td:eq(16)').css('color', 'black'); 
+                
+            }
+            if(data[5] == 'SHAPE-8'){
+                $(row).find('td:eq(0)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(1)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(2)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(3)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(4)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(5)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(6)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(7)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(8)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(9)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(10)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(11)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(12)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(14)').css('background-color', 'RebeccaPurple'); 
+                $(row).find('td:eq(15)').css('background-color', 'RebeccaPurple'); 
+                 
+
+                $(row).find('td:eq(0)').css('color', 'white');
+                $(row).find('td:eq(1)').css('color', 'white');
+                $(row).find('td:eq(2)').css('color', 'white');
+                $(row).find('td:eq(3)').css('color', 'white');
+                $(row).find('td:eq(4)').css('color', 'white');
+                $(row).find('td:eq(5)').css('color', 'white');
+                $(row).find('td:eq(6)').css('color', 'white');
+                $(row).find('td:eq(7)').css('color', 'white');
+                $(row).find('td:eq(8)').css('color', 'white');
+                $(row).find('td:eq(9)').css('color', 'white');
+                $(row).find('td:eq(10)').css('color', 'white');
+                $(row).find('td:eq(11)').css('color', 'white');
+                $(row).find('td:eq(12)').css('color', 'white');
+                $(row).find('td:eq(14)').css('color', 'white');
+                $(row).find('td:eq(15)').css('color', 'white');
+                $(row).find('td:eq(16)').css('color', 'white');
+                
+            }
+            if(data[5] == 'HEXAGON'){
+                $(row).find('td:eq(0)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(1)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(2)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(3)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(4)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(5)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(6)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(7)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(8)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(9)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(10)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(11)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(12)').css('background-color', 'SteelBlue');
+                $(row).find('td:eq(14)').css('background-color', 'SteelBlue'); 
+                $(row).find('td:eq(15)').css('background-color', 'SteelBlue'); 
+                
+                $(row).find('td:eq(0)').css('color', 'white');
+                $(row).find('td:eq(1)').css('color', 'white');
+                $(row).find('td:eq(2)').css('color', 'white');
+                $(row).find('td:eq(3)').css('color', 'white');
+                $(row).find('td:eq(4)').css('color', 'white');
+                $(row).find('td:eq(5)').css('color', 'white');
+                $(row).find('td:eq(6)').css('color', 'white');
+                $(row).find('td:eq(7)').css('color', 'white');
+                $(row).find('td:eq(8)').css('color', 'white');
+                $(row).find('td:eq(9)').css('color', 'white');
+                $(row).find('td:eq(10)').css('color', 'white');
+                $(row).find('td:eq(11)').css('color', 'white');
+                $(row).find('td:eq(12)').css('color', 'white');
+                $(row).find('td:eq(14)').css('color', 'white');
+                $(row).find('td:eq(15)').css('color', 'white');
+                $(row).find('td:eq(16)').css('color', 'white');
+                
+            }
+            if(data[5] == 'PENTAGON'){
+                $(row).find('td:eq(0)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(1)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(2)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(3)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(4)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(5)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(6)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(7)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(8)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(9)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(10)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(11)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(12)').css('background-color', 'MediumSlateBlue');
+                $(row).find('td:eq(14)').css('background-color', 'MediumSlateBlue'); 
+                $(row).find('td:eq(15)').css('background-color', 'MediumSlateBlue'); 
+                
+
+                $(row).find('td:eq(0)').css('color', 'white');
+                $(row).find('td:eq(1)').css('color', 'white');
+                $(row).find('td:eq(2)').css('color', 'white');
+                $(row).find('td:eq(3)').css('color', 'white');
+                $(row).find('td:eq(4)').css('color', 'white');
+                $(row).find('td:eq(5)').css('color', 'white');
+                $(row).find('td:eq(6)').css('color', 'white');
+                $(row).find('td:eq(7)').css('color', 'white');
+                $(row).find('td:eq(8)').css('color', 'white');
+                $(row).find('td:eq(9)').css('color', 'white');
+                $(row).find('td:eq(10)').css('color', 'white');
+                $(row).find('td:eq(11)').css('color', 'white');
+                $(row).find('td:eq(12)').css('color', 'white');
+                $(row).find('td:eq(14)').css('color', 'white');
+                $(row).find('td:eq(15)').css('color', 'white');
+                $(row).find('td:eq(16)').css('color', 'white');
+                
+            }
+            if(data[5] == 'VIAGRA'){
+                $(row).find('td:eq(0)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(1)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(2)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(3)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(4)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(5)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(6)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(7)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(8)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(9)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(10)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(11)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(12)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(14)').css('background-color', 'RebeccaPurple'); 
+                $(row).find('td:eq(15)').css('background-color', 'RebeccaPurple'); 
+                 
+
+                $(row).find('td:eq(0)').css('color', 'white');
+                $(row).find('td:eq(1)').css('color', 'white');
+                $(row).find('td:eq(2)').css('color', 'white');
+                $(row).find('td:eq(3)').css('color', 'white');
+                $(row).find('td:eq(4)').css('color', 'white');
+                $(row).find('td:eq(5)').css('color', 'white');
+                $(row).find('td:eq(6)').css('color', 'white');
+                $(row).find('td:eq(7)').css('color', 'white');
+                $(row).find('td:eq(8)').css('color', 'white');
+                $(row).find('td:eq(9)').css('color', 'white');
+                $(row).find('td:eq(10)').css('color', 'white');
+                $(row).find('td:eq(11)').css('color', 'white');
+                $(row).find('td:eq(12)').css('color', 'white');
+                $(row).find('td:eq(14)').css('color', 'white');
+                $(row).find('td:eq(15)').css('color', 'white');
+                $(row).find('td:eq(16)').css('color', 'white');
+            }
+            if(data[5] == 'MULTI-TIPS'){
+                $(row).find('td:eq(0)').css('background-color', 'Khaki');
+                $(row).find('td:eq(1)').css('background-color', 'Khaki');
+                $(row).find('td:eq(2)').css('background-color', 'Khaki');
+                $(row).find('td:eq(3)').css('background-color', 'Khaki');
+                $(row).find('td:eq(4)').css('background-color', 'Khaki');
+                $(row).find('td:eq(5)').css('background-color', 'Khaki');
+                $(row).find('td:eq(6)').css('background-color', 'Khaki');
+                $(row).find('td:eq(7)').css('background-color', 'Khaki');
+                $(row).find('td:eq(8)').css('background-color', 'Khaki');
+                $(row).find('td:eq(9)').css('background-color', 'Khaki');
+                $(row).find('td:eq(10)').css('background-color', 'Khaki');
+                $(row).find('td:eq(11)').css('background-color', 'Khaki');
+                $(row).find('td:eq(12)').css('background-color', 'Khaki');
+                $(row).find('td:eq(14)').css('background-color', 'Khaki'); 
+                $(row).find('td:eq(15)').css('background-color', 'Khaki'); 
+                
+                 
+                $(row).find('td:eq(0)').css('color', 'black');
+                $(row).find('td:eq(1)').css('color', 'black');
+                $(row).find('td:eq(2)').css('color', 'black');
+                $(row).find('td:eq(3)').css('color', 'black');
+                $(row).find('td:eq(4)').css('color', 'black');
+                $(row).find('td:eq(5)').css('color', 'black');
+                $(row).find('td:eq(6)').css('color', 'black');
+                $(row).find('td:eq(7)').css('color', 'black');
+                $(row).find('td:eq(8)').css('color', 'black');
+                $(row).find('td:eq(9)').css('color', 'black');
+                $(row).find('td:eq(10)').css('color', 'black');
+                $(row).find('td:eq(11)').css('color', 'black');
+                $(row).find('td:eq(12)').css('color', 'black');
+                $(row).find('td:eq(14)').css('color', 'black');
+                $(row).find('td:eq(15)').css('color', 'black');
+                $(row).find('td:eq(16)').css('color', 'black');
+            }
+            if(data[5] == 'ALMOND'){
+                $(row).find('td:eq(0)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(1)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(2)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(3)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(4)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(5)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(6)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(7)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(8)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(9)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(10)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(11)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(12)').css('background-color', 'RebeccaPurple');
+                $(row).find('td:eq(14)').css('background-color', 'RebeccaPurple'); 
+                $(row).find('td:eq(15)').css('background-color', 'RebeccaPurple'); 
+              
+
+                $(row).find('td:eq(0)').css('color', 'white');
+                $(row).find('td:eq(1)').css('color', 'white');
+                $(row).find('td:eq(2)').css('color', 'white');
+                $(row).find('td:eq(3)').css('color', 'white');
+                $(row).find('td:eq(4)').css('color', 'white');
+                $(row).find('td:eq(5)').css('color', 'white');
+                $(row).find('td:eq(6)').css('color', 'white');
+                $(row).find('td:eq(7)').css('color', 'white');
+                $(row).find('td:eq(8)').css('color', 'white');
+                $(row).find('td:eq(9)').css('color', 'white');
+                $(row).find('td:eq(10)').css('color', 'white');
+                $(row).find('td:eq(11)').css('color', 'white');
+                $(row).find('td:eq(12)').css('color', 'white');
+                $(row).find('td:eq(14)').css('color', 'white');
+                $(row).find('td:eq(15)').css('color', 'white');
+                $(row).find('td:eq(16)').css('color', 'white');
+            }
+            if(data[5] == 'TRIANGLE'){
+                $(row).find('td:eq(0)').css('background-color', 'Indigo');
+                $(row).find('td:eq(1)').css('background-color', 'Indigo');
+                $(row).find('td:eq(2)').css('background-color', 'Indigo');
+                $(row).find('td:eq(3)').css('background-color', 'Indigo');
+                $(row).find('td:eq(4)').css('background-color', 'Indigo');
+                $(row).find('td:eq(5)').css('background-color', 'Indigo');
+                $(row).find('td:eq(6)').css('background-color', 'Indigo');
+                $(row).find('td:eq(7)').css('background-color', 'Indigo');
+                $(row).find('td:eq(8)').css('background-color', 'Indigo');
+                $(row).find('td:eq(9)').css('background-color', 'Indigo');
+                $(row).find('td:eq(10)').css('background-color', 'Indigo');
+                $(row).find('td:eq(11)').css('background-color', 'Indigo');
+                $(row).find('td:eq(12)').css('background-color', 'Indigo');
+                $(row).find('td:eq(14)').css('background-color', 'Indigo'); 
+                $(row).find('td:eq(15)').css('background-color', 'Indigo'); 
+                
+
+                $(row).find('td:eq(0)').css('color', 'white');
+                $(row).find('td:eq(1)').css('color', 'white');
+                $(row).find('td:eq(2)').css('color', 'white');
+                $(row).find('td:eq(3)').css('color', 'white');
+                $(row).find('td:eq(4)').css('color', 'white');
+                $(row).find('td:eq(5)').css('color', 'white');
+                $(row).find('td:eq(6)').css('color', 'white');
+                $(row).find('td:eq(7)').css('color', 'white');
+                $(row).find('td:eq(8)').css('color', 'white');
+                $(row).find('td:eq(9)').css('color', 'white');
+                $(row).find('td:eq(10)').css('color', 'white');
+                $(row).find('td:eq(11)').css('color', 'white');
+                $(row).find('td:eq(12)').css('color', 'white');
+                $(row).find('td:eq(13)').css('color', 'white');
+                $(row).find('td:eq(15)').css('color', 'white');
+                $(row).find('td:eq(16)').css('color', 'white');
+            }
+            if(data[5] == 'MULTI-2-SET'){
+                $(row).find('td:eq(0)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(1)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(2)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(3)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(4)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(5)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(6)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(7)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(8)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(9)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(10)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(11)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(12)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(14)').css('background-color', 'MediumSpringGreen'); 
+                $(row).find('td:eq(15)').css('background-color', 'MediumSpringGreen'); 
+               
+
+                $(row).find('td:eq(0)').css('color', 'black');
+                $(row).find('td:eq(1)').css('color', 'black');
+                $(row).find('td:eq(2)').css('color', 'black');
+                $(row).find('td:eq(3)').css('color', 'black');
+                $(row).find('td:eq(4)').css('color', 'black');
+                $(row).find('td:eq(5)').css('color', 'black');
+                $(row).find('td:eq(6)').css('color', 'black');
+                $(row).find('td:eq(7)').css('color', 'black');
+                $(row).find('td:eq(8)').css('color', 'black');
+                $(row).find('td:eq(9)').css('color', 'black');
+                $(row).find('td:eq(10)').css('color', 'black');
+                $(row).find('td:eq(11)').css('color', 'black');
+                $(row).find('td:eq(12)').css('color', 'black');
+                $(row).find('td:eq(14)').css('color', 'black');
+                $(row).find('td:eq(15)').css('color', 'black');
+                $(row).find('td:eq(16)').css('color', 'black');
+            }
+            if(data[5] == 'MULTI-2-SET'){
+                $(row).find('td:eq(0)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(1)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(2)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(3)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(4)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(5)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(6)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(7)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(8)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(9)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(10)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(11)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(12)').css('background-color', 'MediumSpringGreen');
+                $(row).find('td:eq(14)').css('background-color', 'MediumSpringGreen'); 
+                $(row).find('td:eq(15)').css('background-color', 'MediumSpringGreen');
+                
+
+                $(row).find('td:eq(0)').css('color', 'black');
+                $(row).find('td:eq(1)').css('color', 'black');
+                $(row).find('td:eq(2)').css('color', 'black');
+                $(row).find('td:eq(3)').css('color', 'black');
+                $(row).find('td:eq(4)').css('color', 'black');
+                $(row).find('td:eq(5)').css('color', 'black');
+                $(row).find('td:eq(6)').css('color', 'black');
+                $(row).find('td:eq(7)').css('color', 'black');
+                $(row).find('td:eq(8)').css('color', 'black');
+                $(row).find('td:eq(9)').css('color', 'black');
+                $(row).find('td:eq(10)').css('color', 'black');
+                $(row).find('td:eq(11)').css('color', 'black');
+                $(row).find('td:eq(12)').css('color', 'black');
+                $(row).find('td:eq(14)').css('color', 'black');
+                $(row).find('td:eq(15)').css('color', 'black');
+                $(row).find('td:eq(16)').css('color', 'black');
+            }
+            if(data[5] == 'MULTI-4-SET'){
+                $(row).find('td:eq(0)').css('background-color', 'orange');
+                $(row).find('td:eq(1)').css('background-color', 'orange');
+                $(row).find('td:eq(2)').css('background-color', 'orange');
+                $(row).find('td:eq(3)').css('background-color', 'orange');
+                $(row).find('td:eq(4)').css('background-color', 'orange');
+                $(row).find('td:eq(5)').css('background-color', 'orange');
+                $(row).find('td:eq(6)').css('background-color', 'orange');
+                $(row).find('td:eq(7)').css('background-color', 'orange');
+                $(row).find('td:eq(8)').css('background-color', 'orange');
+                $(row).find('td:eq(9)').css('background-color', 'orange');
+                $(row).find('td:eq(10)').css('background-color', 'orange');
+                $(row).find('td:eq(11)').css('background-color', 'orange');
+                $(row).find('td:eq(12)').css('background-color', 'orange');
+                $(row).find('td:eq(14)').css('background-color', 'orange'); 
+                $(row).find('td:eq(15)').css('background-color', 'orange'); 
+               
+
+                $(row).find('td:eq(0)').css('color', 'black');
+                $(row).find('td:eq(1)').css('color', 'black');
+                $(row).find('td:eq(2)').css('color', 'black');
+                $(row).find('td:eq(3)').css('color', 'black');
+                $(row).find('td:eq(4)').css('color', 'black');
+                $(row).find('td:eq(5)').css('color', 'black');
+                $(row).find('td:eq(6)').css('color', 'black');
+                $(row).find('td:eq(7)').css('color', 'black');
+                $(row).find('td:eq(8)').css('color', 'black');
+                $(row).find('td:eq(9)').css('color', 'black');
+                $(row).find('td:eq(10)').css('color', 'black');
+                $(row).find('td:eq(11)').css('color', 'black');
+                $(row).find('td:eq(12)').css('color', 'black');
+                $(row).find('td:eq(14)').css('color', 'black');
+                $(row).find('td:eq(15)').css('color', 'black');
+                $(row).find('td:eq(16)').css('color', 'black');
+            }
+            if(data[5] == 'DIAMOND'){
+                $(row).find('td:eq(0)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(1)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(2)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(3)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(4)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(5)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(6)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(7)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(8)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(9)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(10)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(11)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(12)').css('background-color', 'DarkViolet');
+                $(row).find('td:eq(14)').css('background-color', 'DarkViolet'); 
+                $(row).find('td:eq(15)').css('background-color', 'DarkViolet'); 
+              
+
+                $(row).find('td:eq(0)').css('color', 'white');
+                $(row).find('td:eq(1)').css('color', 'white');
+                $(row).find('td:eq(2)').css('color', 'white');
+                $(row).find('td:eq(3)').css('color', 'white');
+                $(row).find('td:eq(4)').css('color', 'white');
+                $(row).find('td:eq(5)').css('color', 'white');
+                $(row).find('td:eq(6)').css('color', 'white');
+                $(row).find('td:eq(7)').css('color', 'white');
+                $(row).find('td:eq(8)').css('color', 'white');
+                $(row).find('td:eq(9)').css('color', 'white');
+                $(row).find('td:eq(10)').css('color', 'white');
+                $(row).find('td:eq(11)').css('color', 'white');
+                $(row).find('td:eq(12)').css('color', 'white');
+                $(row).find('td:eq(14)').css('color', 'white');
+                $(row).find('td:eq(15)').css('color', 'white');
+                $(row).find('td:eq(16)').css('color', 'white');
+            }
+            if(data[16] == '100.0%'){
+
+              $(row).find('td:eq(16)').css('background-color', 'darkgreen');
+
+              $(row).find('td:eq(16)').css('color', 'white');  
+              }
+              if(data[16] == '99.0%'){
+                
+              $(row).find('td:eq(16)').css('background-color', 'ForestGreen');
+
+                $(row).find('td:eq(16)').css('color', 'white');
+              }
+              if(data[16] == '95.0%'){
+                
+              $(row).find('td:eq(16)').css('background-color', 'green');
+ 
+              $(row).find('td:eq(16)').css('color', 'black');          
+              }
+              if(data[16] == '90.0%'){
+              $(row).find('td:eq(16)').css('background-color', 'PaleGreen');
+              
+              $(row).find('td:eq(16)').css('color', 'black');         
+              }
+              if (data[16] == '80.0%' || data[16] == '75.0%'){         
+              $(row).find('td:eq(16)').css('background-color', 'LightBlue');
+              $(row).find('td:eq(16)').css('color', 'black');
+              }
+              if (data[16] == '70.0%' || data[16] == '65.0%' || data[16] == '60.0%'){                
+              $(row).find('td:eq(16)').css('background-color', 'Lavender');
+              $(row).find('td:eq(16)').css('color', 'black');                               
+              }
+              if (data[16] == '50.0%' || data[16] == '40.0%' || data[16] == '25.0%'){
+              $(row).find('td:eq(16)').css('background-color', 'orange');
+              $(row).find('td:eq(16)').css('color', 'black');               
+              }
+              if (data[16] == '20.0%' || data[16] == '10.0%' || data[16] == '5.0%'){            
+              $(row).find('td:eq(16)').css('background-color', 'BurlyWood');
+              $(row).find('td:eq(16)').css('color', 'black');               
+              }
+              if(data[13] == 'CRN'){
+                $(row).find('td:eq(13)').css('background-color', 'blue');
+              }
+              if(data[13] == 'HC'){
+                $(row).find('td:eq(13)').css('background-color', 'darkgreen');
+              }
+              if(data[13] == 'NO'){
+                $(row).find('td:eq(13)').css('background-color', 'red');
+              }
+      }
+    });
+    $('#table_id2').on('click', 'tr', function () {
+        var name = $('td', this).eq(1).text();
+        
+        var data = table.row( this ).data();
+        console.log(data);
+        // $('#exampleModal').modal("show");
+        $.ajax({
+        type: "POST",
+        url: "{% url 'admin' %}",
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: {
+          'abc': name // from form
+        },
+        success: function(result){
+          openModal(result);
+        }
+      });
+    });
+    });
+    function openModal(product_data){
+        console.log(product_data);
+        $('#clientnamelabel').html(product_data.passdata.clientname);
+        $('#moclabel').html(product_data.passdata.moc);
+        $('#tooltypelabel').html(product_data.passdata.tooltype);
+        $('#shapelabel').html(product_data.passdata.shape);
+        $('#tabletsizelabel').html(product_data.passdata.tabletsize);
+        $('#u1label').html(product_data.passdata.u1);
+        $('#u2label').html(product_data.passdata.u2);
+        $('#l1label').html(product_data.passdata.l1);
+        $('#l2label').html(product_data.passdata.l2);
+        $('#dlabel').html(product_data.passdata.d);
+        $('#setlabel').html(product_data.passdata.set);
+        $('#platingtypelabel').html(product_data.passdata.platingtype);
+        $('#modeofdispatchlabel').html(product_data.passdata.modeofdispatch);
+        $('#rawmateriallabel').html(product_data.passdata.rawmaterial);
+        $('#masterlabel').html(product_data.passdata.master);
+        $('#blanklabel').html(product_data.passdata.blank);
+        $('#processlabel').html(product_data.passdata.process);
+        $('#bodytippinglabel').html(product_data.passdata.bodytipping);
+        $('#headmachinelabel').html(product_data.passdata.headmachine);
+        $('#keywaylabel').html(product_data.passdata.keyway);
+        $('#htlabel').html(product_data.passdata.ht);
+        $('#grindinglabel').html(product_data.passdata.grinding);
+        $('#hardchromelabel').html(product_data.passdata.hardchrome);
+        $('#qualitychecklabel').html(product_data.passdata.qualitycheck);
+        $('#packingdispachlabel').html(product_data.passdata.packingdispach);
+
+
+
+          $('#orderdate').attr("value", product_data.passdata.orderdate);
+          $('#ordernumber').attr("value", product_data.passdata.ordernumber);
+          
+          $('#value').attr("value", product_data.passdata.value);
+          
+          
+          $('#orderremark').attr("value", product_data.passdata.orderremark);
+          $('#actualdeliverydate').attr("value", product_data.passdata.actualdeliverydate);
+          
+          $('#couriernumber').attr("value", product_data.passdata.couriernumber);
+          
+          $('#priority').attr("value", product_data.passdata.priority);
+          $('#dwgnumber').attr("value", product_data.passdata.dwgnumber);
+          $('#drgdate').attr("value", product_data.passdata.drgdate);
+          $('#approvaldate').attr("value", product_data.passdata.approvaldate);
+          
+          $('#masterout').attr("value", product_data.passdata.masterout);
+          $('#masterin').attr("value", product_data.passdata.masterin);
+          $('#punchblank').attr("value", product_data.passdata.punchblank);
+          $('#dieblank').attr("value", product_data.passdata.dieblank);
+          $('#htdate').attr("value", product_data.passdata.htdate);
+          $('#estimateddelivery').attr("value", product_data.passdata.estimateddelivery);
+          $('#planningout').attr("value", product_data.passdata.planningout);
+          $('#planningin').attr("value", product_data.passdata.planningin);
+          
+          
+          $('#exampleModal').modal('show');
+        };
+</script>
+<script>
+    $('#something').click(function() {
+      location.reload();
+  });
+  </script>
+  <script>
+    $('#something1').click(function() {
+      location.reload();
+  });
+  </script>
+
+  <!-- <div class="container mt-5">
+    <table class="table table-dark table-hover" id="table_id2">
+        <thead>
+            <tr>
+                <th scope="col">Order Date</th>
+                <th scope="col">Order Number</th>
+                <th scope="col">Client Name</th>
+                <th scope="col">Value</th>
+                <th scope="col">MOC</th>
+                <th scope="col">Tool Type</th>
+                <th scope="col">Shape</th>
+                <th scope="col">Tablet Size</th>
+                <th scope="col">U1</th>
+                <th scope="col">U2</th>
+                <th scope="col">L1</th>
+                <th scope="col">L2</th>
+                <th scope="col">D</th> 
+                <th scope="col">Set</th>
+                <th scope="col">Plating Type</th>
+                <th scope="col">Raw Material</th>
+                <th scope="col">Priority</th>
+                <th scope="col">dwgNumber</th>
+                <th scope="col">drgDate</th>
+                <th scope="col">approvalDate</th>
+                <th scope="col">master</th>
+                <th scope="col">masterOut</th>
+                <th scope="col">masterIn</th>
+                <th scope="col">punchBlankUsed</th>
+                <th scope="col">dieBlankUsed</th>
+                <th scope="col">hitDate</th>
+                <th scope="col">estimatedDelivery</th>
+                <th scope="col">planningOut</th>
+                <th scope="col">planningIn</th>
+                <th scope="col">blank</th>
+                <th scope="col">process</th>
+                <th scope="col">bodyTipMachining</th>
+                <th scope="col">headMachining</th>
+                <th scope="col">keywayTaperFinish</th>
+                <th scope="col">ht</th>
+                <th scope="col">grinding</th>
+                <th scope="col">hardChrome</th>
+                <th scope="col">qualityCheck</th>
+                <th scope="col">packingDispach</th>
+                <th scope="col">estimatedDelivery</th>
+                <th scope="col">actualDelivery</th>
+                <th scope="col">dispachMode</th>
+                <th scope="col">couriesNumber</th>
+                <th scope="col">remark</th>
+                
+                <th scope="col">Status</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in tabledata %}
+            <tr>
+                <th scope="row">{{data.orderdate}}</th>
+                <td>{{data.ordernumber}}</td>
+                <td>{{data.clientname}}</td>
+                <td>{{data.value}}</td>
+                <td>{{data.moc}}</td>
+                <td>{{data.tooltype}}</td>
+                <td>{{data.shape}}</td>
+                <td>{{data.u1}}</td>
+                <td>{{data.u2}}</td>
+                <td>{{data.l1}}</td>
+                <td>{{data.l2}}</td>
+                <td>{{data.d}}</td> 
+                <td>{{data.set}}</td>
+                <td>{{data.platingtype}}</td>
+                <td>{{data.rawmaterial}}</td>
+                <td>{{data.priority}}</td>
+                <td>{{data.status}}</td>
+                <td>{{data.dwgNumber}}</td>
+                <td>{{data.drgDate}}</td>
+                <td>{{data.approvalDate}}</td>
+                <td>{{data.master}}</td>
+                <td>{{data.masterOut}}</td>
+                <td>{{data.masterIn}}</td>
+                <td>{{data.punchBlankUsed}}</td>
+                <td>{{data.dieBlankUsed}}</td>
+                <td>{{data.hitDate}}</td>
+                <td>{{data.estimatedDelivery}}</td>
+                <td>{{data.planningOut}}</td>
+                <td>{{data.planningIn}}</td>
+                <td>{{data.blank}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.bodyTipMachining}}</td>
+                <td>{{data.headMachining}}</td>
+                <td>{{data.keywayTaperFinish}}</td>
+                <td>{{data.ht}}</td>
+                <td>{{data.grinding}}</td>
+                <td>{{data.hardChrome}}</td>
+                <td>{{data.qualityCheck}}</td>
+                <td>{{data.packingDispach}}</td>
+                <td>{{data.estimatedDelivery}}</td>
+                <td>{{data.actualDelivery}}</td>
+                <td>{{data.dispachMode}}</td>
+                <td>{{data.couriesNumber}}</td>
+                <td>{{data.remark}}</td>
+                
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <td><button class="btn btn-primary" type="submit" name="updateform"
+                            value="{{data.id}}">Update</button></td>
+                </form>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <td><button class="btn btn-danger" type="submit" name="deleteform" id="confirm-delete"
+                            value="{{data.id}}">Delete</button></td>
+                </form>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div> -->
+{% endblock content %}
+{% block main_script %}
+{% endblock main_script %}
+
+<!-- <table class="table table-dark" id="table_id2">
+    <thead>
+        <tr>
+            <th scope="col">Order Date</th>
+            <th scope="col">Order Number</th>
+            <th scope="col">Client Name</th>
+            <th scope="col">Value</th>
+            <th scope="col">MOC</th>
+            <th scope="col">Tool Type / M.C</th>
+            <th scope="col">Shape</th>
+            <th scope="col">Tablet Size</th>
+            <th scope="col">U1</th>
+            <th scope="col">U2</th>
+            <th scope="col">L1</th>
+            <th scope="col">L2</th>
+            <th scope="col">D</th> 
+            <th scope="col">Set</th>
+            <th scope="col">Plating Type</th>
+            <th scope="col">Raw Material</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Status</th>
+            <th scope="col">dwgNumber</th>
+            <th scope="col">drgDate</th>
+            <th scope="col">approvalDate</th>
+            <th scope="col">master</th>
+            <th scope="col">masterOut</th>
+            <th scope="col">masterIn</th>
+            <th scope="col">punchBlankUsed</th>
+            <th scope="col">dieBlankUsed</th>
+            <th scope="col">hitDate</th>
+            <th scope="col">estimatedDelivery</th>
+            <th scope="col">planningOut</th>
+            <th scope="col">planningIn</th>
+            <th scope="col">blank</th>
+            <th scope="col">process</th>
+            <th scope="col">bodyTipMachining</th>
+            <th scope="col">headMachining</th>
+            <th scope="col">keywayTaperFinish</th>
+            <th scope="col">ht</th>
+            <th scope="col">grinding</th>
+            <th scope="col">hardChrome</th>
+            <th scope="col">qualityCheck</th>
+            <th scope="col">packingDispach</th>
+            <th scope="col">estimatedDelivery</th>
+            <th scope="col">actualDelivery</th>
+            <th scope="col">dispachMode</th>
+            <th scope="col">couriesNumber</th>
+            <th scope="col">remark</th>
+            
+
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in tabledata %}
+        <tr>
+            <td>{{data.orderdate}}</td>
+            <td>{{data.ordernumber}}</td>
+            <td>{{data.clientname}}</td>
+            <td>{{data.value}}</td>
+            <td>{{data.moc}}</td>
+            <td>{{data.tooltype}}</td>
+            <td>{{data.shape}}</td>
+            <td>{{data.tabletsize}}</td>
+            <td>{{data.u1}}</td>
+            <td>{{data.u2}}</td>
+            <td>{{data.l1}}</td>
+            <td>{{data.l2}}</td>
+            <td>{{data.d}}</td> 
+            <td>{{data.set}}</td>
+            <td>{{data.platingtype}}</td>
+            <td>{{data.rawmaterial}}</td>
+            <td>{{data.priority}}</td>
+            <td>{{data.status}}</td>
+            <td>{{data.dwgNumber}}</td>
+            <td>{{data.drgDate}}</td>
+            <td>{{data.approvalDate}}</td>
+            <td>{{data.master}}</td>
+            <td>{{data.masterOut}}</td>
+            <td>{{data.masterIn}}</td>
+            <td>{{data.punchBlankUsed}}</td>
+            <td>{{data.dieBlankUsed}}</td>
+            <td>{{data.hitDate}}</td>
+            <td>{{data.estimatedDelivery}}</td>
+            <td>{{data.planningOut}}</td>
+            <td>{{data.planningIn}}</td>
+            <td>{{data.blank}}</td>
+            <td>{{data.process}}</td>
+            <td>{{data.bodyTipMachining}}</td>
+            <td>{{data.headMachining}}</td>
+            <td>{{data.keywayTaperFinish}}</td>
+            <td>{{data.ht}}</td>
+            <td>{{data.grinding}}</td>
+            <td>{{data.hardChrome}}</td>
+            <td>{{data.qualityCheck}}</td>
+            <td>{{data.packingDispach}}</td>
+            <td>{{data.estimatedDelivery}}</td>
+            <td>{{data.actualDelivery}}</td>
+            <td>{{data.dispachMode}}</td>
+            <td>{{data.couriesNumber}}</td>
+            <td>{{data.remark}}</td>
+            
+            <form action="" method="POST">
+                {% csrf_token %}
+                <td><button class="btn btn-primary" type="submit" name="updateform"
+                        value="{{data.id}}">Update</button></td>
+            </form>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <td><button class="btn btn-danger" type="submit" name="deleteform" id="confirm-delete"
+                        value="{{data.id}}">Delete</button></td>
+            </form>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> -->

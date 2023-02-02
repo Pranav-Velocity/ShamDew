@@ -1,0 +1,1424 @@
+{% extends 'base2.html' %}
+{% block head %}
+{% endblock head %}
+
+
+{% block sidebaranchor %}
+<a href="{% url 'userlog' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <svg class="bi me-2" width="40" height="32">
+        <use xlink:href="#bootstrap"></use>
+    </svg>
+    <span class="fs-4">User Log</span>
+</a>
+{% endblock sidebaranchor %}
+
+{% block sidebarlist %}
+{% if user.is_authenticated %}
+{% if isloggedin == "yes" %}
+<li class="nav-item">
+  <a href="{% url 'admin' %}" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+      HOME
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'adduser' %}" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+      ADD USER
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'add_data' %}" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+     ADD DATA
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'admindelete' %}" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+     DELETE DATA
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'add_customer' %}" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+     Add Customer
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'customerdetail' %}" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+     Customer Detail
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'userlog' %}" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+     User Log
+  </a>
+</li>
+<li class="nav-item">
+  <a href="/logout" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+      LOGOUT
+  </a>
+</li>
+
+{% endif %}
+{% endif %}
+{% endblock sidebarlist %}
+
+{% block content %}
+<div class="table-responsive">
+  <table class="table table-dark table-striped text-center" id="form_table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Form ID</th>
+        <th scope="col">User Name</th>
+        <th scope="col">User Level</th>
+        <th scope="col">User ID</th>
+        <th scope="col">Modified Date & Time</th>
+        <th scope="col">Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in data %}
+      <tr>
+        <th>{{i.id}}</th>
+        <th>{{i.formid}}</th>
+        <th>{{i.user_name}}</th>
+        <th>{{i.level}}</th>
+        <td>{{i.user_id}}</td>
+        <th>{{i.modified_date}}</th>
+        <th>{{i.Type}}</th>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Fields</th>
+              <th scope="col">Old Data</th>
+              <th scope="col">New Data</th>
+              <th scope="col">Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+
+              <tr>
+                <th>Order Date</th>
+                  <td id="oldorderDate"></td>
+                  <td id="neworderDate"></td>
+                  <td id="orderDateupdated"></td>
+              </tr>
+
+
+              <tr>
+                <th>Order Number</th>
+                  <td id="oldorderNumber"></td>
+                  <td id="neworderNumber"></td>
+                  <td id="uneworderNumber"></td>
+              </tr>
+
+
+              <tr>
+                <th>Client Name</th>
+                  <td id="oldclientName"></td>
+                  <td id="newclientName"></td>
+                  <td id="unewclientName"></td>
+              </tr>
+
+
+              <tr>
+                <th>Value</th>
+                  <td id="oldvalue"></td>
+                  <td id="newvalue"></td>
+                  <td id="unewvalue"></td>
+              </tr>
+
+
+              <tr>
+                <th>Moc</th>
+                  <td id="oldmoc"></td>
+                  <td id="newmoc"></td>
+                  <td id="unewmoc"></td>
+              </tr>
+
+
+              <tr>
+                <th>Tool Type</th>
+                  <td id="oldtoolType"></td>
+                  <td id="newtoolType"></td>
+                  <td id="unewtoolType"></td>
+              </tr>
+
+
+              <tr>
+                <th>Shape</th>
+                  <td id="oldshape"></td>
+                  <td id="newshape"></td>
+                  <td id="unewshape"></td>
+              </tr>
+
+
+              <tr>
+                <th>Tablet Size</th>
+                  <td id="oldtabletSize"></td>
+                  <td id="newtabletSize"></td>
+                  <td id="unewtabletSize"></td>
+              </tr>
+
+              <tr>
+                <th>Ul</th>
+                  <td id="oldu1"></td>
+                  <td id="newu1"></td>
+                  <td id="unewu1"></td>
+              </tr>
+
+              <tr>
+                <th>U2</th>
+                  <td id="oldu2"></td>
+                  <td id="newu2"></td>
+                  <td id="unewu2"></td>
+              </tr>
+
+              <tr>
+                <th>L1</th>
+                  <td id="oldl1"></td>
+                  <td id="newl1"></td>
+                  <td id="unewl1"></td>
+              </tr>
+
+              <tr>
+                <th>L2</th>
+                  <td id="oldl2"></td>
+                  <td id="newl2"></td>
+                  <td id="unewl2"></td>
+              </tr>
+
+              <tr>
+                <th>D</th>
+                  <td id="oldd"></td>
+                  <td id="newd"></td>
+                  <td id="unewd"></td>
+              </tr>
+
+              <tr>
+                <th>Set</th>
+                  <td id="oldsett"></td>
+                  <td id="newsett"></td>
+                  <td id="unewsett"></td>
+              </tr>
+
+              <tr>
+                <th>Plating Type</th>
+                  <td id="oldplatingType"></td>
+                  <td id="newplatingType"></td>
+                  <td id="unewplatingType"></td>
+              </tr>
+
+              <tr>
+                <th>Order Remarks</th>
+                  <td id="oldorder_remarks"></td>
+                  <td id="neworder_remarks"></td>
+                  <td id="uneworder_remarks"></td>
+              </tr>
+
+              <tr>
+                <th>Actual Delivery</th>
+                  <td id="oldactualDelivery"></td>
+                  <td id="newactualDelivery"></td>
+                  <td id="unewactualDelivery"></td>
+              </tr>
+
+              <tr>
+                <th>Dispatch Mode</th>
+                  <td id="olddispachMode"></td>
+                  <td id="newdispachMode"></td>
+                  <td id="unewdispachMode"></td>
+              </tr>
+
+              <tr>
+                <th>Courier Number</th>
+                  <td id="oldcouriesNumber"></td>
+                  <td id="newcouriesNumber"></td>
+                  <td id="unewcouriesNumber"></td>
+              </tr>
+
+              <tr>
+                <th>Raw Material</th>
+                  <td id="oldrawMaterial"></td>
+                  <td id="newrawMaterial"></td>
+                  <td id="unewrawMaterial"></td>
+              </tr>
+
+              <tr>
+                <th>Priority</th>
+                  <td id="oldpriority"></td>
+                  <td id="newpriority"></td>
+                  <td id="unewpriority"></td>
+              </tr>
+
+              <tr>
+                <th>Status</th>
+                  <td id="oldstatus"></td>
+                  <td id="newstatus"></td>
+                  <td id="unewstatus"></td>
+              </tr>
+
+              <tr>
+                <th>DWG Number</th>
+                  <td id="olddwgNumber"></td>
+                  <td id="newdwgNumber"></td>
+                  <td id="unewdwgNumber"></td>
+              </tr>
+
+              <tr>
+                <th>DRG Date</th>
+                  <td id="olddrgDate"></td>
+                  <td id="newdrgDate"></td>
+                  <td id="unewdrgDate"></td>
+              </tr>
+
+              <tr>
+                <th>Approval Date</th>
+                  <td id="oldapprovalDate"></td>
+                  <td id="newapprovalDate"></td>
+                  <td id="unewapprovalDate"></td>
+              </tr>
+
+              <tr>
+                <th>Master</th>
+                  <td id="oldmaster"></td>
+                  <td id="newmaster"></td>
+                  <td id="unewmaster"></td>
+              </tr>
+
+              <tr>
+                <th>Master Out</th>
+                  <td id="oldmasterOut"></td>
+                  <td id="newmasterOut"></td>
+                  <td id="unewmasterOut"></td>
+              </tr>
+
+              <tr>
+                <th>Master In</th>
+                  <td id="oldmasterIn"></td>
+                  <td id="newmasterIn"></td>
+                  <td id="unewmasterIn"></td>
+              </tr>
+
+              <tr>
+                <th>PunchBlank Used</th>
+                  <td id="oldpunchBlankUsed"></td>
+                  <td id="newpunchBlankUsed"></td>
+                  <td id="unewpunchBlankUsed"></td>
+              </tr>
+
+              <tr>
+                <th>DieBlank Used</th>
+                  <td id="olddieBlankUsed"></td>
+                  <td id="newdieBlankUsed"></td>
+                  <td id="unewdieBlankUsed"></td>
+              </tr>
+
+              <tr>
+                <th>Hit Date</th>
+                  <td id="oldhitDate"></td>
+                  <td id="newhitDate"></td>
+                  <td id="unewhitDate"></td>
+              </tr>
+
+              <tr>
+                <th>Estimated Delivery</th>
+                  <td id="oldestimatedDelivery"></td>
+                  <td id="newestimatedDelivery"></td>
+                  <td id="unewestimatedDelivery"></td>
+              </tr>
+
+              <tr>
+                <th>Planning Out</th>
+                  <td id="oldplanningOut"></td>
+                  <td id="newplanningOut"></td>
+                  <td id="unewplanningOut"></td>
+              </tr>
+
+              <tr>
+                <th>Planning In</th>
+                  <td id="oldplanningIn"></td>
+                  <td id="newplanningIn"></td>
+                  <td id="unewplanningIn"></td>
+              </tr>
+
+              <tr>
+                <th>Blank</th>
+                  <td id="oldblank"></td>
+                  <td id="newblank"></td>
+                  <td id="unewblank"></td>
+              </tr>
+
+              <tr>
+                <th>Process</th>
+                  <td id="oldprocess"></td>
+                  <td id="newprocess"></td>
+                  <td id="unewprocess"></td>
+              </tr>
+
+              <tr>
+                <th>BodyTipping Machining</th>
+                  <td id="oldbodyTipMachining"></td>
+                  <td id="newbodyTipMachining"></td>
+                  <td id="unewbodyTipMachining"></td>
+              </tr>
+
+              <tr>
+                <th>Head Machining</th>
+                  <td id="oldheadMachining"></td>
+                  <td id="newheadMachining"></td>
+                  <td id="unewheadMachining"></td>
+              </tr>
+
+              <tr>
+                <th>KeyWay Tapper Finish</th>
+                  <td id="oldkeywayTaperFinish"></td>
+                  <td id="newkeywayTaperFinish"></td>
+                  <td id="unewkeywayTaperFinish"></td>
+              </tr>
+
+              <tr>
+                <th>HT</th>
+                  <td id="oldht"></td>
+                  <td id="newht"></td>
+                  <td id="unewht"></td>
+              </tr>
+
+              <tr>
+                <th>Grinding</th>
+                  <td id="oldgrinding"></td>
+                  <td id="newgrinding"></td>
+                  <td id="unewgrinding"></td>
+              </tr>
+
+              <tr>
+                <th>Hard Chrome</th>
+                  <td id="oldhardChrome"></td>
+                  <td id="newhardChrome"></td>
+                  <td id="unewhardChrome"></td>
+              </tr>
+
+              <tr>
+                <th>Quality Check</th>
+                  <td id="oldqualityCheck"></td>
+                  <td id="newqualityCheck"></td>
+                  <td id="unewqualityCheck"></td>
+              </tr>
+
+              <tr>
+                <th>Packaging Dispach</th>
+                  <td id="oldpackingDispach"></td>
+                  <td id="newpackingDispach"></td>
+                  <td id="unewpackingDispach"></td>
+              </tr>
+
+              <tr>
+                <th>REMARKS</th>
+                  <td id="oldremark"></td>
+                  <td id="newremark"></td>
+                  <td id="unewremark"></td>
+              </tr>    
+          </tbody>
+      </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    var table =   $('#form_table').DataTable({
+      'rowCallback': function(row, data, index){
+        console.log(data[6]);
+        
+      }
+    });
+    $('#form_table').on('click', 'tr', function () {
+        var name = $('td', this).eq(0).text();
+        
+        var data = table.row( this ).data();
+        if (data){
+          var send = data[0];
+          
+        }
+        
+        // $('#exampleModal').modal("show");
+        $.ajax({
+        type: "POST",
+        url: "{% url 'userlog' %}",
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: {
+          'abc': send // from form
+        },
+        success: function(result){
+          openModal(result);
+        }
+      });
+    });
+  });
+  function openModal(product_data){
+    console.log(product_data.passdata)
+    $('#oldorderDate').html(product_data.passdata.oldorderDate);
+    $('#neworderDate').html(product_data.passdata.neworderDate);
+
+    $('#oldorderNumber').html(product_data.passdata.oldorderNumber);
+    $('#neworderNumber').html(product_data.passdata.neworderNumber);
+    
+
+    $('#oldclientName').html(product_data.passdata.oldclientName);
+    $('#newclientName').html(product_data.passdata.newclientName);
+    
+
+    $('#oldvalue').html(product_data.passdata.oldvalue);
+    $('#newvalue').html(product_data.passdata.newvalue);
+    
+
+    $('#oldmoc').html(product_data.passdata.oldmoc);
+    $('#newmoc').html(product_data.passdata.newmoc);
+    
+
+    $('#oldtoolType').html(product_data.passdata.oldtoolType);
+    $('#newtoolType').html(product_data.passdata.newtoolType);
+    
+
+    $('#oldshape').html(product_data.passdata.oldshape);
+    $('#newshape').html(product_data.passdata.newshape);
+    
+
+    $('#oldtabletSize').html(product_data.passdata.oldtabletSize);
+    $('#newtabletSize').html(product_data.passdata.newtabletSize);
+    
+    $('#oldu1').html(product_data.passdata.oldu1);
+    $('#newu1').html(product_data.passdata.newu1);
+    
+    $('#oldu2').html(product_data.passdata.oldu2);
+    $('#newu2').html(product_data.passdata.newu2);
+    
+    $('#oldl1').html(product_data.passdata.oldl1);
+    $('#newl1').html(product_data.passdata.newl1);
+    
+    $('#oldl2').html(product_data.passdata.oldl2);
+    $('#newl2').html(product_data.passdata.newl2);
+    
+    $('#oldd').html(product_data.passdata.oldd);
+    $('#newd').html(product_data.passdata.newd);
+    
+    $('#oldsett').html(product_data.passdata.oldsett);
+    $('#newsett').html(product_data.passdata.newsett);
+    
+    $('#oldplatingType').html(product_data.passdata.oldplatingType);
+    $('#newplatingType').html(product_data.passdata.newplatingType);
+    
+    $('#oldorder_remarks').html(product_data.passdata.oldorder_remarks);
+    $('#neworder_remarks').html(product_data.passdata.neworder_remarks);
+    
+    $('#oldactualDelivery').html(product_data.passdata.oldactualDelivery);
+    $('#newactualDelivery').html(product_data.passdata.newactualDelivery);
+    
+    $('#olddispachMode').html(product_data.passdata.olddispachMode);
+    $('#newdispachMode').html(product_data.passdata.newdispachMode);
+    
+    $('#oldcouriesNumber').html(product_data.passdata.oldcouriesNumber);
+    $('#newcouriesNumber').html(product_data.passdata.newcouriesNumber);
+    
+    $('#oldrawMaterial').html(product_data.passdata.oldrawMaterial);
+    $('#newrawMaterial').html(product_data.passdata.newrawMaterial);
+    
+    $('#oldpriority').html(product_data.passdata.oldpriority);
+    $('#newpriority').html(product_data.passdata.newpriority);
+    
+    $('#oldstatus').html(product_data.passdata.oldstatus);
+    $('#newstatus').html(product_data.passdata.newstatus);
+    
+    $('#olddwgNumber').html(product_data.passdata.olddwgNumber);
+    $('#newdwgNumber').html(product_data.passdata.newdwgNumber);
+    
+    $('#olddrgDate').html(product_data.passdata.olddrgDate);
+    $('#newdrgDate').html(product_data.passdata.newdrgDate);
+    
+    $('#oldapprovalDate').html(product_data.passdata.oldapprovalDate);
+    $('#newapprovalDate').html(product_data.passdata.newapprovalDate);
+    
+    $('#oldmaster').html(product_data.passdata.oldmaster);
+    $('#newmaster').html(product_data.passdata.newmaster);
+
+    $('#oldmasterOut').html(product_data.passdata.oldmasterOut);
+    $('#newmasterOut').html(product_data.passdata.newmasterOut);
+
+    $('#oldmasterIn').html(product_data.passdata.oldmasterIn);
+    $('#newmasterIn').html(product_data.passdata.newmasterIn);
+
+    $('#oldpunchBlankUsed').html(product_data.passdata.oldpunchBlankUsed);
+    $('#newpunchBlankUsed').html(product_data.passdata.newpunchBlankUsed);
+
+    $('#olddieBlankUsed').html(product_data.passdata.olddieBlankUsed);
+    $('#newdieBlankUsed').html(product_data.passdata.newdieBlankUsed);
+
+    $('#oldhitDate').html(product_data.passdata.oldhitDate);
+    $('#newhitDate').html(product_data.passdata.newhitDate);
+
+    $('#oldestimatedDelivery').html(product_data.passdata.oldestimatedDelivery);
+    $('#newestimatedDelivery').html(product_data.passdata.newestimatedDelivery);
+    
+    $('#oldplanningOut').html(product_data.passdata.oldplanningOut);
+    $('#newplanningOut').html(product_data.passdata.newplanningOut);
+    
+    $('#oldplanningIn').html(product_data.passdata.oldplanningIn);
+    $('#newplanningIn').html(product_data.passdata.newplanningIn);
+    
+    $('#oldblank').html(product_data.passdata.oldblank);
+    $('#newblank').html(product_data.passdata.newblank);
+    
+    $('#oldprocess').html(product_data.passdata.oldprocess);
+    $('#newprocess').html(product_data.passdata.newprocess);
+    
+    $('#oldbodyTipMachining').html(product_data.passdata.oldbodyTipMachining);
+    $('#newbodyTipMachining').html(product_data.passdata.newbodyTipMachining);
+    
+    $('#oldheadMachining').html(product_data.passdata.oldheadMachining);
+    $('#newheadMachining').html(product_data.passdata.newheadMachining);
+    
+    $('#oldkeywayTaperFinish').html(product_data.passdata.oldkeywayTaperFinish);
+    $('#newkeywayTaperFinish').html(product_data.passdata.newkeywayTaperFinish);
+    
+    $('#oldht').html(product_data.passdata.oldht);
+    $('#newht').html(product_data.passdata.newht);
+    
+    $('#oldgrinding').html(product_data.passdata.oldgrinding);
+    $('#newgrinding').html(product_data.passdata.newgrinding);
+    
+    $('#oldhardChrome').html(product_data.passdata.oldhardChrome);
+    $('#newhardChrome').html(product_data.passdata.newhardChrome);
+    
+    $('#oldqualityCheck').html(product_data.passdata.oldqualityCheck);
+    $('#newqualityCheck').html(product_data.passdata.newqualityCheck);
+    
+    $('#oldpackingDispach').html(product_data.passdata.oldpackingDispach);
+    $('#newpackingDispach').html(product_data.passdata.newpackingDispach);
+    
+    $('#newpackingDispach').html(product_data.passdata.newpackingDispach);
+    $('#newremark').html(product_data.passdata.newremark);
+    
+   if (product_data.passdata.oldorderDate == product_data.passdata.neworderDate  ){
+      $('#orderDateupdated').html("Not Updated");
+      $('#orderDateupdated').css("background-color", "red");
+      $('#orderDateupdated').css("color", "white");  
+    }
+    if(product_data.passdata.oldorderDate != product_data.passdata.neworderDate && product_data.passdata.neworderDate.length > 0){
+      $('#orderDateupdated').html("Updated");
+      $('#orderDateupdated').css("background-color", "green");
+      $('#orderDateupdated').css("color", "white"); 
+    }
+    else{
+      $('#orderDateupdated').html("Not Updated");
+      $('#orderDateupdated').css("background-color", "red");
+      $('#orderDateupdated').css("color", "white");
+    }
+
+
+    
+    if (product_data.passdata.oldorderNumber == product_data.passdata.neworderNumber){
+      $('#uneworderNumber').html("Not Updated");
+      $('#uneworderNumber').css("background-color", "red");
+      $('#uneworderNumber').css("color", "white");
+    }
+    if(product_data.passdata.oldorderNumber != product_data.passdata.neworderNumber && product_data.passdata.neworderNumber.length > 0){
+      $('#uneworderNumber').html("Updated");
+      $('#uneworderNumber').css("background-color", "green");
+      $('#uneworderNumber').css("color", "white");
+    }
+    else{
+      $('#uneworderNumber').html("Not Updated");
+      $('#uneworderNumber').css("background-color", "red");
+      $('#uneworderNumber').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldclientName == product_data.passdata.newclientName){
+      $('#unewclientName').html("Not Updated");
+      $('#unewclientName').css("background-color", "red");
+      $('#unewclientName').css("color", "white");
+    }
+    if(product_data.passdata.oldclientName != product_data.passdata.newclientName && product_data.passdata.newclientName.length > 0){
+      $('#unewclientName').html("Updated");
+      $('#unewclientName').css("background-color", "green");
+      $('#unewclientName').css("color", "white");
+    }
+    else{
+      $('#unewclientName').html("Not Updated");
+      $('#unewclientName').css("background-color", "red");
+      $('#unewclientName').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldvalue == product_data.passdata.newvalue){
+      $('#unewvalue').html("Not Updated");
+      $('#unewvalue').css("background-color", "red");
+      $('#unewvalue').css("color", "white");
+    }
+    if(product_data.passdata.oldvalue != product_data.passdata.newvalue && product_data.passdata.newvalue.length > 0){
+      $('#unewvalue').html("Updated");
+      $('#unewvalue').css("background-color", "green");
+      $('#unewvalue').css("color", "white");
+    }
+    else{
+      $('#unewvalue').html("Not Updated");
+      $('#unewvalue').css("background-color", "red");
+      $('#unewvalue').css("color", "white");
+    }
+    
+    
+    if (product_data.passdata.oldmoc == product_data.passdata.newmoc){
+      $('#unewmoc').html("Not Updated");
+      $('#unewmoc').css("background-color", "red");
+      $('#unewmoc').css("color", "white");
+    }
+    if(product_data.passdata.oldmoc != product_data.passdata.newmoc && product_data.passdata.newmoc.length > 0){
+      $('#unewmoc').html("Updated");
+      $('#unewmoc').css("background-color", "green");
+      $('#unewmoc').css("color", "white");
+    }
+    else{
+      $('#unewmoc').html("Not Updated");
+      $('#unewmoc').css("background-color", "red");
+      $('#unewmoc').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldtoolType == product_data.passdata.newtoolType){
+      $('#unewtoolType').html("Not Updated");
+      $('#unewtoolType').css("background-color", "red");
+      $('#unewtoolType').css("color", "white");
+    }
+    if(product_data.passdata.oldtoolType != product_data.passdata.newtoolType && product_data.passdata.newtoolType.length > 0  ){
+      $('#unewtoolType').html("Updated");
+      $('#unewtoolType').css("background-color", "green");
+      $('#unewtoolType').css("color", "white");
+    }
+    else{
+      $('#unewtoolType').html("Not Updated");
+      $('#unewtoolType').css("background-color", "red");
+      $('#unewtoolType').css("color", "white");
+    }
+    
+    
+    if (product_data.passdata.oldshape == product_data.passdata.newshape){
+      $('#unewshape').html("Not Updated");
+      $('#unewshape').css("background-color", "red");
+      $('#unewshape').css("color", "white");
+    }
+    if(product_data.passdata.oldshape != product_data.passdata.newshape && product_data.passdata.newshape.length > 0  ){
+      $('#unewshape').html("Updated");
+      $('#unewshape').css("background-color", "green");
+      $('#unewshape').css("color", "white");
+    }
+    else{
+      $('#unewshape').html("Not Updated");
+      $('#unewshape').css("background-color", "red");
+      $('#unewshape').css("color", "white");
+    }
+    
+    
+    if (product_data.passdata.oldtabletSize == product_data.passdata.newtabletSize){
+      $('#unewtabletSize').html("Not Updated");
+      $('#unewtabletSize').css("background-color", "red");
+      $('#unewtabletSize').css("color", "white");
+    }
+    if(product_data.passdata.oldtabletSize != product_data.passdata.newtabletSize && product_data.passdata.newtabletSize.length > 0  ){
+      $('#unewtabletSize').html("Updated");
+      $('#unewtabletSize').css("background-color", "green");
+      $('#unewtabletSize').css("color", "white");
+    }
+    else{
+      $('#unewtabletSize').html("Not Updated");
+      $('#unewtabletSize').css("background-color", "red");
+      $('#unewtabletSize').css("color", "white");
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    if (product_data.passdata.oldu1 == product_data.passdata.newu1){
+      $('#unewu1').html("Not Updated");
+      $('#unewu1').css("background-color", "red");
+      $('#unewu1').css("color", "white");
+    }
+    if(product_data.passdata.oldu1 != product_data.passdata.newu1 && product_data.passdata.newu1.length > 0  ){
+      $('#unewu1').html("Updated");
+      $('#unewu1').css("background-color", "green");
+      $('#unewu1').css("color", "white");
+    }
+    else{
+      $('#unewu1').html("Not Updated");
+      $('#unewu1').css("background-color", "red");
+      $('#unewu1').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldu2 == product_data.passdata.newu2){
+      $('#unewu2').html("Not Updated");
+      $('#unewu2').css("background-color", "red");
+      $('#unewu2').css("color", "white");
+    }
+    if(product_data.passdata.oldu2 != product_data.passdata.newu2 && product_data.passdata.newu2.length > 0  ){
+      $('#unewu2').html("Updated");
+      $('#unewu2').css("background-color", "green");
+      $('#unewu2').css("color", "white");
+    }
+    else{
+      $('#unewu2').html("Not Updated");
+      $('#unewu2').css("background-color", "red");
+      $('#unewu2').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldl1 == product_data.passdata.newl1){
+      $('#unewl1').html("Not Updated");
+      $('#unewl1').css("background-color", "red");
+      $('#unewl1').css("color", "white");
+    }
+    if(product_data.passdata.oldl1 != product_data.passdata.newl1 && product_data.passdata.newl1.length > 0  ){
+      $('#unewl1').html("Updated");
+      $('#unewl1').css("background-color", "green");
+      $('#unewl1').css("color", "white");
+    }
+    else{
+      $('#unewl1').html("Not Updated");
+      $('#unewl1').css("background-color", "red");
+      $('#unewl1').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldl2 == product_data.passdata.newl2){
+      $('#unewl2').html("Not Updated");
+      $('#unewl2').css("background-color", "red");
+      $('#unewl2').css("color", "white");
+    }
+    if(product_data.passdata.oldl2 != product_data.passdata.newl2 && product_data.passdata.newl2.length > 0  ){
+      $('#unewl2').html("Updated");
+      $('#unewl2').css("background-color", "green");
+      $('#unewl2').css("color", "white");
+    }
+    else{
+      $('#unewl2').html("Not Updated");
+      $('#unewl2').css("background-color", "red");
+      $('#unewl2').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldd == product_data.passdata.newd){
+      $('#unewd').html("Not Updated");
+      $('#unewd').css("background-color", "red");
+      $('#unewd').css("color", "white");
+    }
+    if(product_data.passdata.oldd != product_data.passdata.newd && product_data.passdata.newd.length > 0  ){
+      $('#unewd').html("Updated");
+      $('#unewd').css("background-color", "green");
+      $('#unewd').css("color", "white");
+    }
+    else{
+      $('#unewd').html("Not Updated");
+      $('#unewd').css("background-color", "red");
+      $('#unewd').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldsett == product_data.passdata.newsett){
+      $('#unewsett').html("Not Updated");
+      $('#unewsett').css("background-color", "red");
+      $('#unewsett').css("color", "white");
+    }
+    if(product_data.passdata.oldsett != product_data.passdata.newsett && product_data.passdata.newsett.length > 0  ){
+      $('#unewsett').html("Updated");
+      $('#unewsett').css("background-color", "green");
+      $('#unewsett').css("color", "white");
+    }
+    else{
+      $('#unewsett').html("Not Updated");
+      $('#unewsett').css("background-color", "red");
+      $('#unewsett').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldplatingType == product_data.passdata.newplatingType){
+      $('#unewplatingType').html("Not Updated");
+      $('#unewplatingType').css("background-color", "red");
+      $('#unewplatingType').css("color", "white");
+    }
+    if(product_data.passdata.oldplatingType != product_data.passdata.newplatingType && product_data.passdata.newplatingType.length > 0  ){
+      $('#unewplatingType').html("Updated");
+      $('#unewplatingType').css("background-color", "green");
+      $('#unewplatingType').css("color", "white");
+    }
+    else{
+      $('#unewplatingType').html("Not Updated");
+      $('#unewplatingType').css("background-color", "red");
+      $('#unewplatingType').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldorder_remarks == product_data.passdata.neworder_remarks){
+      $('#uneworder_remarks').html("Not Updated");
+      $('#uneworder_remarks').css("background-color", "red");
+      $('#uneworder_remarks').css("color", "white");
+    }
+    if(product_data.passdata.oldorder_remarks != product_data.passdata.neworder_remarks && product_data.passdata.neworder_remarks.length > 0  ){
+      $('#uneworder_remarks').html("Updated");
+      $('#uneworder_remarks').css("background-color", "green");
+      $('#uneworder_remarks').css("color", "white");
+    }
+    else{
+      $('#uneworder_remarks').html("Not Updated");
+      $('#uneworder_remarks').css("background-color", "red");
+      $('#uneworder_remarks').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldactualDelivery == product_data.passdata.newactualDelivery){
+      $('#unewactualDelivery').html("Not Updated");
+      $('#unewactualDelivery').css("background-color", "red");
+      $('#unewactualDelivery').css("color", "white");
+    }
+    if(product_data.passdata.oldactualDelivery != product_data.passdata.newactualDelivery && product_data.passdata.newactualDelivery.length > 0  ){
+      $('#unewactualDelivery').html("Updated");
+      $('#unewactualDelivery').css("background-color", "green");
+      $('#unewactualDelivery').css("color", "white");
+    }
+    else{
+      $('#unewactualDelivery').html("Not Updated");
+      $('#unewactualDelivery').css("background-color", "red");
+      $('#unewactualDelivery').css("color", "white");
+    }
+    
+    if (product_data.passdata.olddispachMode == product_data.passdata.newdispachMode){
+      $('#unewdispachMode').html("Not Updated");
+      $('#unewdispachMode').css("background-color", "red");
+      $('#unewdispachMode').css("color", "white");
+    }
+    // if(product_data.passdata.olddispachMode != product_data.passdata.newdispachMode && product_data.passdata.newdispachMode.length > 0  ){
+    //   $('#unewdispachMode').html("Updated");
+    //   $('#unewdispachMode').css("background-color", "green");
+    //   $('#unewdispachMode').css("color", "white");
+    // }
+    else{
+      $('#unewdispachMode').html("Updated");
+      $('#unewdispachMode').css("background-color", "green");
+      $('#unewdispachMode').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldcouriesNumber == product_data.passdata.newcouriesNumber){
+      $('#unewcouriesNumber').html("Not Updated");
+      $('#unewcouriesNumber').css("background-color", "red");
+      $('#unewcouriesNumber').css("color", "white");
+    }
+    if(product_data.passdata.oldcouriesNumber != product_data.passdata.newcouriesNumber && product_data.passdata.newcouriesNumber.length > 0  ){
+      $('#unewcouriesNumber').html("Updated");
+      $('#unewcouriesNumber').css("background-color", "green");
+      $('#unewcouriesNumber').css("color", "white");
+    }
+    else{
+      $('#unewcouriesNumber').html("Not Updated");
+      $('#unewcouriesNumber').css("background-color", "red");
+      $('#unewcouriesNumber').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldrawMaterial == product_data.passdata.newrawMaterial){
+      $('#unewrawMaterial').html("Not Updated");
+      $('#unewrawMaterial').css("background-color", "red");
+      $('#unewrawMaterial').css("color", "white");
+    }
+    if(product_data.passdata.oldrawMaterial != product_data.passdata.newrawMaterial && product_data.passdata.newrawMaterial.length > 0  ){
+      $('#unewrawMaterial').html("Updated");
+      $('#unewrawMaterial').css("background-color", "green");
+      $('#unewrawMaterial').css("color", "white");
+    }
+    else{
+      $('#unewrawMaterial').html("Not Updated");
+      $('#unewrawMaterial').css("background-color", "red");
+      $('#unewrawMaterial').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldpriority == product_data.passdata.newpriority){
+      $('#unewpriority').html("Not Updated");
+      $('#unewpriority').css("background-color", "red");
+      $('#unewpriority').css("color", "white");
+    }
+    if(product_data.passdata.oldpriority != product_data.passdata.newpriority && product_data.passdata.newpriority.length > 0  ){
+      $('#unewpriority').html("Updated");
+      $('#unewpriority').css("background-color", "green");
+      $('#unewpriority').css("color", "white");
+    }
+    else{
+      $('#unewpriority').html("Not Updated");
+      $('#unewpriority').css("background-color", "red");
+      $('#unewpriority').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldstatus == product_data.passdata.newstatus){
+      $('#unewstatus').html("Not Updated");
+      $('#unewstatus').css("background-color", "red");
+      $('#unewstatus').css("color", "white");
+    }
+    if(product_data.passdata.oldstatus != product_data.passdata.newstatus && product_data.passdata.newstatus.length > 0  ){
+      $('#unewstatus').html("Updated");
+      $('#unewstatus').css("background-color", "green");
+      $('#unewstatus').css("color", "white");
+    }
+    else{
+      $('#unewstatus').html("Not Updated");
+      $('#unewstatus').css("background-color", "red");
+      $('#unewstatus').css("color", "white");
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    if (product_data.passdata.olddwgNumber == product_data.passdata.newdwgNumber){
+      $('#unewdwgNumber').html("Not Updated");
+      $('#unewdwgNumber').css("background-color", "red");
+      $('#unewdwgNumber').css("color", "white");
+    }
+    if(product_data.passdata.olddwgNumber != product_data.passdata.newdwgNumber && product_data.passdata.newdwgNumber.length > 0  ){
+      $('#unewdwgNumber').html("Updated");
+      $('#unewdwgNumber').css("background-color", "green");
+      $('#unewdwgNumber').css("color", "white");
+    }
+    else{
+      $('#unewdwgNumber').html("Not Updated");
+      $('#unewdwgNumber').css("background-color", "red");
+      $('#unewdwgNumber').css("color", "white");
+    }
+
+    if (product_data.passdata.olddrgDate == product_data.passdata.newdrgDate){
+      $('#unewdrgDate').html("Not Updated");
+      $('#unewdrgDate').css("background-color", "red");
+      $('#unewdrgDate').css("color", "white");
+    }
+    if(product_data.passdata.olddrgDate != product_data.passdata.newdrgDate && product_data.passdata.newdrgDate.length > 0  ){
+      $('#unewdrgDate').html("Updated");
+      $('#unewdrgDate').css("background-color", "green");
+      $('#unewdrgDate').css("color", "white");
+    }
+    else{
+      $('#unewdrgDate').html("Not Updated");
+      $('#unewdrgDate').css("background-color", "red");
+      $('#unewdrgDate').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldapprovalDate == product_data.passdata.newapprovalDate){
+      $('#unewapprovalDate').html("Not Updated");
+      $('#unewapprovalDate').css("background-color", "red");
+      $('#unewapprovalDate').css("color", "white");
+    }
+    if(product_data.passdata.oldapprovalDate != product_data.passdata.newapprovalDate && product_data.passdata.newapprovalDate.length > 0  ){
+      $('#unewapprovalDate').html("Updated");
+      $('#unewapprovalDate').css("background-color", "green");
+      $('#unewapprovalDate').css("color", "white");
+    }
+    else{
+      $('#unewapprovalDate').html("Not Updated");
+      $('#unewapprovalDate').css("background-color", "red");
+      $('#unewapprovalDate').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldmaster == product_data.passdata.newmaster){
+      $('#unewmaster').html("Not Updated");
+      $('#unewmaster').css("background-color", "red");
+      $('#unewmaster').css("color", "white");
+    }
+    if(product_data.passdata.oldmaster != product_data.passdata.newmaster && product_data.passdata.newmaster.length > 0  ){
+      $('#unewmaster').html("Updated");
+      $('#unewmaster').css("background-color", "green");
+      $('#unewmaster').css("color", "white");
+    }
+    else{
+      $('#unewmaster').html("Not Updated");
+      $('#unewmaster').css("background-color", "red");
+      $('#unewmaster').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldmasterOut == product_data.passdata.newmasterOut){
+      $('#unewmasterOut').html("Not Updated");
+      $('#unewmasterOut').css("background-color", "red");
+      $('#unewmasterOut').css("color", "white");
+    }
+    if(product_data.passdata.oldmasterOut != product_data.passdata.newmasterOut && product_data.passdata.newmasterOut.length > 0  ){
+      $('#unewmasterOut').html("Updated");
+      $('#unewmasterOut').css("background-color", "green");
+      $('#unewmasterOut').css("color", "white");
+    }
+    else{
+      $('#unewmasterOut').html("Not Updated");
+      $('#unewmasterOut').css("background-color", "red");
+      $('#unewmasterOut').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldmasterIn == product_data.passdata.newmasterIn){
+      $('#unewmasterIn').html("Not Updated");
+      $('#unewmasterIn').css("background-color", "red");
+      $('#unewmasterIn').css("color", "white");
+    }
+    if(product_data.passdata.oldmasterIn != product_data.passdata.newmasterIn && product_data.passdata.newmasterIn.length > 0  ){
+      $('#unewmasterIn').html("Updated");
+      $('#unewmasterIn').css("background-color", "green");
+      $('#unewmasterIn').css("color", "white");
+    }
+    else{
+      $('#unewmasterIn').html("Not Updated");
+      $('#unewmasterIn').css("background-color", "red");
+      $('#unewmasterIn').css("color", "white");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    if (product_data.passdata.oldpunchBlankUsed == product_data.passdata.newpunchBlankUsed){
+      $('#unewpunchBlankUsed').html("Not Updated");
+      $('#unewpunchBlankUsed').css("background-color", "red");
+      $('#unewpunchBlankUsed').css("color", "white");
+    }
+    if(product_data.passdata.oldpunchBlankUsed != product_data.passdata.newpunchBlankUsed && product_data.passdata.newpunchBlankUsed.length > 0  ){
+      $('#unewpunchBlankUsed').html("Updated");
+      $('#unewpunchBlankUsed').css("background-color", "green");
+      $('#unewpunchBlankUsed').css("color", "white");
+    }
+    else{
+      $('#unewpunchBlankUsed').html("Not Updated");
+      $('#unewpunchBlankUsed').css("background-color", "red");
+      $('#unewpunchBlankUsed').css("color", "white");
+    }
+    
+    if (product_data.passdata.olddieBlankUsed == product_data.passdata.newdieBlankUsed){
+      $('#unewdieBlankUsed').html("Not Updated");
+      $('#unewdieBlankUsed').css("background-color", "red");
+      $('#unewdieBlankUsed').css("color", "white");
+    }
+    if(product_data.passdata.olddieBlankUsed != product_data.passdata.newdieBlankUsed && product_data.passdata.newdieBlankUsed.length > 0  ){
+      $('#unewdieBlankUsed').html("Updated");
+      $('#unewdieBlankUsed').css("background-color", "green");
+      $('#unewdieBlankUsed').css("color", "white");
+    }
+    else{
+      $('#unewdieBlankUsed').html("Not Updated");
+      $('#unewdieBlankUsed').css("background-color", "red");
+      $('#unewdieBlankUsed').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldhitDate == product_data.passdata.newhitDate){
+      $('#unewhitDate').html("Not Updated");
+      $('#unewhitDate').css("background-color", "red");
+      $('#unewhitDate').css("color", "white");
+    }
+    if(product_data.passdata.oldhitDate != product_data.passdata.newhitDate && product_data.passdata.newhitDate.length > 0  ){
+      $('#unewhitDate').html("Updated");
+      $('#unewhitDate').css("background-color", "green");
+      $('#unewhitDate').css("color", "white");
+    }
+    else{
+      $('#unewhitDate').html("Not Updated");
+      $('#unewhitDate').css("background-color", "red");
+      $('#unewhitDate').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldestimatedDelivery == product_data.passdata.newestimatedDelivery){
+      $('#unewestimatedDelivery').html("Not Updated");
+      $('#unewestimatedDelivery').css("background-color", "red");
+      $('#unewestimatedDelivery').css("color", "white");
+    }
+    if(product_data.passdata.oldestimatedDelivery != product_data.passdata.newestimatedDelivery && product_data.passdata.newestimatedDelivery.length > 0  ){
+      $('#unewestimatedDelivery').html("Updated");
+      $('#unewestimatedDelivery').css("background-color", "green");
+      $('#unewestimatedDelivery').css("color", "white");
+    }
+    else{
+      $('#unewestimatedDelivery').html("Not Updated");
+      $('#unewestimatedDelivery').css("background-color", "red");
+      $('#unewestimatedDelivery').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldplanningOut == product_data.passdata.newplanningOut){
+      $('#unewplanningOut').html("Not Updated");
+      $('#unewplanningOut').css("background-color", "red");
+      $('#unewplanningOut').css("color", "white");
+    }
+    if(product_data.passdata.oldplanningOut != product_data.passdata.newplanningOut && product_data.passdata.newplanningOut.length > 0  ){
+      $('#unewplanningOut').html("Updated");
+      $('#unewplanningOut').css("background-color", "green");
+      $('#unewplanningOut').css("color", "white");
+    }
+    else{
+      $('#unewplanningOut').html("Not Updated");
+      $('#unewplanningOut').css("background-color", "red");
+      $('#unewplanningOut').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldplanningIn == product_data.passdata.newplanningIn){
+      $('#unewplanningIn').html("Not Updated");
+      $('#unewplanningIn').css("background-color", "red");
+      $('#unewplanningIn').css("color", "white");
+    }
+    if(product_data.passdata.oldplanningIn != product_data.passdata.newplanningIn && product_data.passdata.newplanningIn.length > 0  ){
+      $('#unewplanningIn').html("Updated");
+      $('#unewplanningIn').css("background-color", "green");
+      $('#unewplanningIn').css("color", "white");
+    }
+    else{
+      $('#unewplanningIn').html("Not Updated");
+      $('#unewplanningIn').css("background-color", "red");
+      $('#unewplanningIn').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldblank == product_data.passdata.newblank){
+      $('#unewblank').html("Not Updated");
+      $('#unewblank').css("background-color", "red");
+      $('#unewblank').css("color", "white");
+    }
+    if(product_data.passdata.oldblank != product_data.passdata.newblank && product_data.passdata.newblank.length > 0  ){
+      $('#unewblank').html("Updated");
+      $('#unewblank').css("background-color", "green");
+      $('#unewblank').css("color", "white");
+    }
+    else{
+      $('#unewblank').html("Not Updated");
+      $('#unewblank').css("background-color", "red");
+      $('#unewblank').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldprocess == product_data.passdata.newprocess){
+      $('#unewprocess').html("Not Updated");
+      $('#unewprocess').css("background-color", "red");
+      $('#unewprocess').css("color", "white");
+    }
+    if(product_data.passdata.oldprocess != product_data.passdata.newprocess && product_data.passdata.newprocess.length > 0  ){
+      $('#unewprocess').html("Updated");
+      $('#unewprocess').css("background-color", "green");
+      $('#unewprocess').css("color", "white");
+    }
+    else{
+      $('#unewprocess').html("Not Updated");
+      $('#unewprocess').css("background-color", "red");
+      $('#unewprocess').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldbodyTipMachining == product_data.passdata.newbodyTipMachining){
+      $('#unewbodyTipMachining').html("Not Updated");
+      $('#unewbodyTipMachining').css("background-color", "red");
+      $('#unewbodyTipMachining').css("color", "white");
+    }
+    if(product_data.passdata.oldbodyTipMachining != product_data.passdata.newbodyTipMachining && product_data.passdata.newbodyTipMachining.length > 0  ){
+      $('#unewbodyTipMachining').html("Updated");
+      $('#unewbodyTipMachining').css("background-color", "green");
+      $('#unewbodyTipMachining').css("color", "white");
+    }
+    else{
+      $('#unewbodyTipMachining').html("Not Updated");
+      $('#unewbodyTipMachining').css("background-color", "red");
+      $('#unewbodyTipMachining').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldheadMachining == product_data.passdata.newheadMachining){
+      $('#unewheadMachining').html("Not Updated");
+      $('#unewheadMachining').css("background-color", "red");
+      $('#unewheadMachining').css("color", "white");
+    }
+    if(product_data.passdata.oldheadMachining != product_data.passdata.newheadMachining && product_data.passdata.newheadMachining.length > 0  ){
+      $('#unewheadMachining').html("Updated");
+      $('#unewheadMachining').css("background-color", "green");
+      $('#unewheadMachining').css("color", "white");
+    }
+    else{
+      $('#unewheadMachining').html("Not Updated");
+      $('#unewheadMachining').css("background-color", "red");
+      $('#unewheadMachining').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldkeywayTaperFinish   == product_data.passdata.newkeywayTaperFinish){
+      $('#unewkeywayTaperFinish').html("Not Updated");
+      $('#unewkeywayTaperFinish').css("background-color", "red");
+      $('#unewkeywayTaperFinish').css("color", "white");
+    }
+    if(product_data.passdata.oldkeywayTaperFinish != product_data.passdata.newkeywayTaperFinish && product_data.passdata.newkeywayTaperFinish.length > 0  ){
+      $('#unewkeywayTaperFinish').html("Updated");
+      $('#unewkeywayTaperFinish').css("background-color", "green");
+      $('#unewkeywayTaperFinish').css("color", "white");
+    }
+    else{
+      $('#unewkeywayTaperFinish').html("Not Updated");
+      $('#unewkeywayTaperFinish').css("background-color", "red");
+      $('#unewkeywayTaperFinish').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldht == product_data.passdata.newht){
+      $('#unewht').html("Not Updated");
+      $('#unewht').css("background-color", "red");
+      $('#unewht').css("color", "white");
+    }
+    if(product_data.passdata.oldht != product_data.passdata.newht && product_data.passdata.newht.length > 0  ){
+      $('#unewht').html("Updated");
+      $('#unewht').css("background-color", "green");
+      $('#unewht').css("color", "white");
+    }
+    else{
+      $('#unewht').html("Not Updated");
+      $('#unewht').css("background-color", "red");
+      $('#unewht').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldgrinding == product_data.passdata.newgrinding){
+      $('#unewgrinding').html("Not Updated");
+      $('#unewgrinding').css("background-color", "red");
+      $('#unewgrinding').css("color", "white");
+    }
+    if(product_data.passdata.oldgrinding != product_data.passdata.newgrinding && product_data.passdata.newgrinding.length > 0  ){
+      $('#unewgrinding').html("Updated");
+      $('#unewgrinding').css("background-color", "green");
+      $('#unewgrinding').css("color", "white");
+    }
+    else{
+      $('#unewgrinding').html("Not Updated");
+      $('#unewgrinding').css("background-color", "red");
+      $('#unewgrinding').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldhardChrome == product_data.passdata.newhardChrome){
+      $('#unewhardChrome').html("Not Updated");
+      $('#unewhardChrome').css("background-color", "red");
+      $('#unewhardChrome').css("color", "white");
+    }
+    if(product_data.passdata.oldhardChrome != product_data.passdata.newhardChrome && product_data.passdata.newhardChrome.length > 0  ){
+      $('#unewhardChrome').html("Updated");
+      $('#unewhardChrome').css("background-color", "green");
+      $('#unewhardChrome').css("color", "white");
+    }
+    else{
+      $('#unewhardChrome').html("Not Updated");
+      $('#unewhardChrome').css("background-color", "red");
+      $('#unewhardChrome').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldqualityCheck == product_data.passdata.newqualityCheck){
+      $('#unewqualityCheck').html("Not Updated");
+      $('#unewqualityCheck').css("background-color", "red");
+      $('#unewqualityCheck').css("color", "white");
+    }
+    if(product_data.passdata.oldqualityCheck != product_data.passdata.newqualityCheck && product_data.passdata.newqualityCheck.length > 0  ){
+      $('#unewqualityCheck').html("Updated");
+      $('#unewqualityCheck').css("background-color", "green");
+      $('#unewqualityCheck').css("color", "white");
+    }
+    else{
+      $('#unewqualityCheck').html("Not Updated");
+      $('#unewqualityCheck').css("background-color", "red");
+      $('#unewqualityCheck').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldpackingDispach == product_data.passdata.newpackingDispach){
+      $('#unewpackingDispach').html("Not Updated");
+      $('#unewpackingDispach').css("background-color", "red");
+      $('#unewpackingDispach').css("color", "white");
+    }
+    if(product_data.passdata.oldpackingDispach != product_data.passdata.newpackingDispach && product_data.passdata.newpackingDispach.length > 0  ){
+      $('#unewpackingDispach').html("Updated");
+      $('#unewpackingDispach').css("background-color", "green");
+      $('#unewpackingDispach').css("color", "white");
+    }
+    else{
+      $('#unewpackingDispach').html("Not Updated");
+      $('#unewpackingDispach').css("background-color", "red");
+      $('#unewpackingDispach').css("color", "white");
+    }
+    
+    if (product_data.passdata.oldremark == product_data.passdata.newremark){
+      $('#unewremark').html("Not Updated");
+      $('#unewremark').css("background-color", "red");
+      $('#unewremark').css("color", "white");
+    }
+    if(product_data.passdata.oldremark != product_data.passdata.newremark && product_data.passdata.newremark.length > 0  ){
+      $('#unewremark').html("Updated");
+      $('#unewremark').css("background-color", "green");
+      $('#unewremark').css("color", "white");
+    }
+    else{
+      $('#unewremark').html("Not Updated");
+      $('#unewremark').css("background-color", "red");
+      $('#unewremark').css("color", "white");
+    }
+    
+    
+
+   
+    
+    $('#exampleModal').modal('show');
+  };
+</script>
+{% endblock content %}
