@@ -1,0 +1,323 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title%} {% endblock title %}
+{% block head %}
+
+{% endblock head %}
+
+
+
+{% block sidebaranchor %}  
+<a href="{% url 'login' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+  <svg class="bi me-2" width="40" height="32">
+      <use xlink:href="#bootstrap"></use>
+  </svg>
+  <span class="fs-4">ADD DATA</span>
+</a>    
+{% endblock sidebaranchor %}
+
+{% if user.is_authenticated %}
+  {% if isloggedin == "yes" %}
+{% block sidebarlist %}
+<li class="nav-item">
+  <a href="{% url 'index1' %}" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+      Home
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'adddata1' %}" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+      Add Data
+  </a>
+</li>
+<li class="nav-item">
+  <a href="/logout" class="nav-link text-white" aria-current="page">
+      <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home"></use>
+      </svg>
+      Logout
+  </a>
+</li>
+{% endblock sidebarlist %}
+{% endif %}
+{% endif %}
+
+
+
+{% block content %}
+<div class="container">
+  {% if user.is_authenticated %}
+  {% if isloggedin == "yes" %}
+  {% if update != "yes" %}
+  <form action="" method="POST" autocomplete="off">
+    {% csrf_token %}
+    <div class="row" style="background-color: peru;">
+      <div class="col-sm-5">
+
+      </div>
+      <div class="col-sm-7">
+        <h1>Main Stage</h1>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <input type="date" class="form-control" required name="orderdate"  id="floatingInput1" placeholder="">
+          <label for="floatingInput1">Order Date</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" name="ordernumber"  required id="floatingInput2" placeholder="">
+          <label for="floatingInput2">Order Number</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="clientname" required aria-label="Default select example" id="floatingInput3">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.clientname %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput3">Name of Client</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <input type="number" min="1" class="form-control" required name="value" id="floatingInput4" placeholder="" />
+          <label for="floatingInput4">Value</label>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="moc" required aria-label="Default select example" id="floatingInput5">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.moc %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput5">MOC</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="tooltype" required aria-label="Default select example" id="floatingInput6">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.tooltype %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput6">Tool Type / M.C</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="shape" required aria-label="Default select example" id="floatingInput7">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.shape %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput7">Shape</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="tabletsize" required aria-label="Default select example" id="floatingInput8">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.tabletsize %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput8">Tablet Size</label>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="u1" required aria-label="Default select example" id="floatingInput9">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.u1 %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput9">U1</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="u2" aria-label="Default select example" id="floatingInput10">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.u2 %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput10">U2</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="l1" required aria-label="Default select example" id="floatingInput11">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.l1 %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput11">L1</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="l2" aria-label="Default select example" id="floatingInput12">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.l2 %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput12">L2</label>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="d" required aria-label="Default select example" id="floatingInput13">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.d %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput13">D</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="set" required aria-label="Default select example" id="floatingInput14">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.set %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput14">SET</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="platingtype" required aria-label="Default select example" id="floatingInput15">
+            <option selected value="">Select From Dropdown</option>
+            {% for i in placeholder.platingtype %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <label for="floatingInput15">Plating Type</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <input type="text"  class="form-control" name="orderremark" id="floatingInput4" placeholder="">
+          <label for="floatingInput4">Remarks</label>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+      <div class="col-sm-4">
+
+      </div>
+      <div class="col-sm-3">
+        <!-- <div class="form-floating mb-3">
+          <input type="text" class="form-control" name="priority" required  id="floatingInput17" placeholder="">
+          <label for="floatingInput17">Priority</label>
+        </div> -->
+      </div>
+      <div class="col-sm-3">
+        
+      </div>
+      
+    </div>
+    <div class="row" style="background-color: peru;">
+      <div class="col-sm-5">
+
+      </div>
+      <div class="col-sm-7">
+        <h2>Dispatch Stage</h2>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+      <!-- <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <input type="date" class="form-control" name="edd" id="floatingInput1" placeholder=""
+            value="{{i.update_eed}}">
+          <label for="floatingInput1">Estimate Delivery Date</label>
+        </div>
+      </div> -->
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <input type="date" class="form-control" name="actualdeliverydate" id="floatingInput1" placeholder=""
+            value="{{i.update_actual}}">
+          <label for="floatingInput1">Actual Delivery Date</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+          <select class="form-select" name="modeofdispatch" aria-label="Default select example" id="floatingInput3">
+            {% if i.update_dispatchmode == "NULL" %}
+            <option selected value="" disabled>Select Dispatch Mode</option>
+            {% else %}
+            <option selected value="{{i.update_dispatchmode}}" disabled>{{i.update_dispatchmode}}</option>
+            {% endif %}
+            {% for i in placeholder.dispachMode %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+
+          </select>
+          <label for="floatingInput3">Mode of Dispatch</label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-floating mb-3">
+        {% if i.update_courierno == None %}
+        <input type="text" class="form-control" name="couriernumber" id="floatingInput1" placeholder=""
+            value="">
+          <label for="floatingInput1">Transport Courier Number</label>
+        </div>
+        {% else %}
+        <div class="form-floating mb-3">
+        <input type="text" class="form-control" name="couriernumber" id="floatingInput1" placeholder=""
+            value="{{i.update_courierno}}">
+          <label for="floatingInput1">Transport Courier Number</label>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    <div class="row" style="margin-top: 10px;">
+      <div class="col-sm-3">
+
+      </div>
+      <div class="col-sm-3">
+
+      </div>
+      <div class="col-sm-3">
+        <button class="btn btn-success" type="submit">Submit</button>
+      </div>
+    </div>
+
+  </form>
+  {% endif %}
+  {% endif %}
+  {% endif %}
+</div>
+
+{% endblock content %}
+{% block main_script %}
+{% endblock main_script %}

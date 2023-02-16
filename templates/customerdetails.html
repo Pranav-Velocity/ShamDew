@@ -1,0 +1,278 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title%} {% endblock title %}
+{% block head %}
+
+{% endblock head %}
+
+{% block sidebaranchor %}
+<a href="{% url 'customerdetail' %}"
+  class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+  <svg class="bi me-2" width="40" height="32">
+    <use xlink:href="#bootstrap"></use>
+  </svg>
+  <span class="fs-4">Customer Detail</span>
+</a>
+{% endblock sidebaranchor %}
+{% if user.is_authenticated %}
+{% if data == "yes" %}
+{% block sidebarlist %}
+<li class="nav-item">
+  <a href="{% url 'admin' %}" class="nav-link text-white" aria-current="page">
+    <svg class="bi me-2" width="16" height="16">
+      <use xlink:href="#home"></use>
+    </svg>
+    HOME
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'adduser' %}" class="nav-link text-white" aria-current="page">
+    <svg class="bi me-2" width="16" height="16">
+      <use xlink:href="#home"></use>
+    </svg>
+    ADD USER
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'add_data' %}" class="nav-link text-white" aria-current="page">
+    <svg class="bi me-2" width="16" height="16">
+      <use xlink:href="#home"></use>
+    </svg>
+    ADD DATA
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'admindelete' %}" class="nav-link text-white" aria-current="page">
+    <svg class="bi me-2" width="16" height="16">
+      <use xlink:href="#home"></use>
+    </svg>
+    DELETE DATA
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'add_customer' %}" class="nav-link text-white" aria-current="page">
+    <svg class="bi me-2" width="16" height="16">
+      <use xlink:href="#home"></use>
+    </svg>
+    Add Customer
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'customerdetail' %}" class="nav-link text-white" aria-current="page">
+    <svg class="bi me-2" width="16" height="16">
+      <use xlink:href="#home"></use>
+    </svg>
+    Customer Detail
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'userlog' %}" class="nav-link text-white" aria-current="page">
+    <svg class="bi me-2" width="16" height="16">
+      <use xlink:href="#home"></use>
+    </svg>
+    User Log
+  </a>
+</li>
+<li class="nav-item">
+  <a href="/logout" class="nav-link text-white" aria-current="page">
+    <svg class="bi me-2" width="16" height="16">
+      <use xlink:href="#home"></use>
+    </svg>
+    LOGOUT
+  </a>
+</li>
+{% endblock sidebarlist %}
+{% endif %}
+{% endif %}
+
+{% block content %}
+{% if user.is_authenticated %}
+{% if data == "yes" %}
+<div class="container">
+  <form action="" method="POST" id="custform">
+    {% csrf_token %}
+    <div class="row mt-5">
+
+      <div class="col-sm-3">
+
+      </div>
+      <div class="col-sm-3">
+        <select id="custname" class="form-select" aria-label="Default select example">
+          <option disabled selected>Open this select menu</option>
+          {% for i in cust %}
+          <option value="{{i.id}}">{{i.customerCompanyName}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-6">
+        <button type="submit" class="btn btn-primary">Fetch Data</button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+
+
+<div class="container mt-2" id="customerform" style="visibility: hidden;">
+  <hr>
+  <form action="" method="POST" id="customeraddform">
+    {% csrf_token %}
+  <div class="text-center" style="font-size: 30px;font-style: bold;">Customer Details</div>
+  <div class="row mt-2">
+    <div class="col-sm-4">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="customerName" name="customername">
+        <label for="customerName">Customer Name</label>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="customerEmail" name="customeremail" required>
+        <label for="customerEmail">Customer Email</label>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-floating mb-3">
+        <input type="number" class="form-control" id="customerMobile" name="customermobile" required>
+        <label for="customerMobile">Customer Mobile</label>
+      </div>
+    </div>
+  </div>
+  <div class="text-center" style="font-size: 30px;font-style: bold;">Company Details</div>
+  <div class="row mt-2">
+    <div class="col-sm-3">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="companyName" name="companyname">
+        <label for="companyName">Company Name</label>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-floating mb-3">
+        <input type="text" maxlength="50" class="form-control" id="companyAddress" name="companyaddress">
+        <label for="companyAddress">Company Address</label>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <select name="state" id="state" class="form-select" style="height:58px;">
+        <option value="Andhra Pradesh">Andhra Pradesh</option>
+        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+        <option value="Assam">Assam</option>
+        <option value="Bihar">Bihar</option>
+        <option value="Chandigarh">Chandigarh</option>
+        <option value="Chhattisgarh">Chhattisgarh</option>
+        <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
+        <option value="Daman and Diu">Daman and Diu</option>
+        <option value="Delhi">Delhi</option>
+        <option value="Lakshadweep">Lakshadweep</option>
+        <option value="Puducherry">Puducherry</option>
+        <option value="Goa">Goa</option>
+        <option value="Gujarat">Gujarat</option>
+        <option value="Haryana">Haryana</option>
+        <option value="Himachal Pradesh">Himachal Pradesh</option>
+        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+        <option value="Jharkhand">Jharkhand</option>
+        <option value="Karnataka">Karnataka</option>
+        <option value="Kerala">Kerala</option>
+        <option value="Madhya Pradesh">Madhya Pradesh</option>
+        <option value="Maharashtra">Maharashtra</option>
+        <option value="Manipur">Manipur</option>
+        <option value="Meghalaya">Meghalaya</option>
+        <option value="Mizoram">Mizoram</option>
+        <option value="Nagaland">Nagaland</option>
+        <option value="Odisha">Odisha</option>
+        <option value="Punjab">Punjab</option>
+        <option value="Rajasthan">Rajasthan</option>
+        <option value="Sikkim">Sikkim</option>
+        <option value="Tamil Nadu">Tamil Nadu</option>
+        <option value="Telangana">Telangana</option>
+        <option value="Tripura">Tripura</option>
+        <option value="Uttar Pradesh">Uttar Pradesh</option>
+        <option value="Uttarakhand">Uttarakhand</option>
+        <option value="West Bengal">West Bengal</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3">
+
+    </div>
+    <div class="col-sm-3">
+      <div class="form-floating mb-3">
+        <input type="text" maxlength="50" class="form-control" id="companyCity" name="companycity">
+        <label for="companyCity">Company City</label>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-floating mb-3">
+        <input type="text" maxlength="50" class="form-control" id="companyPincode" name="companypincode">
+        <label for="companyPincode">Company Pincode</label>
+      </div>
+    </div>
+    <div class="col-sm-3">
+
+    </div>
+    
+  </div>
+  <div class="row">
+    <div class="col-sm-5">
+
+    </div>
+    <div class="col-sm-7">
+      <button class="btn btn-primary" type="submit" style="border-radius: 50px;width:100px;">Save</button>
+    </div>
+  </div>
+</form>
+<h1 style="color:greenyellow" id="message"></h1>
+</div>
+
+
+
+<script type="text/javascript">
+        
+  var frm = $('#custform');
+  frm.submit(function () {
+    a=$('#custname').val();
+      $.ajax({
+          type: "POST",
+          url: "{% url 'customerdetail' %}",
+          data: {
+              custid: $('#custname').val(),
+              csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+          },
+          success: function (response) {
+              var data = response.custdata
+              console.log(data)
+              if (data){
+                var state=data.custCompanyState;
+                console.log(state)
+                $('#customerform').css("visibility", "visible");
+                $('#customerName').attr("value", data.custname);
+                $('#customerEmail').attr("value", data.custemail);
+                $('#customerMobile').attr("value", data.custmobile);
+                $('#companyName').attr("value", data.custCompanyName);
+                $('#companyAddress').attr("value", data.custCompanyAddress);
+                $('#companyCity').attr("value", data.custCompanyCiy);
+                $('#companyPincode').attr("value", data.custCompanyPincode);
+                $('#state').append($('<option>').text(state).attr('value', state));
+                  $("#state").val(state);
+              }
+          },
+          error: function (response) {
+              console.log("error")
+          }
+      });
+      return false;
+  });
+  
+  
+  
+</script>
+{% endif %}
+{% endif %}
+
+
+{% endblock content %}
+

@@ -1,0 +1,170 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title%} {% endblock title %}
+{% block head %}
+
+{% endblock head %}
+
+
+
+{% block sidebaranchor %}
+<a href="{% url 'login' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <svg class="bi me-2" width="40" height="32">
+        <use xlink:href="#bootstrap"></use>
+    </svg>
+    <span class="fs-4">ADD USER</span>
+  </a> 
+{% endblock sidebaranchor %}
+
+
+{% if user.is_authenticated %}
+{% if data == "yes" %}
+{% block sidebarlist %}
+<li class="nav-item">
+    <a href="{% url 'admin' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+        HOME
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'adduser' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+        ADD USER
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'add_data' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       ADD DATA
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'admindelete' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       DELETE DATA
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'add_customer' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       Add Customer
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'customerdetail' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       Customer Detail
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'userlog' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       User Log
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/logout" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+        LOGOUT
+    </a>
+  </li>
+{% endblock sidebarlist %}
+{% endif %}
+{% endif %}
+
+{% block content %}
+{% if user.is_authenticated %}
+{% if data == "yes" %}
+
+
+<div class="container mt-5">
+    {% if user_match == "yes" %}
+        <div class="alert alert-danger" role="alert">
+            User already present with this Email ID.
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col sm-6">
+            <form action="" method="POST" name="form1">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" name="email" maxlength="50"
+                        id="email" placeholder="">
+                    <label for="email">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" name="addpassword" maxlength="50"
+                        id="floatingInput3" placeholder="">
+                    <label for="floatingInput3">Password</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input type="radio" id="user_level_1" name="user_level" value="user_1">
+                            <label for="user_level_1">User Level 1</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="radio" id="user_level_2" name="user_level" value="user_2">
+                            <label for="user_level_2">User Level 2</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="radio" id="user_level_3" name="user_level" value="user_3">
+                            <label for="user_level_3">User Level 3</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success" onclick="CheckPassword(document.form1.addpassword)">Create User</button>
+            </form>
+            {% if passok == "yes" %}
+            <div>Data Saved</div>
+            {% endif %}
+            {% if passok == "no" %}
+            <div>Password Not Right</div>
+            {% endif %}
+        </div>
+        <div class="col-sm-3">
+
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+<script type="text/javascript">
+    function CheckPassword(inputtxt) 
+    { 
+    var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/;
+    if(inputtxt.value.match(passw)) 
+    { 
+    
+    return true;
+    }
+    else
+    { 
+    
+    return false;
+    }
+    }
+  </script>
+{% endblock content %}
+{% block main_script %}
+{% endblock main_script %}

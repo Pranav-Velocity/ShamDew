@@ -1,0 +1,731 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title%} {% endblock title %}
+{% block head %}
+
+{% endblock head %}
+
+{% block sidebaranchor %}
+<a href="{% url 'admindelete' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <svg class="bi me-2" width="40" height="32">
+        <use xlink:href="#bootstrap"></use>
+    </svg>
+    <span class="fs-4">DELETE DATA</span>
+  </a> 
+{% endblock sidebaranchor %}
+{% if user.is_authenticated %}
+{% if data == "yes" %}
+{% block sidebarlist %}
+<li class="nav-item">
+    <a href="{% url 'admin' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+        HOME
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'adduser' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+        ADD USER
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'add_data' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       ADD DATA
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'admindelete' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       DELETE DATA
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'add_customer' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       Add Customer
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'customerdetail' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       Customer Detail
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'userlog' %}" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+       User Log
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/logout" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+        </svg>
+        LOGOUT
+    </a>
+  </li>
+{% endblock sidebarlist %}
+{% endif %}
+{% endif %}
+
+{% block content %}
+{% if user.is_authenticated %}
+{% if data == "yes" %}
+<div class="container">
+  <table class="table table-dark " id="table_id2">
+    <thead>
+      <tr>
+        <th scope="col">Delete</th>
+        <th scope="col">Order Date</th>
+        <th scope="col">Order Number</th>
+        <th scope="col">Client Name</th>
+        <th scope="col">MOC</th>
+        <th scope="col">Tool Type / M.C</th>
+        <th scope="col">Shape</th>
+        <th scope="col">Tablet Size</th>
+        <th scope="col">U1</th>
+        <th scope="col">U2</th>
+        <th scope="col">L1</th>
+        <th scope="col">L2</th>
+        <th scope="col">D</th>
+        <th scope="col">Set</th>
+        <th scope="col">Plating Type</th>
+        <th scope="col">Value</th>
+        <th scope="col">Remarks</th>
+        
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in tabledata %}
+      <tr>
+        <td><form action="" method="POST">
+          {% csrf_token %}
+          <button type="submit" value="{{data.id}}" name="deleteform" id="confirm-delete" class="btn btn-danger">Delete</button>
+        </form></td>
+        <td>{{data.orderdate}}</td>
+        <td>{{data.ordernumber}}</td>
+        <td>{{data.clientname}}</td>
+        <td>{{data.moc}}</td>
+        <td>{{data.tooltype}}</td>
+        <td>{{data.shape}}</td>
+        <td>{{data.tabletsize}}</td>
+        <td>{{data.u1}}</td>
+        <td>{{data.u2}}</td>
+        <td>{{data.l1}}</td>
+        <td>{{data.l2}}</td>
+        <td>{{data.d}}</td>
+        <td>{{data.set}}</td>
+        <td>{{data.platingtype}}</td>
+        <td>{{data.value}}</td>
+        <td>Nice</td>
+        <td>{{data.status}}</td>
+  
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endif %}
+{% endif %}
+
+<script>
+  $(document).ready(function () {
+      $('#table_id2').DataTable({
+          scrollX:true,
+          'rowCallback': function(row, data, index){
+
+if(data[6] == 'MULTI-3-SET'){
+        $(row).find('td:eq(0)').css('background-color', 'deeppink');
+        $(row).find('td:eq(1)').css('background-color', 'deeppink');
+        $(row).find('td:eq(2)').css('background-color', 'deeppink');
+        $(row).find('td:eq(3)').css('background-color', 'deeppink');
+        $(row).find('td:eq(4)').css('background-color', 'deeppink');
+        $(row).find('td:eq(5)').css('background-color', 'deeppink');
+        $(row).find('td:eq(6)').css('background-color', 'deeppink');
+        $(row).find('td:eq(7)').css('background-color', 'deeppink');
+        $(row).find('td:eq(8)').css('background-color', 'deeppink');
+        $(row).find('td:eq(9)').css('background-color', 'deeppink');
+        $(row).find('td:eq(10)').css('background-color', 'deeppink');
+        $(row).find('td:eq(11)').css('background-color', 'deeppink');
+        $(row).find('td:eq(12)').css('background-color', 'deeppink'); 
+        $(row).find('td:eq(13)').css('background-color', 'deeppink'); 
+        $(row).find('td:eq(15)').css('background-color', 'deeppink'); 
+        $(row).find('td:eq(16)').css('background-color', 'deeppink');
+        
+    }
+    if(data[6] == 'BULLET'){
+        $(row).find('td:eq(0)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(1)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(2)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(3)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(4)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(5)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(6)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(7)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(8)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(9)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(10)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(11)').css('background-color', 'LightSkyBlue');
+        $(row).find('td:eq(12)').css('background-color', 'LightSkyBlue'); 
+        $(row).find('td:eq(13)').css('background-color', 'LightSkyBlue'); 
+        $(row).find('td:eq(15)').css('background-color', 'LightSkyBlue'); 
+        $(row).find('td:eq(16)').css('background-color', 'LightSkyBlue'); 
+    }
+    if(data[6] == 'CAPSULE'){
+        $(row).find('td:eq(0)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(1)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(2)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(3)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(4)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(5)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(6)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(7)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(8)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(9)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(10)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(11)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(12)').css('background-color', 'MediumTurquoise');
+        $(row).find('td:eq(13)').css('background-color', 'MediumTurquoise'); 
+        $(row).find('td:eq(15)').css('background-color', 'MediumTurquoise'); 
+        $(row).find('td:eq(16)').css('background-color', 'MediumTurquoise');
+    }
+    if(data[6] == 'ROUND'){
+        $(row).find('td:eq(0)').css('background-color', 'MintCream');
+        $(row).find('td:eq(1)').css('background-color', 'MintCream');
+        $(row).find('td:eq(2)').css('background-color', 'MintCream');
+        $(row).find('td:eq(3)').css('background-color', 'MintCream');
+        $(row).find('td:eq(4)').css('background-color', 'MintCream');
+        $(row).find('td:eq(5)').css('background-color', 'MintCream');
+        $(row).find('td:eq(6)').css('background-color', 'MintCream');
+        $(row).find('td:eq(7)').css('background-color', 'MintCream');
+        $(row).find('td:eq(8)').css('background-color', 'MintCream');
+        $(row).find('td:eq(9)').css('background-color', 'MintCream');
+        $(row).find('td:eq(10)').css('background-color', 'MintCream');
+        $(row).find('td:eq(11)').css('background-color', 'MintCream');
+        $(row).find('td:eq(12)').css('background-color', 'MintCream');
+        $(row).find('td:eq(13)').css('background-color', 'MintCream'); 
+        $(row).find('td:eq(15)').css('background-color', 'MintCream'); 
+        $(row).find('td:eq(16)').css('background-color', 'MintCream');
+
+        $(row).find('td:eq(0)').css('color', 'black');
+        $(row).find('td:eq(1)').css('color', 'black');
+        $(row).find('td:eq(2)').css('color', 'black');
+        $(row).find('td:eq(3)').css('color', 'black');
+        $(row).find('td:eq(4)').css('color', 'black');
+        $(row).find('td:eq(5)').css('color', 'black');
+        $(row).find('td:eq(6)').css('color', 'black');
+        $(row).find('td:eq(7)').css('color', 'black');
+        $(row).find('td:eq(8)').css('color', 'black');
+        $(row).find('td:eq(9)').css('color', 'black');
+        $(row).find('td:eq(10)').css('color', 'black');
+        $(row).find('td:eq(11)').css('color', 'black');
+        $(row).find('td:eq(12)').css('color', 'black');
+        $(row).find('td:eq(13)').css('color', 'black');
+        $(row).find('td:eq(15)').css('color', 'black');
+        $(row).find('td:eq(16)').css('color', 'black');
+
+    }
+    if(data[6] == 'OVAL'){
+        $(row).find('td:eq(0)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(1)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(2)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(3)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(4)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(5)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(6)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(7)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(8)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(9)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(10)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(11)').css('background-color', 'RoyalBlue');
+        $(row).find('td:eq(12)').css('background-color', 'RoyalBlue');
+         $(row).find('td:eq(13)').css('background-color', 'RoyalBlue'); 
+        $(row).find('td:eq(15)').css('background-color', 'RoyalBlue'); 
+        $(row).find('td:eq(16)').css('background-color', 'RoyalBlue');
+
+        $(row).find('td:eq(0)').css('color', 'black');
+        $(row).find('td:eq(1)').css('color', 'black');
+        $(row).find('td:eq(2)').css('color', 'black');
+        $(row).find('td:eq(3)').css('color', 'black');
+        $(row).find('td:eq(4)').css('color', 'black');
+        $(row).find('td:eq(5)').css('color', 'black');
+        $(row).find('td:eq(6)').css('color', 'black');
+        $(row).find('td:eq(7)').css('color', 'black');
+        $(row).find('td:eq(8)').css('color', 'black');
+        $(row).find('td:eq(9)').css('color', 'black');
+        $(row).find('td:eq(10)').css('color', 'black');
+        $(row).find('td:eq(11)').css('color', 'black');
+        $(row).find('td:eq(12)').css('color', 'black');
+        $(row).find('td:eq(13)').css('color', 'black'); 
+        $(row).find('td:eq(15)').css('color', 'black'); 
+        $(row).find('td:eq(16)').css('color', 'black'); 
+        
+    }
+    if(data[6] == 'SHAPE-8'){
+        $(row).find('td:eq(0)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(1)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(2)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(3)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(4)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(5)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(6)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(7)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(8)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(9)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(10)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(11)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(12)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(13)').css('background-color', 'RebeccaPurple'); 
+        $(row).find('td:eq(15)').css('background-color', 'RebeccaPurple'); 
+        $(row).find('td:eq(16)').css('background-color', 'RebeccaPurple'); 
+
+        $(row).find('td:eq(0)').css('color', 'white');
+        $(row).find('td:eq(1)').css('color', 'white');
+        $(row).find('td:eq(2)').css('color', 'white');
+        $(row).find('td:eq(3)').css('color', 'white');
+        $(row).find('td:eq(4)').css('color', 'white');
+        $(row).find('td:eq(5)').css('color', 'white');
+        $(row).find('td:eq(6)').css('color', 'white');
+        $(row).find('td:eq(7)').css('color', 'white');
+        $(row).find('td:eq(8)').css('color', 'white');
+        $(row).find('td:eq(9)').css('color', 'white');
+        $(row).find('td:eq(10)').css('color', 'white');
+        $(row).find('td:eq(11)').css('color', 'white');
+        $(row).find('td:eq(12)').css('color', 'white');
+        $(row).find('td:eq(13)').css('color', 'white');
+        $(row).find('td:eq(15)').css('color', 'white');
+        $(row).find('td:eq(16)').css('color', 'white');
+        
+    }
+    if(data[6] == 'HEXAGON'){
+        $(row).find('td:eq(0)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(1)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(2)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(3)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(4)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(5)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(6)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(7)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(8)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(9)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(10)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(11)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(12)').css('background-color', 'SteelBlue');
+        $(row).find('td:eq(13)').css('background-color', 'SteelBlue'); 
+        $(row).find('td:eq(15)').css('background-color', 'SteelBlue'); 
+        $(row).find('td:eq(16)').css('background-color', 'SteelBlue');
+
+        $(row).find('td:eq(0)').css('color', 'white');
+        $(row).find('td:eq(1)').css('color', 'white');
+        $(row).find('td:eq(2)').css('color', 'white');
+        $(row).find('td:eq(3)').css('color', 'white');
+        $(row).find('td:eq(4)').css('color', 'white');
+        $(row).find('td:eq(5)').css('color', 'white');
+        $(row).find('td:eq(6)').css('color', 'white');
+        $(row).find('td:eq(7)').css('color', 'white');
+        $(row).find('td:eq(8)').css('color', 'white');
+        $(row).find('td:eq(9)').css('color', 'white');
+        $(row).find('td:eq(10)').css('color', 'white');
+        $(row).find('td:eq(11)').css('color', 'white');
+        $(row).find('td:eq(12)').css('color', 'white');
+        $(row).find('td:eq(13)').css('color', 'white');
+        $(row).find('td:eq(15)').css('color', 'white');
+        $(row).find('td:eq(16)').css('color', 'white');
+        
+    }
+    if(data[6] == 'PENTAGON'){
+        $(row).find('td:eq(0)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(1)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(2)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(3)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(4)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(5)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(6)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(7)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(8)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(9)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(10)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(11)').css('background-color', 'MediumSlateBlue');
+        $(row).find('td:eq(12)').css('background-color', 'MediumSlateBlue');
+         $(row).find('td:eq(13)').css('background-color', 'MediumSlateBlue'); 
+        $(row).find('td:eq(15)').css('background-color', 'MediumSlateBlue'); 
+        $(row).find('td:eq(16)').css('background-color', 'MediumSlateBlue'); 
+
+        $(row).find('td:eq(0)').css('color', 'white');
+        $(row).find('td:eq(1)').css('color', 'white');
+        $(row).find('td:eq(2)').css('color', 'white');
+        $(row).find('td:eq(3)').css('color', 'white');
+        $(row).find('td:eq(4)').css('color', 'white');
+        $(row).find('td:eq(5)').css('color', 'white');
+        $(row).find('td:eq(6)').css('color', 'white');
+        $(row).find('td:eq(7)').css('color', 'white');
+        $(row).find('td:eq(8)').css('color', 'white');
+        $(row).find('td:eq(9)').css('color', 'white');
+        $(row).find('td:eq(10)').css('color', 'white');
+        $(row).find('td:eq(11)').css('color', 'white');
+        $(row).find('td:eq(12)').css('color', 'white');
+        $(row).find('td:eq(13)').css('color', 'white');
+        $(row).find('td:eq(15)').css('color', 'white');
+        $(row).find('td:eq(16)').css('color', 'white');
+        
+    }
+    if(data[6] == 'VIAGRA'){
+        $(row).find('td:eq(0)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(1)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(2)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(3)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(4)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(5)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(6)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(7)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(8)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(9)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(10)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(11)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(12)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(13)').css('background-color', 'RebeccaPurple'); 
+        $(row).find('td:eq(15)').css('background-color', 'RebeccaPurple'); 
+        $(row).find('td:eq(16)').css('background-color', 'RebeccaPurple'); 
+
+        $(row).find('td:eq(0)').css('color', 'white');
+        $(row).find('td:eq(1)').css('color', 'white');
+        $(row).find('td:eq(2)').css('color', 'white');
+        $(row).find('td:eq(3)').css('color', 'white');
+        $(row).find('td:eq(4)').css('color', 'white');
+        $(row).find('td:eq(5)').css('color', 'white');
+        $(row).find('td:eq(6)').css('color', 'white');
+        $(row).find('td:eq(7)').css('color', 'white');
+        $(row).find('td:eq(8)').css('color', 'white');
+        $(row).find('td:eq(9)').css('color', 'white');
+        $(row).find('td:eq(10)').css('color', 'white');
+        $(row).find('td:eq(11)').css('color', 'white');
+        $(row).find('td:eq(12)').css('color', 'white');
+        $(row).find('td:eq(13)').css('color', 'white');
+        $(row).find('td:eq(15)').css('color', 'white');
+        $(row).find('td:eq(16)').css('color', 'white');
+    }
+    if(data[6] == 'MULTI-TIPS'){
+        $(row).find('td:eq(0)').css('background-color', 'Khaki');
+        $(row).find('td:eq(1)').css('background-color', 'Khaki');
+        $(row).find('td:eq(2)').css('background-color', 'Khaki');
+        $(row).find('td:eq(3)').css('background-color', 'Khaki');
+        $(row).find('td:eq(4)').css('background-color', 'Khaki');
+        $(row).find('td:eq(5)').css('background-color', 'Khaki');
+        $(row).find('td:eq(6)').css('background-color', 'Khaki');
+        $(row).find('td:eq(7)').css('background-color', 'Khaki');
+        $(row).find('td:eq(8)').css('background-color', 'Khaki');
+        $(row).find('td:eq(9)').css('background-color', 'Khaki');
+        $(row).find('td:eq(10)').css('background-color', 'Khaki');
+        $(row).find('td:eq(11)').css('background-color', 'Khaki');
+        $(row).find('td:eq(12)').css('background-color', 'Khaki');
+        $(row).find('td:eq(13)').css('background-color', 'Khaki'); 
+        $(row).find('td:eq(15)').css('background-color', 'Khaki'); 
+        $(row).find('td:eq(16)').css('background-color', 'Khaki'); 
+         
+        $(row).find('td:eq(0)').css('color', 'black');
+        $(row).find('td:eq(1)').css('color', 'black');
+        $(row).find('td:eq(2)').css('color', 'black');
+        $(row).find('td:eq(3)').css('color', 'black');
+        $(row).find('td:eq(4)').css('color', 'black');
+        $(row).find('td:eq(5)').css('color', 'black');
+        $(row).find('td:eq(6)').css('color', 'black');
+        $(row).find('td:eq(7)').css('color', 'black');
+        $(row).find('td:eq(8)').css('color', 'black');
+        $(row).find('td:eq(9)').css('color', 'black');
+        $(row).find('td:eq(10)').css('color', 'black');
+        $(row).find('td:eq(11)').css('color', 'black');
+        $(row).find('td:eq(12)').css('color', 'black');
+        $(row).find('td:eq(13)').css('color', 'black');
+        $(row).find('td:eq(15)').css('color', 'black');
+        $(row).find('td:eq(16)').css('color', 'black');
+    }
+    if(data[6] == 'ALMOND'){
+        $(row).find('td:eq(0)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(1)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(2)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(3)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(4)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(5)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(6)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(7)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(8)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(9)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(10)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(11)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(12)').css('background-color', 'RebeccaPurple');
+        $(row).find('td:eq(13)').css('background-color', 'RebeccaPurple'); 
+        $(row).find('td:eq(15)').css('background-color', 'RebeccaPurple'); 
+        $(row).find('td:eq(16)').css('background-color', 'RebeccaPurple'); 
+
+        $(row).find('td:eq(0)').css('color', 'white');
+        $(row).find('td:eq(1)').css('color', 'white');
+        $(row).find('td:eq(2)').css('color', 'white');
+        $(row).find('td:eq(3)').css('color', 'white');
+        $(row).find('td:eq(4)').css('color', 'white');
+        $(row).find('td:eq(5)').css('color', 'white');
+        $(row).find('td:eq(6)').css('color', 'white');
+        $(row).find('td:eq(7)').css('color', 'white');
+        $(row).find('td:eq(8)').css('color', 'white');
+        $(row).find('td:eq(9)').css('color', 'white');
+        $(row).find('td:eq(10)').css('color', 'white');
+        $(row).find('td:eq(11)').css('color', 'white');
+        $(row).find('td:eq(12)').css('color', 'white');
+        $(row).find('td:eq(13)').css('color', 'white');
+        $(row).find('td:eq(15)').css('color', 'white');
+        $(row).find('td:eq(16)').css('color', 'white');
+    }
+    if(data[6] == 'TRIANGLE'){
+        $(row).find('td:eq(0)').css('background-color', 'Indigo');
+        $(row).find('td:eq(1)').css('background-color', 'Indigo');
+        $(row).find('td:eq(2)').css('background-color', 'Indigo');
+        $(row).find('td:eq(3)').css('background-color', 'Indigo');
+        $(row).find('td:eq(4)').css('background-color', 'Indigo');
+        $(row).find('td:eq(5)').css('background-color', 'Indigo');
+        $(row).find('td:eq(6)').css('background-color', 'Indigo');
+        $(row).find('td:eq(7)').css('background-color', 'Indigo');
+        $(row).find('td:eq(8)').css('background-color', 'Indigo');
+        $(row).find('td:eq(9)').css('background-color', 'Indigo');
+        $(row).find('td:eq(10)').css('background-color', 'Indigo');
+        $(row).find('td:eq(11)').css('background-color', 'Indigo');
+        $(row).find('td:eq(12)').css('background-color', 'Indigo');
+        $(row).find('td:eq(13)').css('background-color', 'Indigo'); 
+        $(row).find('td:eq(15)').css('background-color', 'Indigo'); 
+        $(row).find('td:eq(16)').css('background-color', 'Indigo'); 
+
+        $(row).find('td:eq(0)').css('color', 'white');
+        $(row).find('td:eq(1)').css('color', 'white');
+        $(row).find('td:eq(2)').css('color', 'white');
+        $(row).find('td:eq(3)').css('color', 'white');
+        $(row).find('td:eq(4)').css('color', 'white');
+        $(row).find('td:eq(5)').css('color', 'white');
+        $(row).find('td:eq(6)').css('color', 'white');
+        $(row).find('td:eq(7)').css('color', 'white');
+        $(row).find('td:eq(8)').css('color', 'white');
+        $(row).find('td:eq(9)').css('color', 'white');
+        $(row).find('td:eq(10)').css('color', 'white');
+        $(row).find('td:eq(11)').css('color', 'white');
+        $(row).find('td:eq(12)').css('color', 'white');
+        $(row).find('td:eq(13)').css('color', 'white');
+        $(row).find('td:eq(15)').css('color', 'white');
+        $(row).find('td:eq(16)').css('color', 'white');
+    }
+    if(data[6] == 'MULTI-2-SET'){
+        $(row).find('td:eq(0)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(1)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(2)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(3)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(4)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(5)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(6)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(7)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(8)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(9)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(10)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(11)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(12)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(13)').css('background-color', 'MediumSpringGreen'); 
+        $(row).find('td:eq(15)').css('background-color', 'MediumSpringGreen'); 
+        $(row).find('td:eq(16)').css('background-color', 'MediumSpringGreen');
+
+        $(row).find('td:eq(0)').css('color', 'black');
+        $(row).find('td:eq(1)').css('color', 'black');
+        $(row).find('td:eq(2)').css('color', 'black');
+        $(row).find('td:eq(3)').css('color', 'black');
+        $(row).find('td:eq(4)').css('color', 'black');
+        $(row).find('td:eq(5)').css('color', 'black');
+        $(row).find('td:eq(6)').css('color', 'black');
+        $(row).find('td:eq(7)').css('color', 'black');
+        $(row).find('td:eq(8)').css('color', 'black');
+        $(row).find('td:eq(9)').css('color', 'black');
+        $(row).find('td:eq(10)').css('color', 'black');
+        $(row).find('td:eq(11)').css('color', 'black');
+        $(row).find('td:eq(12)').css('color', 'black');
+        $(row).find('td:eq(13)').css('color', 'black');
+        $(row).find('td:eq(15)').css('color', 'black');
+        $(row).find('td:eq(16)').css('color', 'black');
+    }
+    if(data[6] == 'MULTI-2-SET'){
+        $(row).find('td:eq(0)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(1)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(2)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(3)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(4)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(5)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(6)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(7)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(8)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(9)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(10)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(11)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(12)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(13)').css('background-color', 'MediumSpringGreen'); 
+        $(row).find('td:eq(15)').css('background-color', 'MediumSpringGreen');
+        $(row).find('td:eq(16)').css('background-color', 'MediumSpringGreen'); 
+
+        $(row).find('td:eq(0)').css('color', 'black');
+        $(row).find('td:eq(1)').css('color', 'black');
+        $(row).find('td:eq(2)').css('color', 'black');
+        $(row).find('td:eq(3)').css('color', 'black');
+        $(row).find('td:eq(4)').css('color', 'black');
+        $(row).find('td:eq(5)').css('color', 'black');
+        $(row).find('td:eq(6)').css('color', 'black');
+        $(row).find('td:eq(7)').css('color', 'black');
+        $(row).find('td:eq(8)').css('color', 'black');
+        $(row).find('td:eq(9)').css('color', 'black');
+        $(row).find('td:eq(10)').css('color', 'black');
+        $(row).find('td:eq(11)').css('color', 'black');
+        $(row).find('td:eq(12)').css('color', 'black');
+        $(row).find('td:eq(13)').css('color', 'black');
+        $(row).find('td:eq(15)').css('color', 'black');
+        $(row).find('td:eq(16)').css('color', 'black');
+    }
+    if(data[6] == 'MULTI-4-SET'){
+        $(row).find('td:eq(0)').css('background-color', 'orange');
+        $(row).find('td:eq(1)').css('background-color', 'orange');
+        $(row).find('td:eq(2)').css('background-color', 'orange');
+        $(row).find('td:eq(3)').css('background-color', 'orange');
+        $(row).find('td:eq(4)').css('background-color', 'orange');
+        $(row).find('td:eq(5)').css('background-color', 'orange');
+        $(row).find('td:eq(6)').css('background-color', 'orange');
+        $(row).find('td:eq(7)').css('background-color', 'orange');
+        $(row).find('td:eq(8)').css('background-color', 'orange');
+        $(row).find('td:eq(9)').css('background-color', 'orange');
+        $(row).find('td:eq(10)').css('background-color', 'orange');
+        $(row).find('td:eq(11)').css('background-color', 'orange');
+        $(row).find('td:eq(12)').css('background-color', 'orange');
+        $(row).find('td:eq(13)').css('background-color', 'orange'); 
+        $(row).find('td:eq(15)').css('background-color', 'orange'); 
+        $(row).find('td:eq(16)').css('background-color', 'orange'); 
+
+        $(row).find('td:eq(0)').css('color', 'black');
+        $(row).find('td:eq(1)').css('color', 'black');
+        $(row).find('td:eq(2)').css('color', 'black');
+        $(row).find('td:eq(3)').css('color', 'black');
+        $(row).find('td:eq(4)').css('color', 'black');
+        $(row).find('td:eq(5)').css('color', 'black');
+        $(row).find('td:eq(6)').css('color', 'black');
+        $(row).find('td:eq(7)').css('color', 'black');
+        $(row).find('td:eq(8)').css('color', 'black');
+        $(row).find('td:eq(9)').css('color', 'black');
+        $(row).find('td:eq(10)').css('color', 'black');
+        $(row).find('td:eq(11)').css('color', 'black');
+        $(row).find('td:eq(12)').css('color', 'black');
+        $(row).find('td:eq(13)').css('color', 'black');
+        $(row).find('td:eq(15)').css('color', 'black');
+        $(row).find('td:eq(16)').css('color', 'black');
+    }
+    if(data[6] == 'DIAMOND'){
+        $(row).find('td:eq(0)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(1)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(2)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(3)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(4)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(5)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(6)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(7)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(8)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(9)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(10)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(11)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(12)').css('background-color', 'DarkViolet');
+        $(row).find('td:eq(13)').css('background-color', 'DarkViolet'); 
+        $(row).find('td:eq(15)').css('background-color', 'DarkViolet'); 
+        $(row).find('td:eq(16)').css('background-color', 'DarkViolet');
+
+        $(row).find('td:eq(0)').css('color', 'white');
+        $(row).find('td:eq(1)').css('color', 'white');
+        $(row).find('td:eq(2)').css('color', 'white');
+        $(row).find('td:eq(3)').css('color', 'white');
+        $(row).find('td:eq(4)').css('color', 'white');
+        $(row).find('td:eq(5)').css('color', 'white');
+        $(row).find('td:eq(6)').css('color', 'white');
+        $(row).find('td:eq(7)').css('color', 'white');
+        $(row).find('td:eq(8)').css('color', 'white');
+        $(row).find('td:eq(9)').css('color', 'white');
+        $(row).find('td:eq(10)').css('color', 'white');
+        $(row).find('td:eq(11)').css('color', 'white');
+        $(row).find('td:eq(12)').css('color', 'white');
+        $(row).find('td:eq(13)').css('color', 'white');
+        $(row).find('td:eq(15)').css('color', 'white');
+        $(row).find('td:eq(16)').css('color', 'white');
+    }
+    if(data[17] == '100.0%'){
+
+      $(row).find('td:eq(17)').css('background-color', 'darkgreen');
+
+      $(row).find('td:eq(17)').css('color', 'white');  
+      }
+      if(data[17] == '99.0%'){
+        
+      $(row).find('td:eq(17)').css('background-color', 'ForestGreen');
+
+        $(row).find('td:eq(17)').css('color', 'white');
+      }
+      if(data[17] == '95.0%'){
+        
+      $(row).find('td:eq(17)').css('background-color', 'green');
+
+      $(row).find('td:eq(17)').css('color', 'black');          
+      }
+      if(data[17] == '90.0%'){
+      $(row).find('td:eq(17)').css('background-color', 'PaleGreen');
+      
+      $(row).find('td:eq(17)').css('color', 'black');         
+      }
+      if (data[17] == '80.0%' || data[17] == '75.0%'){         
+      $(row).find('td:eq(17)').css('background-color', 'LightBlue');
+      $(row).find('td:eq(17)').css('color', 'black');
+      }
+      if (data[17] == '70.0%' || data[17] == '65.0%' || data[17] == '60.0%'){                
+      $(row).find('td:eq(17)').css('background-color', 'Lavender');
+      $(row).find('td:eq(17)').css('color', 'black');                               
+      }
+      if (data[17] == '50.0%' || data[17] == '40.0%' || data[17] == '25.0%'){
+      $(row).find('td:eq(17)').css('background-color', 'orange');
+      $(row).find('td:eq(17)').css('color', 'black');               
+      }
+      if (data[17] == '20.0%' || data[17] == '10.0%' || data[17] == '5.0%'){            
+      $(row).find('td:eq(17)').css('background-color', 'BurlyWood');
+      $(row).find('td:eq(17)').css('color', 'black');               
+      }
+      if(data[14] == 'CRN'){
+        $(row).find('td:eq(14)').css('background-color', 'blue');
+      }
+      if(data[14] == 'HC'){
+        $(row).find('td:eq(14)').css('background-color', 'darkgreen');
+      }
+      if(data[14] == 'NO'){
+        $(row).find('td:eq(14)').css('background-color', 'red');
+      }
+}
+            });
+  });
+</script>
+<script type="text/javascript">
+  $(document).on('click', '#confirm-delete', function () {
+      return confirm('Are you sure you want to delete this data??');
+  })
+</script>
+{% endblock content %}
+{% block main_script %}
+
+{% endblock main_script %}
