@@ -24,5 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',IndexLogin,name="login"),
     path('logout/',logout_page,name="logout"),
-    path('',include('die_punch.urls'))
+    path('die_punch/',include('die_punch.urls'))
 ]+ static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
