@@ -1,8 +1,5 @@
 live-static-files/
 .__pycache__
-stderr.log
-runtime.txt
-runserver.bat
-robots.txt
+db.sqlite3
 
 
