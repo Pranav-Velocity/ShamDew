@@ -37,8 +37,8 @@ class Form(models.Model):
 
 class CustomerDetail(models.Model):
     customerName = models.CharField(max_length=100,null=True,blank=True)
-    customerMobile = models.CharField(max_length=20)
-    customerEmail = models.CharField(max_length=50)
+    customerMobile = models.CharField(max_length=20,null=True,blank=True)
+    customerEmail = models.CharField(max_length=50,null=True,blank=True)
     customerCompanyName = models.CharField(max_length=200,null=True,blank=True)
     customerCompanyAddress = models.CharField(max_length=200,null=True,blank=True)
     customerCompanyCity = models.CharField(max_length=50,null=True,blank=True)
@@ -48,26 +48,99 @@ class CustomerDetail(models.Model):
         db_table = 'customerdetail'
 
   
+class Moc(models.Model):
+    name = models.CharField(max_length=255)
 
+class ToolType(models.Model):
+    name = models.CharField(max_length=255)
+
+class Shape(models.Model):
+    name = models.CharField(max_length=255)
+
+class TabletSize(models.Model):
+    name = models.CharField(max_length=255)
+
+class U1(models.Model):
+    name = models.CharField(max_length=255)
+
+class U2(models.Model):
+    name = models.CharField(max_length=255)
+
+class L1(models.Model):
+    name = models.CharField(max_length=255)
+
+class L2(models.Model):
+    name = models.CharField(max_length=255)
+
+class D(models.Model):
+    name = models.CharField(max_length=255)
+
+class Set(models.Model):
+    name = models.CharField(max_length=255)
+
+class PlatingType(models.Model):
+    name = models.CharField(max_length=255)
+
+class RawMaterial(models.Model):
+    name = models.CharField(max_length=255)
+
+class PunchBlank(models.Model):
+    name = models.CharField(max_length=255)
+
+class DieBlank(models.Model):
+    name = models.CharField(max_length=255)
+
+class Blank(models.Model):
+    name = models.CharField(max_length=255)
+
+class Process(models.Model):
+    name = models.CharField(max_length=255)
+
+class BodyTipMachining(models.Model):
+    name = models.CharField(max_length=255)
+
+class HeadMachining(models.Model):
+    name = models.CharField(max_length=255)
+
+class KeywayTaperFinish(models.Model):
+    name = models.CharField(max_length=255)
+
+class HT(models.Model):
+    name = models.CharField(max_length=255)
+
+class Grinding(models.Model):
+    name = models.CharField(max_length=255)
+
+class HardChrome(models.Model):
+    name = models.CharField(max_length=255)
+
+class QualityCheck(models.Model):
+    name = models.CharField(max_length=255)
+
+class PackingDispach(models.Model):
+    name = models.CharField(max_length=255)
+
+class DispachMode(models.Model):
+    name = models.CharField(max_length=255)
 
 class ProductionData(models.Model):
     orderDate = models.CharField(max_length=50,null=True,blank=True)
     orderNumber = models.CharField(max_length=50,null=True,blank=True)
-    clientName  = models.CharField(max_length=50,null=True,blank=True)
+    clientName  = models.ForeignKey(CustomerDetail,on_delete=models.CASCADE)
     # client_id = models.ForeignKey(CustomerDetail,on_delete=models.CASCADE)
     value = models.CharField(max_length=50,null=True,blank=True)
-    moc = models.CharField(max_length=50,null=True,blank=True)
-    toolType = models.CharField(max_length=50,null=True,blank=True)
-    shape = models.CharField(max_length=50,null=True,blank=True)
-    tabletSize = models.CharField(max_length=50,null=True,blank=True)
-    u1 = models.CharField(max_length=50,null=True,blank=True)
-    u2 = models.CharField(max_length=50,null=True,blank=True)
-    l1 = models.CharField(max_length=50,null=True,blank=True)
-    l2 = models.CharField(max_length=50,null=True,blank=True)
-    d = models.CharField(max_length=10,null=True,blank=True)
-    sett = models.CharField(max_length=50,null=True,blank=True)
-    platingType = models.CharField(max_length=50,null=True,blank=True)
-    rawMaterial = models.CharField(max_length=50,null=True,blank=True)
+    moc = models.ForeignKey(Moc,on_delete=models.CASCADE)
+    toolType = models.ForeignKey(ToolType,on_delete=models.CASCADE)
+    shape = models.ForeignKey(Shape,on_delete=models.CASCADE)
+    tabletSize = models.ForeignKey(TabletSize,on_delete=models.CASCADE)
+    u1 = models.ForeignKey(U1,on_delete=models.CASCADE)
+    u2 = models.ForeignKey(U2,on_delete=models.CASCADE)
+    l1 = models.ForeignKey(L1,on_delete=models.CASCADE)
+    l2 = models.ForeignKey(L2,on_delete=models.CASCADE)
+    d = models.ForeignKey(D,on_delete=models.CASCADE)
+    set = models.ForeignKey(Set,on_delete=models.CASCADE)
+    platingType = models.ForeignKey(PlatingType,on_delete=models.CASCADE)
+    rawMaterial = models.ForeignKey(RawMaterial,on_delete=models.CASCADE)
     priority = models.CharField(max_length=50,null=True,blank=True)
     order_remarks = models.CharField(max_length=50,null=True,blank=True)
     status = models.CharField(max_length=50,null=True,blank=True)
@@ -77,26 +150,26 @@ class ProductionData(models.Model):
     master = models.CharField(max_length=50,null=True,blank=True)
     masterOut = models.CharField(max_length=50,null=True,blank=True)
     masterIn = models.CharField(max_length=50,null=True,blank=True)
-    punchBlankUsed = models.CharField(max_length=10,null=True,blank=True)
-    dieBlankUsed = models.CharField(max_length=10,null=True,blank=True)
+    punchBlankUsed = models.ForeignKey(PunchBlank,on_delete=models.CASCADE)
+    dieBlankUsed = models.ForeignKey(DieBlank,on_delete=models.CASCADE)
     hitDate = models.CharField(max_length=50,null=True,blank=True)
     estimatedDelivery = models.CharField(max_length=50,null=True,blank=True)
     planningOut = models.CharField(max_length=50,null=True,blank=True)
     planningIn = models.CharField(max_length=50,null=True,blank=True)
     
-    blank = models.CharField(max_length=10,null=True,blank=True)
-    process = models.CharField(max_length=10,null=True,blank=True)
-    bodyTipMachining = models.CharField(max_length=10,null=True,blank=True)
-    headMachining = models.CharField(max_length=10,null=True,blank=True)
-    keywayTaperFinish = models.CharField(max_length=10,null=True,blank=True)
-    ht = models.CharField(max_length=10,null=True,blank=True)
-    grinding = models.CharField(max_length=10,null=True,blank=True)
-    hardChrome = models.CharField(max_length=10,null=True,blank=True)
-    qualityCheck = models.CharField(max_length=10,null=True,blank=True)
-    packingDispach = models.CharField(max_length=10,null=True,blank=True)
+    blank = models.ForeignKey(Blank,on_delete=models.CASCADE)
+    process = models.ForeignKey(Process,on_delete=models.CASCADE)
+    bodyTipMachining = models.ForeignKey(BodyTipMachining,on_delete=models.CASCADE)
+    headMachining = models.ForeignKey(HeadMachining,on_delete=models.CASCADE)
+    keywayTaperFinish = models.ForeignKey(KeywayTaperFinish,on_delete=models.CASCADE)
+    ht = models.ForeignKey(HT,on_delete=models.CASCADE)
+    grinding = models.ForeignKey(Grinding,on_delete=models.CASCADE)
+    hardChrome = models.ForeignKey(HardChrome,on_delete=models.CASCADE)
+    qualityCheck = models.ForeignKey(QualityCheck,on_delete=models.CASCADE)
+    packingDispach = models.ForeignKey(PackingDispach,on_delete=models.CASCADE)
     
     actualDelivery = models.CharField(max_length=50,null=True,blank=True)
-    dispachMode = models.CharField(max_length=50,null=True,blank=True)
+    dispachMode = models.ForeignKey(DispachMode,on_delete=models.CASCADE)
     couriesNumber = models.CharField(max_length=50,null=True,blank=True)
 
     remark = models.CharField(max_length=100,null=True,blank=True)
@@ -104,56 +177,13 @@ class ProductionData(models.Model):
         db_table = 'prodform'
 
 
-class AutoAddMain(models.Model):
-    clientName  = models.CharField(max_length=50,null=True,blank=True)
-    moc = models.CharField(max_length=50,null=True,blank=True)
-    toolType = models.CharField(max_length=50,null=True,blank=True)
-    shape = models.CharField(max_length=50,null=True,blank=True)
-    tabletSize = models.CharField(max_length=50,null=True,blank=True)
-    u1 = models.CharField(max_length=50,null=True,blank=True)
-    u2 = models.CharField(max_length=50,null=True,blank=True)
-    l1 = models.CharField(max_length=50,null=True,blank=True)
-    l2 = models.CharField(max_length=50,null=True,blank=True)
-    d = models.CharField(max_length=10,null=True,blank=True)
-    sett = models.CharField(max_length=50,null=True,blank=True)
-    platingType = models.CharField(max_length=50,null=True,blank=True)
-    rawMaterial = models.CharField(max_length=50,null=True,blank=True)
-    class Meta:
-        db_table = 'maindetail'
 
-class AutoAddPlanning(models.Model):
-    punchBlankUsed = models.CharField(max_length=10,null=True,blank=True)
-    dieBlankUsed = models.CharField(max_length=10,null=True,blank=True)
-    class Meta:
-        db_table = 'planningdetail'
-
-
-class AutoAddManufacturing(models.Model):
-    blank = models.CharField(max_length=10,null=True,blank=True)
-    process = models.CharField(max_length=10,null=True,blank=True)
-    bodyTipMachining = models.CharField(max_length=10,null=True,blank=True)
-    headMachining = models.CharField(max_length=10,null=True,blank=True)
-    keywayTaperFinish = models.CharField(max_length=10,null=True,blank=True)
-    ht = models.CharField(max_length=10,null=True,blank=True)
-    grinding = models.CharField(max_length=10,null=True,blank=True)
-    hardChrome = models.CharField(max_length=10,null=True,blank=True)
-    qualityCheck = models.CharField(max_length=10,null=True,blank=True)
-    packingDispach = models.CharField(max_length=10,null=True,blank=True)
-    
-    class Meta:
-        db_table = 'maufacturingdetail'
-
-class AutoAddDispatch(models.Model):
-    dispachMode = models.CharField(max_length=50,null=True,blank=True)
-    class Meta:
-        db_table = 'dispatchdetail'
 
 
   
 class UserLog(models.Model):
-    formid= models.CharField(max_length=10,null=True,blank=True)
-    user_id = models.CharField(max_length=10,null=True,blank=True)
-    user_name = models.CharField(max_length=50,null=True,blank=True)
+    formid= models.ForeignKey(ProductionData,on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
     modified_date = models.DateTimeField(auto_now=True)
     orderDate = models.CharField(max_length=50,null=True,blank=True)
     orderNumber = models.CharField(max_length=50,null=True,blank=True)

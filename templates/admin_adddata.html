@@ -1,248 +1,353 @@
-{% extends 'base2.html' %}
-{% load static %}
-
-{% block title%} {% endblock title %}
-{% block head %}
-
-{% endblock head %}
-
-{% block sidebaranchor %}
-<a href="{% url 'login' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-    <svg class="bi me-2" width="40" height="32">
-        <use xlink:href="#bootstrap"></use>
-    </svg>
-    <span class="fs-4">ADD DATA</span>
-  </a> 
-{% endblock sidebaranchor %}
-{% if user.is_authenticated %}
-{% if data == "yes" %}
-{% block sidebarlist %}
-<li class="nav-item">
-    <a href="{% url 'admin' %}" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-        HOME
-    </a>
-  </li>
-  <li class="nav-item">
-    <a href="{% url 'adduser' %}" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-        ADD USER
-    </a>
-  </li>
-  <li class="nav-item">
-    <a href="{% url 'add_data' %}" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-       ADD DATA
-    </a>
-  </li>
-  <li class="nav-item">
-    <a href="{% url 'admindelete' %}" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-       DELETE DATA
-    </a>
-  </li>
-  <li class="nav-item">
-    <a href="{% url 'add_customer' %}" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-       Add Customer
-    </a>
-  </li>
-  <li class="nav-item">
-    <a href="{% url 'customerdetail' %}" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-       Customer Detail
-    </a>
-  </li>
-  <li class="nav-item">
-    <a href="{% url 'userlog' %}" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-       User Log
-    </a>
-  </li>
-  <li class="nav-item">
-    <a href="/logout" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-        LOGOUT
-    </a>
-  </li>
-{% endblock sidebarlist %}
-{% endif %}
-{% endif %}
-
+{% include 'includes/masterpage.html' %}
+{% block title %} <title>Approval Pending Tasks</title> {% endblock title %}
 {% block content %}
 {% if user.is_authenticated %}
 {% if data == "yes" %}
-<div class="container mt-5">
+<div class="content-wrapper">
+    <section class="content" style="margin-left:10%;">
     <div class="row">
         <div class="col-md-6">
-            <button type="submit" class="btn btn-primary" style="width:300px;height:60px;font-weight: bold;" data-bs-toggle="modal" data-bs-target="#exampleModal1">MAIN
+            <button  class="btn btn-primary" style="width:300px;height:60px;font-weight: bold;" onclick="ShowData('mainstage')">MAIN
                 STAGE</button>
         </div>
         <div class="col-md-6">
-            <button type="submit" class="btn btn-success" style="width:300px;height:60px;font-weight: bold;" data-bs-toggle="modal"
-                data-bs-target="#exampleModal2">PLANNING STAGE</button>
+            <button  class="btn btn-success" style="width:300px;height:60px;font-weight: bold;" onclick="ShowData('planningstage')">PLANNING STAGE</button>
         </div>
     </div>
     <div class="row mt-5">
         <div class="col-md-6">
-            <button type="submit" class="btn btn-warning" style="width:300px;height:60px;color:white;font-weight: bold;" data-bs-toggle="modal"
-                data-bs-target="#exampleModal3">MANUFACTURING STAGE</button>
+            <button  class="btn btn-warning" style="width:300px;height:60px;color:white;font-weight: bold;" onclick="ShowData('manufacturingstage')">MANUFACTURING STAGE</button>
         </div>
         <div class="col-md-6">
-            <button type="submit" class="btn btn-danger" style="width:300px;height:60px;font-weight: bold;" data-bs-toggle="modal" data-bs-target="#exampleModal4">DISPATCH
+            <button  class="btn btn-danger" style="width:300px;height:60px;font-weight: bold;" onclick="ShowData('dispatchstage')">DISPATCH
                 STAGE</button>
         </div>
     </div>
-   
-</div>
-
-{% endif %}
-{% endif %}
-
-<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Main Stage</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addlientname" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add Client Name</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addmoc" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add MOC</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addtooltype" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add Tool Type</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addshape" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add Shape</label>
-                            </div>
-                        </div>
+    <!-- <div class="modal fade" id="main_stage_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Area</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addtabletsize" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add Tablet Size</label>
+                    <div class="modal-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="clientname" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Client Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="moc" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add MOC</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="tooltype" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Tool Type</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="shape" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Shape</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addu1" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add U1</label>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="tabletsize" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Tablet Size</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="u1" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add U1</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="u2" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add U2</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="l1" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add L1</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="l2" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add L2</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addu2" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add U2</label>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="d" id="floatingInput18" placeholder="">
+                                        <label for="floatingInput18">Add D</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="set" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add SET</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="platingtype" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Plating Type</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="rawmaterial" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Raw Material</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addl1" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add L1</label>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-primary">Add Data</button>
+                                </div>
+                                <div class="col-sm-3">
+        
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addl2" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add L2</label>
-                            </div>
-                        </div>
+                        </form>
+                    </div>                       
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" value="Submit">
                     </div>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addd" id="floatingInput18" placeholder="">
-                                <label for="floatingInput18">Add D</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addset" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add SET</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addplatingtype" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add Plating Type</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="addrawmaterial" id="floatingInput18"
-                                    placeholder="">
-                                <label for="floatingInput18">Add Raw Material</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3">
+                </div>
 
-                        </div>
-                        <div class="col-sm-3">
-
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary">Add Data</button>
-                        </div>
-                        <div class="col-sm-3">
-
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
         </div>
     </div>
+    <div class="modal fade" id="planning_stage_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Area</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addpunchblank" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Punch Blank Used</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="adddieblank" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Die Blank Used</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+        
+                                </div>
+                                <div class="col-sm-3">
+        
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                                <div class="col-sm-3">
+        
+                                </div>
+        
+                            </div>
+                        </form>
+                    </div>                       
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                    </div>
+                </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="manufacturing_stage_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Area</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addblank" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Blank</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addprocess" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Process</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addbodytipping" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Body-Tipping-Machine</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addheadmachining" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Head Machining</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addkeyway" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Keyway-Tapper-Finish</label>
+                                    </div>
+                                </div>
+        
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addht" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add HT</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addgrinding" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Gringing</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addhardchrome" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Hard Chrome</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addqualitycheck" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Quality Check</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="addpackaging" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Packaging Dispatch</label>
+                                    </div>
+                                </div>
+        
+        
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-5">
+        
+                                </div>
+                                <div class="col-sm-7">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>                       
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                    </div>
+                </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="dispatch_stage_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Area</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="adddispachmode" id="floatingInput18"
+                                            placeholder="">
+                                        <label for="floatingInput18">Add Dispach Mode</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <button type="submit" class="btn btn-primary" style="height:50px;">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>                       
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                    </div>
+                </div>
+
+        </div>
+    </div> -->
+    </section>
+    <section  class="content" id="hidden_section" style="margin-left:10%;margin-top:5%;">
+        
+    </section>
 </div>
+{% endif %}
+{% endif %}
+
+
 <!-- Modal 2 -->
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -429,5 +534,166 @@
     </div>
 </div>
 {% endblock content %}
-{% block main_script %}
-{% endblock main_script %}
+{% block script %}
+<script>
+    function ShowData(type){
+        $('#hidden_section').empty();
+        if(type == "mainstage"){
+            $('#hidden_section').append(`
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <select id="fields" class="form-control" aria-label="Default select example">
+                        <option selected value="">Open this select menu</option>
+                        <option value="clientname">Client Name</option>
+                        <option value="moc">MOC</option>
+                        <option value="tooltype">Tool Type</option>
+                        <option value="shape">Shape</option>
+                        <option value="tabletsize">Tablet Size</option>
+                        <option value="u1">U1</option>
+                        <option value="u2">U2</option>
+                        <option value="l1">L1</option>
+                        <option value="l2">L2</option>
+                        <option value="d">D</option>
+                        <option value="set">Set</option>
+                        <option value="platingtype">Plating Type</option>
+                        <option value="rawmaterial">Raw Materials</option>
+                    </select>
+
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <table class="table" id="data_table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_table_body">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    
+                    <div class="col-md-4" id="input_field">
+                        
+                    </div>
+                    <div class="col-md-2" id="input_field_save">
+                        <button type="submit" class="btn btn-primary">Save</button
+                    </div>
+                    
+                </div>
+            </form>
+            `);
+        }
+        if(type == "planningstage"){
+            $('#hidden_section').append(`
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <select id="fields" class="form-control" aria-label="Default select example">
+                        <option selected value="">Open this select menu</option>
+                        <option value="punchblank">Punch Blank Used</option>
+                        <option value="dieblank">Die Blank</option>
+                    </select>
+
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <table class="table" id="data_table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_table_body">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    
+                    <div class="col-md-4" id="input_field">
+                        
+                    </div>
+                    <div class="col-md-2" id="input_field_save">
+                        <button type="submit" class="btn btn-primary">Save</button
+                    </div>
+                    
+                </div>
+            </form>
+            `);
+        }
+        document.getElementById("fields").onchange = function () {
+            $.ajax({ // create an AJAX call...
+            type: "POST",
+            url: "{% url 'add_data' %}",
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data: {
+              'get_data_of':this.value
+            },
+            success: function(response) {
+                console.log(response);
+                $('#data_table_body').empty();
+                if(response.type == "clientname"){
+                    var data = response.data;
+                    data.forEach(myfunction);
+                    var count = 0;
+                    function myfunction(item,count){
+                        count = count + 1;
+                        console.log(count , item)
+                        $('#data_table_body').append(`
+                        
+                        <tr>
+                            <th scope="row">${count}</th>
+                            <td>${item.id}</td>
+                            <td>${item.customerCompanyName}</td>
+                        </tr>
+
+
+                        `);
+                    }
+                }
+                else{
+                    var data = response.data;
+                    data.forEach(myfunction);
+                    var count = 0;
+                    function myfunction(item,count){
+                        count = count + 1;
+                        console.log(count , item)
+                        $('#data_table_body').append(`
+                        
+                        <tr>
+                            <th scope="row">${count}</th>
+                            <td>${item.id}</td>
+                            <td>${item.name}</td>
+                        </tr>
+
+
+                        `);
+                    }
+                }
+                if(response.data){
+                    $('#input_field').empty();
+                    $('#input_field').append(`
+                    <input type="text" name="${response.type}" class="form-control">
+                    `)
+                }
+            }
+        });
+        }
+    }
+    
+</script>
+{% endblock script %}
