@@ -1,4 +1,5 @@
 {% include 'includes/masterpage.html' %}
+{% load custom_tags %}
 {% block title %} <title>Dashboard</title> {% endblock title %}
 {% block content %}
 <div class="content-wrapper">
@@ -56,8 +57,8 @@
         <td>{{data.set.name}}</td>
         <td>{{data.platingType.name}}</td>
         <td>{{data.value}}</td>
-        <td>{{data.orderremarks}}</td>
-        <td>{{data.status}}</td>
+        <td>{{data.user_1_remarks}}</td>
+        <td>{{ data.id | testing}}</td>
 
       </tr>
       {% endfor %}
@@ -68,12 +69,16 @@
 
 
 
-<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+
+<div class="modal" id="update_form_modal" tabindex="-1">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
         <form action="" method="POST" autocomplete="off" id ="testform">
@@ -91,24 +96,22 @@
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="orderdate1" id="orderdate" placeholder=""
-                  value="{{i.update_orderdate}}">
+                <input type="date" class="form-control" name="update_orderdate" id="orderdate">
                 <label for="orderdate">Order Date</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="ordernumber1" id="ordernumber" placeholder=""
-                  value="{{i.update_ordernumber}}">
+                <input type="text" class="form-control" name="update_ordernumber" id="ordernumber">
                 <label for="ordernumber">Order Number</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="clientname1" aria-label="Default select example" id="clientname">
-                  <option id="clientnamelabel" selected value="{{i.update_clientname}}">{{i.update_clientname}}</option>
-                  {% for i in placeholder.clientname %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_clientname" aria-label="Default select example" id="clientname">
+                  <option value="" selected>Please Select</option>
+                  {% for i in CustomerDetail %}
+                  <option value="{{i.id}}">{{i.customerCompanyName}}</option>
                   {% endfor %}
                 </select>
                 <label for="clientname">Name of Client</label>
@@ -116,8 +119,7 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="number" min="1" class="form-control" name="value1" id="value" placeholder=""
-                  value="{{i.update_value}}">
+                <input type="number" min="1" class="form-control" name="update_value" id="value">
                 <label for="value">Value</label>
               </div>
             </div>
@@ -125,11 +127,10 @@
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="moc1" aria-label="Default select example" id="moc">
-                  <option id="moclabel" selected value="{{i.update_moc}}">{{i.update_moc}}</option>
-                  {% for i in placeholder.moc %}
-      
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_moc" aria-label="Default select example" id="moc">
+                  <option value="" selected>Please Select</option>
+                  {% for i in Moc %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="moc">MOC</label>
@@ -137,10 +138,10 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="tooltype1" aria-label="Default select example" id="tooltype">
-                  <option id="tooltypelabel" selected value="{{i.update_tooltype}}">{{i.update_tooltype}}</option>
-                  {% for i in placeholder.tooltype %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_tooltype" aria-label="Default select example" id="tooltype">
+                  <option value="" selected>Please Select</option>
+                  {% for i in ToolType %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="tooltype">Tool Type / M.C</label>
@@ -148,10 +149,10 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="shape1" aria-label="Default select example" id="shape">
-                  <option id="shapelabel" selected value="{{i.update_shape}}">{{i.update_shape}}</option>
-                  {% for i in placeholder.shape %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_shape" aria-label="Default select example" id="shape">
+                  <option value="" selected>Please Select</option>
+                  {% for i in Shape %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="shape">Shape</label>
@@ -159,10 +160,10 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="tabletsize1" aria-label="Default select example" id="tabletsize">
-                  <option id="tabletsizelabel" selected value="{{i.update_tabletsize}}">{{i.update_tabletsize}}</option>
-                  {% for i in placeholder.tabletsize %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_tabletsize" aria-label="Default select example" id="tabletsize">
+                  <option value="" selected>Please Select</option>
+                  {% for i in TabletSize %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="tabletsize">Tablet Size</label>
@@ -172,10 +173,10 @@
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="u11" aria-label="Default select example" id="u1">
-                  <option id="u1label" selected value="{{i.update_u1}}">{{i.update_u1}}</option>
-                  {% for i in placeholder.u1 %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_u1" aria-label="Default select example" id="u1">
+                  <option value="" selected>Please Select</option>
+                  {% for i in U1 %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="u1">U1</label>
@@ -183,10 +184,10 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select  class="form-select" name="u21" aria-label="Default select example" id="u2">
-                  <option id="u2label" selected value="{{i.update_u2}}">{{i.update_u2}}</option>
-                  {% for i in placeholder.u2 %}
-                  <option value="{{i}}">{{i}}</option>
+                <select  class="form-control" name="update_u2" aria-label="Default select example" id="u2">
+                  <option value="" selected>Please Select</option>
+                  {% for i in U2 %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="u2">U2</label>
@@ -194,10 +195,10 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="l11" aria-label="Default select example" id="l1">
-                  <option id="l1label" selected value="{{i.update_l1}}">{{i.update_l1}}</option>
-                  {% for i in placeholder.l1 %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_l1" aria-label="Default select example" id="l1">
+                  <option value="" selected>Please Select</option>
+                  {% for i in L1 %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="l1">L1</label>
@@ -205,10 +206,10 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="l21" aria-label="Default select example" id="l2">
-                  <option id="l2label" selected value="{{i.update_l2}}">{{i.update_l2}}</option>
-                  {% for i in placeholder.l2 %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_l2" aria-label="Default select example" id="l2">
+                  <option value="" selected>Please Select</option>
+                  {% for i in L2 %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="l2">L2</label>
@@ -219,10 +220,10 @@
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="d1" aria-label="Default select example" id="d">
-                  <option id="dlabel" selected value="{{i.update_d}}">{{i.update_d}}</option>
-                  {% for i in placeholder.d %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_d" aria-label="Default select example" id="d">
+                  <option value="" selected>Please Select</option>
+                  {% for i in D %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="d">D</label>
@@ -230,10 +231,10 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="set1" aria-label="Default select example" id="set">
-                  <option id="setlabel" selected value="{{i.update_set}}">{{i.update_set}}</option>
-                  {% for i in placeholder.set %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_set" aria-label="Default select example" id="set">
+                  <option value="" selected>Please Select</option>
+                  {% for i in Set %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="set">SET</label>
@@ -241,10 +242,10 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="platingtype1" aria-label="Default select example" id="platingtype">
-                  <option id="platingtypelabel" selected value="{{i.update_platingtype}}">{{i.update_platingtype}}</option>
-                  {% for i in placeholder.platingtype %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_platingtype" aria-label="Default select example" id="platingtype">
+                  <option value="" selected>Please Select</option>
+                  {% for i in PlatingType %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="platingtype">Plating Type</label>
@@ -252,8 +253,7 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="orderremark" id="orderremark" placeholder=""
-                  value="{{i.update_orderremarks}}">
+                <input type="text" class="form-control" name="update_orderremark" id="orderremark">
                 <label for="orderremark">Remarks</label>
               </div>
             </div>
@@ -277,27 +277,31 @@
             </div>
           </div>
           <div class="row" style="margin-top: 10px;">
-            <div class="col-sm-3">
-              <!-- <div class="form-floating mb-3">
+            <!-- <div class="col-sm-3">
+              <div class="form-floating mb-3">
                 <input type="date" class="form-control" name="edd" id="floatingInput1" placeholder=""
                   value="{{i.update_eed}}">
                 <label for="floatingInput1">Estimate Delivery Date</label>
-              </div> -->
+              </div> 
+            </div> -->
+             <div class="col-sm-1">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="update_form_id" id="form_id">
+              </div> 
             </div>
+            
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="actualdeliverydate" id="actualdeliverydate" placeholder=""
-                  value="{{i.update_actual}}">
+                <input type="date" class="form-control" name="update_actualdeliverydate" id="actualdeliverydate">
                 <label for="actualdeliverydate">Actual Delivery Date</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="modeofdispatch" aria-label="Default select example" id="modeofdispatch">
-                  
-                  <option id="modeofdispatchlabel" selected value="{{i.update_dispatchmode}}" disabled>{{i.update_dispatchmode}}</option>
-                  {% for i in placeholder.dispachMode %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_modeofdispatch" aria-label="Default select example" id="modeofdispatch">
+                  <option value="" selected>Please Select</option>
+                  {% for i in DispachMode %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
       
                 </select>
@@ -305,19 +309,11 @@
               </div>
             </div>
             <div class="col-sm-3">
+              
               <div class="form-floating mb-3">
-              {% if i.update_courierno == None %}
-              <input type="text" class="form-control" name="couriernumber" id="couriernumber" placeholder=""
-                  value="">
+              <input type="text" class="form-control" name="update_couriernumber" id="couriernumber">
                 <label for="couriernumber">Transport Courier Number</label>
               </div>
-              {% else %}
-              <div class="form-floating mb-3">
-              <input type="text" class="form-control" name="couriernumber" id="couriernumber" placeholder=""
-                  value="{{i.update_courierno}}">
-                <label for="couriernumber">Transport Courier Number</label>
-              </div>
-              {% endif %}
             </div>
           </div>
           
@@ -337,11 +333,12 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
+
 
 </section>
 </div>
@@ -921,9 +918,9 @@
     });
     $('#table_id').on('click', 'tr', function () {
         var name = $('td', this).eq(1).text();
-        
+        // console.log("name :",name)
         var data = table.row( this ).data();
-        console.log(data);
+        // console.log(data);
         // $('#exampleModal').modal("show");
         $.ajax({
         type: "POST",
@@ -938,47 +935,30 @@
       });
     });
   });
-  function openModal(product_data){
-          console.log(product_data.passdata)
-          $('#clientnamelabel').html(product_data.passdata.clientname);
-          $('#moclabel').html(product_data.passdata.moc);
-          $('#tooltypelabel').html(product_data.passdata.tooltype);
-          $('#shapelabel').html(product_data.passdata.shape);
-          $('#tabletsizelabel').html(product_data.passdata.tabletsize);
-          $('#u1label').html(product_data.passdata.u1);
-          $('#u2label').html(product_data.passdata.u2);
-          $('#l1label').html(product_data.passdata.l1);
-          $('#l2label').html(product_data.passdata.l2);
-          $('#dlabel').html(product_data.passdata.d);
-          $('#setlabel').html(product_data.passdata.set);
-          $('#platingtypelabel').html(product_data.passdata.platingtype);
-          $('#modeofdispatchlabel').html(product_data.passdata.modeofdispatch);
+  function openModal(response){
+          console.log(response)
+          $('#orderdate').val(response.passdata.orderDate);
+          $('#ordernumber').val(response.passdata.orderNumber);
+          $('#clientname').val(response.passdata.clientName);
+          $('#value').val(response.passdata.value);
+          $('#moc').val(response.passdata.moc);
+          $('#tooltype').val(response.passdata.toolType);
+          $('#shape').val(response.passdata.shape);
+          $('#tabletsize').val(response.passdata.tabletSize);
+          $('#u1').val(response.passdata.u1);
+          $('#u2').val(response.passdata.u2);
+          $('#l1').val(response.passdata.l1);
+          $('#l2').val(response.passdata.l2);
+          $('#d').val(response.passdata.d);
+          $('#set').val(response.passdata.set);
+          $('#platingtype').val(response.passdata.platingType);
+          $('#orderremark').val(response.passdata.user_1_remarks);
+          $('#form_id').val(response.passdata.id);
+          $('#actualdeliverydate').val(response.passdata.actualDelivery);
+          $('#modeofdispatch').val(response.passdata.dispachMode);
+          $('#couriernumber').val(response.passdata.couriesNumber);
           
-
-
-
-          $('#orderdate').attr("value", product_data.passdata.orderdate);
-          $('#ordernumber').attr("value", product_data.passdata.ordernumber);
-          $('#clientname').attr("value", product_data.passdata.clientname);
-          $('#value').attr("value", product_data.passdata.value);
-          $('#moc').attr("value", product_data.passdata.moc);
-          $('#tooltype').attr("value", product_data.passdata.tooltype);
-          $('#shape').attr("value", product_data.passdata.shape);
-          $('#tabletsize').attr("value", product_data.passdata.tabletsize);
-          $('#u1').attr("value", product_data.passdata.u1);
-          $('#u2').attr("value", product_data.passdata.u2);
-          $('#l1').attr("value", product_data.passdata.l1);
-          $('#l2').attr("value", product_data.passdata.l2);
-          $('#d').attr("value", product_data.passdata.d);
-          $('#set').attr("value", product_data.passdata.set);
-          $('#platingtype').attr("value", product_data.passdata.platingtype);
-          $('#orderremark').attr("value", product_data.passdata.orderremark);
-          $('#actualdeliverydate').attr("value", product_data.passdata.actualdeliverydate);
-          $('#modeofdispatch').attr("value", product_data.passdata.modeofdispatch);
-          $('#couriernumber').attr("value", product_data.passdata.couriernumber);
-          
-          
-          $('#exampleModal').modal('show');
+          $('#update_form_modal').modal('show');
         };
 </script>
 

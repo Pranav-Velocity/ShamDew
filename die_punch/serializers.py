@@ -2,6 +2,11 @@ from rest_framework import serializers
 from .models import *
 
 
+class ProductionDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductionData
+        fields = '__all__'
+
 class CustomerDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerDetail

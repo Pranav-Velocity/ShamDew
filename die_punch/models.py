@@ -171,8 +171,11 @@ class ProductionData(models.Model):
     actualDelivery = models.CharField(max_length=50,null=True,blank=True)
     dispachMode = models.ForeignKey(DispachMode,on_delete=models.CASCADE,null=True,blank=True)
     couriesNumber = models.CharField(max_length=50,null=True,blank=True)
-
-    remark = models.CharField(max_length=100,null=True,blank=True)
+    user_1_remarks = models.CharField(max_length=500,null=True,blank=True)
+    user_2_remarks = models.CharField(max_length=500,null=True,blank=True)
+    user_3_remarks = models.CharField(max_length=500,null=True,blank=True)
+    user_admin_remarks = models.CharField(max_length=500,null=True,blank=True)
+    
     class Meta:
         db_table = 'prodform'
 

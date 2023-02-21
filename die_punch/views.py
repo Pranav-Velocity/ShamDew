@@ -5,6 +5,7 @@ from .serializers import *
 from django.db.models import Q
 from django.contrib.auth import authenticate,get_user_model,login,logout
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required
 import datetime
 
 def IndexLogin(request):
@@ -46,154 +47,342 @@ def IndexLogin(request):
     # -0hEw^UBy]dP
 
 def index1(request):
-    # clientnamelist = []
-    # moclist = []
-    # tooltypelist = []
-    # shapelist = []
-    # tabletSizelist = []
-    # u1list = []
-    # u2list = []
-    # l1list = []
-    # l2list = []
-    # dlist = []
-    # setlist = []
-    # platingtypelist = []
+    if request.user.is_user_role_1:
+        if request.method == 'POST':
+            order_number = request.POST.get('abc')
+            if order_number:
+                data = ProductionData.objects.get(orderNumber=order_number)
+                production_data_serializer = ProductionDataSerializer(data,many=False)
+                return JsonResponse({"passdata":production_data_serializer.data})
+            
+            update_orderdate = request.POST.get('update_orderdate')
+            update_ordernumber = request.POST.get('update_ordernumber')
+            update_clientname = request.POST.get('update_clientname')
+            update_value = request.POST.get('update_value')
+            # print("value is :",value1)
+            update_moc = request.POST.get('update_moc')
+            update_tooltype = request.POST.get('update_tooltype')
+            update_shape = request.POST.get('update_shape')
+            update_tabletsize = request.POST.get('update_tabletsize')
+            update_u1 = request.POST.get('update_u1')
+            update_u2 = request.POST.get('update_u2')
+            update_l1 = request.POST.get('update_l1')
+            update_l2 = request.POST.get('update_l2')
+            update_d = request.POST.get('update_d')
+            update_set = request.POST.get('update_set')
+            update_platingtype = request.POST.get('update_platingtype')
+            update_orderremark = request.POST.get('update_orderremark')
+            update_form_id = request.POST.get('update_form_id')
+            update_actualdeliverydate = request.POST.get('update_actualdeliverydate')
+            update_modeofdispatch = request.POST.get('update_modeofdispatch')
+            update_couriernumber = request.POST.get('update_couriernumber')
+            if update_orderdate or update_ordernumber or update_clientname or update_value or update_moc or update_tooltype or update_shape or update_tabletsize or update_u1 or update_u2 or update_u2 or update_l1 or update_l2 or update_d or update_set or update_platingtype or update_orderremark or update_form_id or update_actualdeliverydate or update_modeofdispatch or update_couriernumber:
+                print(update_orderdate , update_ordernumber , update_clientname , update_value , update_moc , update_tooltype , update_shape , update_tabletsize , update_u1 , update_u2 , update_l1 , update_l2 , update_d , update_set , update_platingtype , update_orderremark , update_form_id , update_actualdeliverydate , update_modeofdispatch , update_couriernumber)
+                update_form = ProductionData.objects.get(id=update_form_id)
+                update_form.orderDate = update_orderdate
+                update_form.orderNumber = update_ordernumber
+                update_form.clientName = CustomerDetail.objects.get(id=update_clientname)
+                update_form.value = update_value
+                update_form.moc = Moc.objects.get(id=update_moc)
+                update_form.toolType = ToolType.objects.get(id=update_tooltype)
+                update_form.shape = Shape.objects.get(id=update_shape)
+                update_form.tabletSize = TabletSize.objects.get(id=update_tabletsize)
+                update_form.u1 = U1.objects.get(id=update_u1)
+                update_form.u2 =U2.objects.get(id=update_u2)
+                update_form.l1 = L1.objects.get(id=update_l1)
+                update_form.l2= L2.objects.get(id=update_l2)
+                update_form.d = D.objects.get(id=update_d)
+                update_form.set = Set.objects.get(id=update_set)
+                update_form.platingType = PlatingType.objects.get(id=update_platingtype)
+                update_form.user_1_remarks = update_orderremark
+                update_form.actualDelivery = update_actualdeliverydate
+                update_form.dispachMode = DispachMode.objects.get(id=update_modeofdispatch)
+                update_form.couriesNumber = update_couriernumber
+                update_form.save()
+                return redirect('index1')
+
+
+
+
+   
+        params = {
+            "tabledata":ProductionData.objects.all(),
+            "CustomerDetail":CustomerDetail.objects.all(),
+            "Moc":Moc.objects.all(),
+            "ToolType":ToolType.objects.all(),
+            "Shape":Shape.objects.all(),
+            "TabletSize":TabletSize.objects.all(),
+            "U1":U1.objects.all(),
+            "U2":U2.objects.all(),
+            "L1":L1.objects.all(),
+            "L2":L2.objects.all(),
+            "D":D.objects.all(),
+            "Set":Set.objects.all(),
+            "PlatingType":PlatingType.objects.all(),
+            "DispachMode":DispachMode.objects.all()
+        }
+        return render(request,"user1/dashboard_user1.html",params)
+
+def index1Add(request):
+    if request.user.is_user_role_1:
+        if request.method == "POST":
+            orderdate = request.POST.get('orderdate')
+            ordernumber = request.POST.get('ordernumber')
+            clientname = request.POST.get('clientname')
+            value = request.POST.get('value')
+            moc = request.POST.get('moc')
+            tooltype = request.POST.get('tooltype')
+            shape = request.POST.get('shape')
+            tabletsize = request.POST.get('tabletsize')
+            u1 = request.POST.get('u1')
+            u2 = request.POST.get('u2')
+            l1 = request.POST.get('l1')
+            l2 = request.POST.get('l2')
+            d = request.POST.get('d')
+            set = request.POST.get('set')
+            platingtype = request.POST.get('platingtype')
+            user_1_remarks = request.POST.get('orderremark')
+            # rawmaterial = request.POST.get('rawmaterial')
+            # priority = request.POST.get('priority')
+            
+            # edd = request.POST.get('edd')
+            actualdeliverydate = request.POST.get('actualdeliverydate')
+            modeofdispatch = request.POST.get('modeofdispatch')
+            couriernumber = request.POST.get('couriernumber')
+            print(orderdate , ordernumber , clientname , value , moc , tooltype , shape , tabletsize , u1 , u2 , l1 , l2 , d , set , platingtype , user_1_remarks , user_1_remarks , actualdeliverydate , modeofdispatch ,couriernumber)
+            if orderdate or clientname or value or moc or tooltype or shape or tabletsize or u1 or u2 or l1 or l2 or d or set or platingtype or actualdeliverydate or modeofdispatch or couriernumber :
+                type="New Form"
+                formadd = ProductionData(
+                    orderDate=orderdate,
+                    orderNumber=ordernumber,
+                    clientName=CustomerDetail.objects.get(id=clientname),
+                    value=value,
+                    moc=Moc.objects.get(id = moc),
+                    toolType=ToolType.objects.get(id = tooltype),
+                    shape=Shape.objects.get(id = shape),
+                    tabletSize=TabletSize.objects.get(id = tabletsize),
+                    u1=U1.objects.get(id = u1),
+                    u2=U2.objects.get(id = u2),
+                    l1=L1.objects.get(id = l1),
+                    l2=L2.objects.get(id = l2),
+                    d=D.objects.get(id = d),
+                    set=Set.objects.get(id = set),
+                    platingType=PlatingType.objects.get(id = platingtype),
+                    user_1_remarks=user_1_remarks,
+                    actualDelivery=actualdeliverydate,
+                    dispachMode=DispachMode.objects.get(id = modeofdispatch),
+                    couriesNumber=couriernumber
+                    )
+                # log = UserLog(user_id=request.user.id,user_name=request.user.username,new_orderDate=orderdate,new_orderNumber=ordernumber ,new_clientName=clientname ,new_value=value ,new_moc=moc ,new_toolType=tooltype  ,new_shape=shape  ,new_tabletSize=tabletsize  ,new_u1=u1  ,new_u2=u2  ,new_l1=l1  ,new_l2=l2  ,new_d=d  ,new_sett=set  ,new_platingType=platingtype,new_order_remarks=orderremark,new_actualDelivery=actualdeliverydate ,new_dispachMode=modeofdispatch ,new_couriesNumber=couriernumber,Type=type)
+                
+                if formadd:
+                    formadd.save()
+                    # log.save()
+                    return redirect('index1')
+        
+        params = {
+            "CustomerDetail":CustomerDetail.objects.all(),
+            "Moc":Moc.objects.all(),
+            "ToolType":ToolType.objects.all(),
+            "Shape":Shape.objects.all(),
+            "TabletSize":TabletSize.objects.all(),
+            "U1":U1.objects.all(),
+            "U2":U2.objects.all(),
+            "L1":L1.objects.all(),
+            "L2":L2.objects.all(),
+            "D":D.objects.all(),
+            "Set":Set.objects.all(),
+            "PlatingType":PlatingType.objects.all(),
+            "DispachMode":DispachMode.objects.all()
+        }
+        return render(request,"user1/1add.html",params)
+
+
+
+
+def index2(request):
+    if request.user.is_user_role_2:
+        if request.method == 'POST':
+            get_data = request.POST.get('abc')
+            if get_data:
+                check = ProductionData.objects.get(orderNumber=get_data)
+                punchblank = int(check.u1.name) + int(check.l1.name)
+                dieblank = int(check.d.name)
+                production_data_serializer = ProductionDataSerializer(check,many=False)
+                return JsonResponse({"passdata":production_data_serializer.data,"punch_blank":punchblank,'die_blank':dieblank})
+            update_form_id = request.POST.get('update_form_id')
+            rawmaterial = request.POST.get('update_rawmaterial')
+            priority = request.POST.get('update_priority')
+            dwgnumber = request.POST.get('update_dwgnumber')
+            drgdate = request.POST.get('update_drgdate')
+            approvaldate = request.POST.get('update_approvaldate')
+            master = request.POST.get('update_master')
+            masterout = request.POST.get('update_masterout')
+            masterin = request.POST.get('update_masterin')
+            htdate = request.POST.get('update_htdate')
+            estimateddelivery = request.POST.get('update_estimateddelivery')
+            planningout = request.POST.get('update_planningout')
+            planningin = request.POST.get('update_planningin')
+            blank = request.POST.get('update_blank')
+            process = request.POST.get('update_process')
+            bodytipping = request.POST.get('update_bodytipping')
+            headmachine = request.POST.get('update_headmachine')
+            keyway = request.POST.get('update_keyway')
+            ht = request.POST.get('update_ht')
+            grinding = request.POST.get('update_grinding')
+            hardchrome = request.POST.get('update_hardchrome')
+            qualitycheck = request.POST.get('update_qualitycheck')
+            packingdispach = request.POST.get('update_packingdispach')
+            if update_form_id or rawmaterial or priority or dwgnumber or drgdate or approvaldate or master or masterout or masterin or htdate or estimateddelivery or planningout or planningin or blank or process or bodytipping or  headmachine or keyway or ht or grinding or hardchrome or qualitycheck or packingdispach:
+                get_form = ProductionData.objects.get(id=update_form_id)
+                get_form.rawMaterial = RawMaterial.objects.get(id=rawmaterial)
+                get_form.priority = priority
+                get_form.dwgNumber = dwgnumber
+                get_form.drgDate = drgdate
+                get_form.approvalDate = approvaldate
+                get_form.master = master
+                get_form.masterOut = masterout
+                get_form.masterIn = masterin
+                get_form.hitDate = htdate
+                get_form.estimatedDelivery = estimateddelivery
+                get_form.planningOut = planningout
+                get_form.planningIn = planningin
+                get_form.blank = Blank.objects.get(id = blank)
+                get_form.process = Process.objects.get(id = process)
+                get_form.bodyTipMachining = BodyTipMachining.objects.get(id = bodytipping)
+                get_form.headMachining = HeadMachining.objects.get(id = headmachine)
+                get_form.keywayTaperFinish = KeywayTaperFinish.objects.get(id = keyway)
+                get_form.ht = HT.objects.get(id = ht)
+                get_form.grinding = Grinding.objects.get(id = grinding)
+                get_form.hardChrome = HardChrome.objects.get(id = hardchrome)
+                get_form.qualityCheck = QualityCheck.objects.get(id = qualitycheck)
+                get_form.packingDispach = PackingDispach.objects.get(id = packingdispach)
+                get_form.save()
+                return redirect('index2')
+                
+                
+    # rawmaterial = ""
+    # priority=""
+    # update_punchBlankUsed = ""
+    # update_dieBlankUsed = ""
+    # errlogin=""
+    # alerta = ""
+    # a=""
+    # user_name=""
+    # tabledata= []
+    # placeholderdata = []
+    # update = ""
+    # updateform = ""
+    # mobile = ""
+    # salary = ""
+    # test = ""
     # updateplaceholder = []
+    # blanklist = []
+    # processlist = []
+    # bodyTipMachininglist = []
+    # headMachininglist = []
+    # keywayTaperFinishlist = []
+    # htlist = []
+    # grindinglist = []
+    # hardChromelist = []
+    # qualityChecklist = []
+    # packingDispachlist = []
+    # rawmateriallist= []
+    # blankdata = AutoAddManufacturing.objects.filter(blank__isnull = False).order_by('blank')
+    # for i in blankdata:
+    #     blanklist.append(i.blank)
+    # processdata = AutoAddManufacturing.objects.filter(process__isnull = False).order_by('process')
+    # for i in processdata:
+    #     processlist.append(i.process)
+    # bodyTipMachiningdata = AutoAddManufacturing.objects.filter(bodyTipMachining__isnull = False).order_by('bodyTipMachining')
+    # for i in bodyTipMachiningdata:
+    #     bodyTipMachininglist.append(i.bodyTipMachining)
+    # headMachiningdata = AutoAddManufacturing.objects.filter(headMachining__isnull = False).order_by('headMachining')
+    # for i in headMachiningdata:
+    #     headMachininglist.append(i.headMachining)
+    # keywayTaperFinishdata = AutoAddManufacturing.objects.filter(keywayTaperFinish__isnull = False).order_by('keywayTaperFinish')
+    # for i in keywayTaperFinishdata:
+    #     keywayTaperFinishlist.append(i.keywayTaperFinish)
+    # htdata = AutoAddManufacturing.objects.filter(ht__isnull = False).order_by('ht')
+    # for i in htdata:
+    #     htlist.append(i.ht)
+    # grindingdata = AutoAddManufacturing.objects.filter(grinding__isnull = False).order_by('grinding')
+    # for i in grindingdata:
+    #     grindinglist.append(i.grinding)
+    # hardChromedata = AutoAddManufacturing.objects.filter(hardChrome__isnull = False).order_by('hardChrome')
+    # for i in hardChromedata:
+    #     hardChromelist.append(i.hardChrome)
+    # qualityCheckdata = AutoAddManufacturing.objects.filter(qualityCheck__isnull = False).order_by('qualityCheck')
+    # for i in qualityCheckdata:
+    #     qualityChecklist.append(i.qualityCheck)
+    # packingDispachdata = AutoAddManufacturing.objects.filter(packingDispach__isnull = False).order_by('packingDispach')
+    # for i in packingDispachdata:
+    #     packingDispachlist.append(i.packingDispach)
     # dispatchlist = []
     # dispatchdata = AutoAddDispatch.objects.filter(dispachMode__isnull = False).order_by('dispachMode')
     # for i in dispatchdata:
     #     dispatchlist.append(i.dispachMode)
-    # clientnamedata = CustomerDetail.objects.filter(customerCompanyName__isnull = False).order_by('customerCompanyName')
-    # for i in clientnamedata:
-    #     clientnamelist.append(i.customerCompanyName)
-    # mocdata = AutoAddMain.objects.filter(moc__isnull = False).order_by('moc')
-    # for i in mocdata:
-    #     moclist.append(i.moc)
-    # tooltypedata = AutoAddMain.objects.filter(toolType__isnull = False).order_by('toolType')
-    # for i in tooltypedata:
-    #     tooltypelist.append(i.toolType)
-    # shapedata = AutoAddMain.objects.filter(shape__isnull = False).order_by('shape')
-    # for i in shapedata: 
-    #     shapelist.append(i.shape)
-    # tabletdata = AutoAddMain.objects.filter(tabletSize__isnull = False).order_by('tabletSize')
-    # for i in tabletdata:
-    #     tabletSizelist.append(i.tabletSize)
-    # u1data = AutoAddMain.objects.filter(u1__isnull = False).order_by('u1')
-    # for i in u1data:
-    #     u1list.append(i.u1)
-    # u2data = AutoAddMain.objects.filter(u2__isnull = False).order_by('u2')
-    # for i in u2data:
-    #     u2list.append(i.u2)
-    # l1data = AutoAddMain.objects.filter(l1__isnull = False).order_by('l1')
-    # for i in l1data:
-    #     l1list.append(i.l1)
-    # l2data = AutoAddMain.objects.filter(l2__isnull = False).order_by('l2')
-    # for i in l2data:
-    #     l2list.append(i.l2)
-    # ddata = AutoAddMain.objects.filter(d__isnull = False).order_by('d')
-    # for i in ddata:
-    #     dlist.append(i.d)
-    # setdata = AutoAddMain.objects.filter(sett__isnull = False).order_by('sett')
-    # for i in setdata:
-    #     setlist.append(i.sett)
-    # platingtypedata = AutoAddMain.objects.filter(platingType__isnull = False).order_by('platingType')
-    # for i in platingtypedata:
-    #     platingtypelist.append(i.platingType)
-    
+    # rawmaterialdata = AutoAddMain.objects.filter(rawMaterial__isnull = False)
+    # for i in rawmaterialdata:
+    #     rawmateriallist.append(i.rawMaterial)
     # placeholder = {
-    #     "clientname":clientnamelist,
-    #     "moc":moclist,
-    #     "tooltype":tooltypelist,
-    #     "shape":shapelist,
-    #     "tabletsize":tabletSizelist,
-    #     "u1":u1list,
-    #     "u2":u2list,
-    #     "l1":l1list,
-    #     "l2":l2list,
-    #     "d":dlist,
-    #     "set":setlist,
-    #     "platingtype":platingtypelist,
-    #     "dispachMode" : dispatchlist
+    #     "blank" : blanklist,
+    #     "process":processlist,
+    #     "bodyTipMachining":bodyTipMachininglist,
+    #     "headMachining":headMachininglist,
+    #     "keywayTaperFinish":keywayTaperFinishlist,
+    #     "ht":htlist,
+    #     "grinding":grindinglist,
+    #     "hardChrome":hardChromelist,
+    #     "qualityCheck":qualityChecklist,
+    #     "packingDispach":packingDispachlist,
+    #     "dispachMode" : dispatchlist,
+    #     "rawmaterial":rawmateriallist
     # }
     
-    # a=""
-    # user_name=""
-    # showformdata=""
-    # updateform = ""
-    # tabledata = []
-    # getid = ""
-    # update = ""
-    # isloggedin = ""
-    # first = ""
-    # last = ""
-    # add = ""
-    # ag = ""
-    # orderdate1=""
-    # ordernumber1=""
-    # clientname1=""
-    # value1=""
-    # moc1=""
-    # tooltype1=""
-    # shape1=""
-    # tabletsize1=""
-    # u11=""
-    # u21=""
-    # l11=""
-    # l21=""
-    # d1=""
-    # set1=""
-    # platingtype1=""
-    # rawmaterial1=""
-    # priority1=""
-    # status1=""
-    # alerta=""
-    # errlogin= ""
-    # test = ""
-    # passdata = ""
-    # updateform = ""
-    # check=""
-    # orderremark=""
     # if request.method == 'POST':
     #     test = request.POST.get('abc')
-    #     # print("test data is :",test)
-    #     orderdate = request.POST.get('orderdate')
-    #     ordernumber = request.POST.get('ordernumber')
-    #     clientname = request.POST.get('clientname')
-    #     value = request.POST.get('value')
-    #     moc = request.POST.get('moc')
-    #     tooltype = request.POST.get('tooltype')
-    #     shape = request.POST.get('shape')
-    #     tabletsize = request.POST.get('tabletsize')
-    #     u1 = request.POST.get('u1')
-    #     u2 = request.POST.get('u2')
-    #     l1 = request.POST.get('l1')
-    #     l2 = request.POST.get('l2')
-    #     d = request.POST.get('d')
-    #     set = request.POST.get('set')
-    #     platingtype = request.POST.get('platingtype')
+    #     print("test data is :",test)
     #     rawmaterial = request.POST.get('rawmaterial')
     #     priority = request.POST.get('priority')
-
-    #     edd = request.POST.get('edd')
-    #     actualdeliverydate = request.POST.get('actualdeliverydate')
-    #     modeofdispatch = request.POST.get('modeofdispatch')
-    #     couriernumber = request.POST.get('couriernumber')
+    #     print(rawmaterial , priority)
     #     dwgnumber = request.POST.get('dwgnumber')
     #     drgdate = request.POST.get('drgdate')
     #     approvaldate = request.POST.get('approvaldate')
     #     master = request.POST.get('master')
     #     masterout = request.POST.get('masterout')
     #     masterin = request.POST.get('masterin')
-    #     # punchblank = request.POST.get('punchblank')
-    #     # dieblank = request.POST.get('dieblank')
     #     htdate = request.POST.get('htdate')
     #     estimateddelivery = request.POST.get('estimateddelivery')
     #     planningout = request.POST.get('planningout')
     #     planningin = request.POST.get('planningin')
+    #     # print(dwgnumber)
+    #     # print(drgdate)
+    #     # print(approvaldate)
+    #     # print(master)
+    #     # print(masterout)
+    #     # print(masterin)
+    #     # print(htdate)
+    #     # print(estimateddelivery)
+    #     # print(planningout)
+    #     # print(planningin)
 
-    #     status = request.POST.get('status')        
+    #     blank = request.POST.get('blank')
+    #     process = request.POST.get('process')
+    #     bodytipping = request.POST.get('bodytipping')
+    #     headmachine = request.POST.get('headmachine')
+    #     keyway = request.POST.get('keyway')
+    #     ht = request.POST.get('ht')
+    #     grinding = request.POST.get('grinding')
+    #     hardchrome = request.POST.get('hardchrome')
+    #     qualitycheck = request.POST.get('qualitycheck')
+    #     packingdispach = request.POST.get('packingdispach')
+
     #     username = request.POST.get('username')
     #     password = request.POST.get('password')
+        
+    #     updateform = request.POST.get('updateform')
+        
     #     if username and password:
     #         query = User.objects.filter(Q(username=username))
     #         if query:
@@ -203,7 +392,7 @@ def index1(request):
     #                 level = userlvl.level
     #                 # print("logged in userlevel is :",level)
     #                 superuser = i.is_superuser
-    #                 if superuser == False and level == 1:
+    #                 if superuser == False and level == 2:
     #                     authen = authenticate(username=username, password=password)
     #                     if authen:
     #                         login(request, authen)
@@ -213,1158 +402,534 @@ def index1(request):
     #                     errlogin = "invalid"
     #         else:
     #             errlogin = "invalid"
+    #     # if username and password:
+    #     #     query = User.objects.filter(Q(username=username))
+    #     #     for i in query:
+    #     #         superuser = i.is_superuser
+    #     #         if superuser == False:
+    #     #             authen = authenticate(username=username, password=password)
+    #     #             if authen:
+    #     #                 login(request, authen)
     # else:
-    #     first = ""
-    #     last = ""
-    #     add = ""
-    #     ag = ""
     #     dwgnumber = ""
     #     drgdate = ""
     #     approvaldate = ""
     #     master = ""
     #     masterout = ""
     #     masterin = ""
-    #     punchblank = ""
-    #     dieblank = ""
     #     htdate = ""
     #     estimateddelivery = ""
     #     planningout = ""
     #     planningin = ""
 
-    #     edd = ""
-    #     actualdeliverydate = ""
-    #     modeofdispatch = ""
-    #     couriernumber = ""
-    # if request.user.is_user_role_1:
-    #     user_id = request.user.id
-
-    #     # print("logged in user id is :",user_id)
-    #     user_name = request.user.first_name
-    #     a = "addyes"
-    #     if a == "addyes":
-    #         if request.method == "POST":
-    #             orderdate1 = request.POST.get('orderdate1')
-    #             ordernumber1 = request.POST.get('ordernumber1')
-    #             clientname1 = request.POST.get('clientname1')
-    #             value1 = request.POST.get('value1')
-    #             # print("value is :",value1)
-    #             moc1 = request.POST.get('moc1')
-    #             tooltype1 = request.POST.get('tooltype1')
-    #             shape1 = request.POST.get('shape1')
-    #             tabletsize1 = request.POST.get('tabletsize1')
-    #             u11 = request.POST.get('u11')
-    #             u21 = request.POST.get('u21')
-    #             l11 = request.POST.get('l11')
-    #             l21 = request.POST.get('l21')
-    #             d1 = request.POST.get('d1')
-    #             set1 = request.POST.get('set1')
-    #             platingtype1 = request.POST.get('platingtype1')
-    #             rawmaterial1 = request.POST.get('rawmaterial1')
-    #             priority1 = request.POST.get('priority1')
-    #             status1 = request.POST.get('status1')
-    #             orderremark = request.POST.get('orderremark')
-    #             updateform = request.POST.get('updateform')
-
-    #         else:
-    #             orderdate1=""
-    #             ordernumber1=""
-    #             clientname1=""
-    #             value1=""
-    #             moc1=""
-    #             tooltype1=""
-    #             shape1=""
-    #             tabletsize1=""
-    #             u11=""
-    #             u21=""
-    #             l11=""
-    #             l21=""
-    #             d1=""
-    #             set1=""
-    #             platingtype1=""
-    #             rawmaterial1=""
-    #             priority1=""
-    #             status1=""
-    #         # print("yes showdata")
-    #         # print(lvlid)
-    #         frm = ProductionData.objects.all().order_by('id')
-    #         for j in frm:
-    #             data_id= j.id
-    #             data_orderdate1  = j.orderDate
-    #             data_orderdate = datetime.datetime.strptime(data_orderdate1, "%Y-%m-%d").strftime("%d-%m-%Y")
-    #             data_ordernumber    = j.orderNumber
-    #             data_clientname =j.clientName
-    #             data_value =j.value
-    #             data_moc = j.moc
-    #             data_tooltype =j.toolType
-    #             data_shape =j.shape
-    #             data_tabletsize =j.tabletSize
-    #             data_u1 =j.u1
-    #             data_u2 =j.u2
-    #             data_l1 =j.l1
-    #             data_l2 =j.l2
-    #             data_d =j.d
-    #             data_set =j.sett
-    #             data_platingtype =j.platingType
-    #             data_rawmaterial =j.rawMaterial
-    #             data_priority =j.priority
-    #             data_orderremark = j.order_remarks
-    #             data_edd = j.estimatedDelivery
-    #             data_actualdd=j.actualDelivery
-                
-    #             # print("edd :",data_edd)
-    #             # print("actual edd :",data_actualdd)
-    #             data1 = j.blank
-    #             data2 = j.process
-    #             data3 = j.bodyTipMachining
-    #             data4 = j.headMachining
-    #             data5 = j.keywayTaperFinish
-    #             data6 = j.ht
-    #             data7 = j.grinding
-    #             data8 = j.hardChrome
-    #             data9 = j.qualityCheck
-    #             data10 = j.packingDispach
-                
-                
-    #             if data1 :
-    #                 data1 = float(data1)
-    #             else:
-    #                 data1 = 0
-    #             if data2 :
-    #                 data2 = float(data2)
-    #             else:
-    #                 data2 = 0
-    #             if data3 :
-    #                 data3 = float(data3)
-    #             else:
-    #                 data3 = 0
-    #             if data4 :
-    #                 data4 = float(data4)
-    #             else:
-    #                 data4 = 0
-    #             if data5 :
-    #                 data5 = float(data5)
-    #             else:
-    #                 data5 = 0
-    #             if data6 :
-    #                 data6 = float(data6)
-    #             else:
-    #                 data6 = 0
-    #             if data7 :
-    #                 data7 = float(data7)
-    #             else:
-    #                 data7 = 0
-    #             if data8 :
-    #                 data8 = float(data8)
-    #             else:
-    #                 data8 = 0
-    #             if data9 :
-    #                 data9 = float(data9)
-    #             else:
-    #                 data9 = 0
-    #             if data10 :
-    #                 data10 = float(data10)
-    #             else:
-    #                 data10 = 0
-                
-    #             totaldata = (((data1 + data2 + data3 + data4 + data5 + data6 + data7 + data8 + data9 + data10)/10) * 100)
-    #             # print("total is :",totaldata)
-    #             data_status = str(totaldata) + str("%")
-    #             obj = {
-    #                 "id":data_id,
-    #                 "orderdate" : data_orderdate,
-    #                 "ordernumber" :data_ordernumber,
-    #                 "clientname" :data_clientname,
-    #                 "value" :data_value,
-    #                 "moc" :data_moc,
-    #                 "tooltype" :data_tooltype,
-    #                 "shape" :data_shape,
-    #                 "tabletsize" :data_tabletsize,
-    #                 "u1" :data_u1,
-    #                 "u2" :data_u2,
-    #                 "l1" :data_l1,
-    #                 "l2" :data_l2,
-    #                 "d" :data_d,
-    #                 "set" :data_set,
-    #                 "platingtype" :data_platingtype,
-    #                 "rawmaterial" :data_rawmaterial,
-    #                 "priority" :data_priority,
-    #                 "orderremarks":data_orderremark,
-    #                 "status" :data_status,
-    #                 'edd':data_edd,
-    #                 'actualdeliverydate':data_actualdd
-
-    #             }
-    #             tabledata.append(obj)
-        
-    #     else:
-    #         a="no"
-    #     if a == "addyes":
-    #         isloggedin = "yes"
-    #     else:
-    #         isloggedin = "no"
-        
-    #     if test:
-    #         check = ProductionData.objects.get(orderNumber=test)
-    #         request.session['id'] = check.id
-    #         passdata = {
-    #             "orderdate" : check.orderDate,
-    #             "ordernumber" : check.orderNumber,
-    #             "clientname" :check.clientName,
-    #             "value" : check.value,
-    #             "moc" : check.moc,
-    #             "tooltype" : check.toolType,
-    #             "shape" : check.shape,
-    #             "tabletsize" : check.tabletSize,
-    #             "u1" : check.u1,
-    #             "u2" : check.u2,
-    #             "l1" : check.l1,
-    #             "l2" : check.l2,
-    #             "d" : check.d,
-    #             "set" : check.sett,
-    #             "platingtype" : check.platingType,
-    #             "orderremark" : check.order_remarks,
-    #             "actualdeliverydate" : check.actualDelivery,
-    #             "modeofdispatch" : check.dispachMode,
-    #             "couriernumber" : check.couriesNumber
-
-    #         }
-    #         return JsonResponse({"passdata":passdata})
-    #     if updateform:
-    #         # print("yes i got to update",updateform)
-    #         update = "yes"
-    #         request.session['updateformid'] = updateform
-    #         udata = ProductionData.objects.filter(id = updateform)
-    #         for i in udata:
-    #             update_orderdate = str(i.orderDate)
-    #             u_u1 = i.u1
-    #             u_l1 = i.l1
-    #             if u_u1 and u_l1:
-    #                 updatepunchblank = int(u_u1) +int(u_l1)
-    #             else :
-    #                 updatepunchblank = ""
-                
-    #             # print("date is :",parsed_date)
-    #             # dt_stamp = datetime.datetime(update_orderdate)
-    #             # print(dt_stamp)
-    #             # dateorder = dt_stamp.strftime("%Y-%m-%d")
-    #             # print(dateorder)
-    #             obj = {
-    #                 "update_id":i.id,
-    #                 "update_orderdate" : update_orderdate,
-    #                 "update_ordernumber" :i.orderNumber,
-    #                 "update_clientname" :i.clientName,
-    #                 "update_value" :i.value,
-    #                 "update_moc" :i.moc,
-    #                 "update_tooltype" :i.toolType,
-    #                 "update_shape" :i.shape,
-    #                 "update_tabletsize" :i.tabletSize,
-    #                 "update_u1" :i.u1,
-    #                 "update_u2" :i.u2,
-    #                 "update_l1" :i.l1,
-    #                 "update_l2" :i.l2,
-    #                 "update_d" :i.d,
-    #                 "update_set" :i.sett,
-    #                 "update_platingtype" :i.platingType,
-    #                 "update_rawmaterial" :i.rawMaterial,
-    #                 "update_priority" :i.priority,
-    #                 "update_orderremarks":i.order_remarks,
-    #                 "update_status" :i.status,
-
-    #                 "update_dwgnumber":i.dwgNumber,
-    #                 "update_drgdate":i.drgDate,
-    #                 "update_approvalDate":i.approvalDate,
-    #                 "update_master":i.master,
-    #                 "update_masterOut":i.masterOut,
-    #                 "update_masterIn":i.masterIn,
-    #                 "update_punchBlankUsed":updatepunchblank,
-    #                 "update_dieBlankUsed":i.d,
-    #                 "update_hitDate":str(i.hitDate),
-    #                 "update_estimatedDelivery":str(i.estimatedDelivery),
-    #                 "update_planningOut":str(i.planningOut),
-    #                 "update_planningIn":str(i.planningIn),
-
-    #                 "update_eed":str(i.estimatedDelivery),
-    #                 "update_actual":str(i.actualDelivery),
-    #                 "update_dispatchmode":i.dispachMode,
-    #                 "update_courierno":i.couriesNumber
-    #             }
-    #             updateplaceholder.append(obj)
-            
-        
-    #     else:
-    #         # print("no didnt get")
-    #         update = "no"
-        
-    #     if 'updateformid'  in request.session:
-    #         sessdata = request.session['updateformid']
-    #     else:
-    #         sessdata = ""
-    #     if 'id' in request.session:
-    #         sessdata = request.session['id']
-    #     if orderdate1 or ordernumber1 or clientname1 or value1 or moc1 or tooltype1  or shape1  or tabletsize1  or u11  or u21  or l11  or l21  or d1  or set1  or platingtype1 or orderremark or rawmaterial1  or priority1  or status1 or dwgnumber or drgdate or approvaldate or master or masterout or masterin  or htdate or estimateddelivery or planningout or planningin or edd or actualdeliverydate or modeofdispatch or couriernumber:
-    #         form = ProductionData.objects.get(id = sessdata)
-    #         print("logged in user is blah :",user_id,user_name)
-    #         type="Updated"
-    #         # status=form.status,dwgNumber=form.dwgNumber,drgDate=form.drgDate,approvalDate=form.approvalDate,master=form.master,masterOut=form.masterOut,masterIn=form.masterIn,punchBlankUsed=form.punchBlankUsed,dieBlankUsed=form.dieBlankUsed,hitDate=form.hitDate,estimatedDelivery=form.estimatedDelivery,planningOut=form.planningOut,planningIn=form.planningIn,blank=form.blank,process=form.process,bodyTipMachining=form.bodyTipMachining,headMachining=form.headMachining,keywayTaperFinish=form.keywayTaperFinish,ht=form.ht,grinding=form.grinding,hardChrome=form.hardChrome,qualityCheck=form.qualityCheck,packingDispach=form.packingDispach
-    #         log = UserLog(formid=sessdata,user_id=user_id,user_name=user_name,orderDate=form.orderDate,orderNumber=form.orderNumber,clientName=form.clientName,value=form.value,moc=form.moc,toolType=form.toolType,shape=form.shape,tabletSize=form.tabletSize,u1=form.u1,u2=form.u2,l1=form.l1,l2=form.l2,d=form.d,sett=form.sett,platingType=form.platingType,rawMaterial=form.rawMaterial,priority=form.priority,order_remarks=form.order_remarks,actualDelivery=form.actualDelivery,dispachMode=form.dispachMode,couriesNumber=form.couriesNumber,new_orderDate=orderdate1,new_orderNumber=ordernumber1 ,new_clientName=clientname1 ,new_value=value1 ,new_moc=moc1 ,new_toolType=tooltype1  ,new_shape=shape1  ,new_tabletSize=tabletsize1  ,new_u1=u11  ,new_u2=u21  ,new_l1=l11  ,new_l2=l21  ,new_d=d1  ,new_sett=set1  ,new_platingType=platingtype1,new_order_remarks=orderremark,new_actualDelivery=actualdeliverydate ,new_dispachMode=modeofdispatch ,new_couriesNumber=couriernumber,Type=type)
-    #         log.save()
-    #         if orderdate1:
-    #             form.orderDate = orderdate1
-    #             form.save()
-    #         if ordernumber1:
-    #             form.orderNumber = ordernumber1
-    #             form.save()
-    #         if clientname1:
-    #             form.clientName = clientname1
-    #             form.save()
-    #         if value1:
-    #             form.value = value1
-    #             form.save()
-    #         if moc1:
-    #             form.moc = moc1
-    #             form.save()
-    #         if tooltype1:
-    #             form.toolType = tooltype1
-    #             form.save()
-    #         if shape1:
-    #             form.shape = shape1
-    #             form.save()
-    #         if tabletsize1:
-    #             form.tabletSize = tabletsize1
-    #             form.save()
-    #         if u11:
-    #             form.u1 = u11
-    #             form.save()
-    #         if u21:
-    #             form.u2 = u21
-    #             form.save()
-    #         if l11:
-    #             form.l1 = l11
-    #             form.save()
-    #         if l21:
-    #             form.l2 = l21
-    #             form.save()
-    #         if d1:
-    #             form.d = d1
-    #             form.save()
-    #         if set1:
-    #             form.sett = set1
-    #             form.save()
-    #         if platingtype1:
-    #             form.platingType = platingtype1
-    #             form.save()
-    #         if rawmaterial1:
-    #             form.rawMaterial = rawmaterial1
-    #             form.save()
-    #         if priority1:
-    #             form.priority = priority1
-    #             form.save()
-    #         if orderremark:
-    #             form.order_remarks = orderremark
-    #             form.save()
-    #         if status1:
-    #             form.status = status1
-    #             form.save()
-    #         if dwgnumber:
-    #             form.dwgNumber = dwgnumber
-    #             form.save()
-    #         if drgdate:
-    #             form.drgDate = drgdate
-    #             form.save()
-    #         if approvaldate:
-    #             form.approvalDate = approvaldate
-    #             form.save()
-    #         if master:
-    #             form.master = master
-    #             form.save()
-    #         if masterout:
-    #             form.masterOut = masterout
-    #             form.save()
-    #         if masterin:
-    #             form.masterIn = masterin
-    #             form.save()
-    #         if htdate:
-    #             form.hitDate = htdate
-    #             form.save()
-    #         if estimateddelivery:
-    #             form.estimatedDelivery = estimateddelivery
-    #             form.save()
-    #         if planningout:
-    #             form.planningOut = planningout
-    #             form.save()
-    #         if planningin:
-    #             form.planningIn = planningin
-    #             form.save()
-    #         if edd:
-    #             form.estimatedDelivery = edd
-    #             form.save()
-    #         if actualdeliverydate:
-    #             form.actualDelivery = actualdeliverydate
-    #             form.save()
-    #         if modeofdispatch:
-    #             form.dispachMode = modeofdispatch
-    #             form.save()
-    #         if couriernumber:
-    #             form.couriesNumber = couriernumber
-    #             form.save()
-            
-    #         return redirect('index1')
-            
-    #     else:
-    #         print("form is not there")
-    # print("table data :",tabledata)
-    # print(updateplaceholder)
-    params = {
-        "tabledata":ProductionData.objects.all()
-    }
-    return render(request,"dashboard_user1.html",params)
-
-def index1Add(request):
-    if request.method == "POST":
-        orderdate = request.POST.get('orderdate')
-        ordernumber = request.POST.get('ordernumber')
-        clientname = request.POST.get('clientname')
-        value = request.POST.get('value')
-        moc = request.POST.get('moc')
-        tooltype = request.POST.get('tooltype')
-        shape = request.POST.get('shape')
-        tabletsize = request.POST.get('tabletsize')
-        u1 = request.POST.get('u1')
-        u2 = request.POST.get('u2')
-        l1 = request.POST.get('l1')
-        l2 = request.POST.get('l2')
-        d = request.POST.get('d')
-        set = request.POST.get('set')
-        platingtype = request.POST.get('platingtype')
-        orderremark = request.POST.get('orderremark')
-        # rawmaterial = request.POST.get('rawmaterial')
-        # priority = request.POST.get('priority')
-        
-        # edd = request.POST.get('edd')
-        actualdeliverydate = request.POST.get('actualdeliverydate')
-        modeofdispatch = request.POST.get('modeofdispatch')
-        couriernumber = request.POST.get('couriernumber')
-        print(orderdate , ordernumber , clientname , value , moc , tooltype , shape , tabletsize , u1 , u2 , l1 , l2 , d , set , platingtype , orderremark , orderremark , actualdeliverydate , modeofdispatch ,couriernumber)
-        if orderdate or clientname or value or moc or tooltype or shape or tabletsize or u1 or u2 or l1 or l2 or d or set or platingtype or actualdeliverydate or modeofdispatch or couriernumber :
-            type="New Form"
-            formadd = ProductionData(
-                orderDate=orderdate,
-                orderNumber=ordernumber,
-                clientName=CustomerDetail.objects.get(id=clientname),
-                value=value,
-                moc=Moc.objects.get(id = moc),
-                toolType=ToolType.objects.get(id = tooltype),
-                shape=Shape.objects.get(id = shape),
-                tabletSize=TabletSize.objects.get(id = tabletsize),
-                u1=U1.objects.get(id = u1),
-                u2=U2.objects.get(id = u2),
-                l1=L1.objects.get(id = l1),
-                l2=L2.objects.get(id = l2),
-                d=D.objects.get(id = d),
-                set=Set.objects.get(id = set),
-                platingType=PlatingType.objects.get(id = platingtype),
-                order_remarks=orderremark,
-                actualDelivery=actualdeliverydate,
-                dispachMode=DispachMode.objects.get(id = modeofdispatch),
-                couriesNumber=couriernumber
-                )
-            # log = UserLog(user_id=request.user.id,user_name=request.user.username,new_orderDate=orderdate,new_orderNumber=ordernumber ,new_clientName=clientname ,new_value=value ,new_moc=moc ,new_toolType=tooltype  ,new_shape=shape  ,new_tabletSize=tabletsize  ,new_u1=u1  ,new_u2=u2  ,new_l1=l1  ,new_l2=l2  ,new_d=d  ,new_sett=set  ,new_platingType=platingtype,new_order_remarks=orderremark,new_actualDelivery=actualdeliverydate ,new_dispachMode=modeofdispatch ,new_couriesNumber=couriernumber,Type=type)
-            
-            if formadd:
-                formadd.save()
-                # log.save()
-                return redirect('index1')
-    # clientnamelist = []
-    # moclist = []
-    # tooltypelist = []
-    # shapelist = []
-    # tabletSizelist = []
-    # u1list = []
-    # u2list = []
-    # l1list = []
-    # l2list = []
-    # dlist = []
-    # setlist = []
-    # platingtypelist = []
-    # rawmateriallist = []
-    # updateplaceholder = []
-    # dispatchlist = []
-    # dispatchdata = AutoAddDispatch.objects.filter(dispachMode__isnull = False).order_by('dispachMode')
-    # for i in dispatchdata:
-    #     dispatchlist.append(i.dispachMode)
-    # clientnamedata = CustomerDetail.objects.filter(customerCompanyName__isnull = False).order_by('customerCompanyName')
-    # for i in clientnamedata:
-    #     clientnamelist.append(i.customerCompanyName)
-    # mocdata = AutoAddMain.objects.filter(moc__isnull = False).order_by('moc')
-    # for i in mocdata:
-    #     moclist.append(i.moc)
-    # tooltypedata = AutoAddMain.objects.filter(toolType__isnull = False).order_by('toolType')
-    # for i in tooltypedata:
-    #     tooltypelist.append(i.toolType)
-    # shapedata = AutoAddMain.objects.filter(shape__isnull = False).order_by('shape')
-    # for i in shapedata: 
-    #     shapelist.append(i.shape)
-    # tabletdata = AutoAddMain.objects.filter(tabletSize__isnull = False).order_by('tabletSize')
-    # for i in tabletdata:
-    #     tabletSizelist.append(i.tabletSize)
-    # u1data = AutoAddMain.objects.filter(u1__isnull = False).order_by('u1')
-    # for i in u1data:
-    #     u1list.append(i.u1)
-    # u2data = AutoAddMain.objects.filter(u2__isnull = False).order_by('u2')
-    # for i in u2data:
-    #     u2list.append(i.u2)
-    # l1data = AutoAddMain.objects.filter(l1__isnull = False).order_by('l1')
-    # for i in l1data:
-    #     l1list.append(i.l1)
-    # l2data = AutoAddMain.objects.filter(l2__isnull = False).order_by('l2')
-    # for i in l2data:
-    #     l2list.append(i.l2)
-    # ddata = AutoAddMain.objects.filter(d__isnull = False).order_by('d')
-    # for i in ddata:
-    #     dlist.append(i.d)
-    # setdata = AutoAddMain.objects.filter(sett__isnull = False).order_by('sett')
-    # for i in setdata:
-    #     setlist.append(i.sett)
-    # platingtypedata = AutoAddMain.objects.filter(platingType__isnull = False).order_by('platingType')
-    # for i in platingtypedata:
-    #     platingtypelist.append(i.platingType)
-    # rawmaterialdata = AutoAddMain.objects.filter(rawMaterial__isnull = False)
-    # for i in rawmaterialdata:
-    #     rawmateriallist.append(i.rawMaterial)
-    # placeholder = {
-    #     "clientname":clientnamelist,
-    #     "moc":moclist,
-    #     "tooltype":tooltypelist,
-    #     "shape":shapelist,
-    #     "tabletsize":tabletSizelist,
-    #     "u1":u1list,
-    #     "u2":u2list,
-    #     "l1":l1list,
-    #     "l2":l2list,
-    #     "d":dlist,
-    #     "set":setlist,
-    #     "platingtype":platingtypelist,
-    #     "rawmaterial":rawmateriallist,
-    #     "dispachMode" : dispatchlist
-
-    # }
-    # isloggedin=""
-    # if request.user.is_user_role_1:
-    #     user_id = request.user.id
-    #     user_name = request.user.first_name
-    #     isloggedin = "yes"
-    #     if request.method == "POST":
-    #         orderdate = request.POST.get('orderdate')
-    #         ordernumber = request.POST.get('ordernumber')
-    #         clientname = request.POST.get('clientname')
-    #         value = request.POST.get('value')
-    #         moc = request.POST.get('moc')
-    #         tooltype = request.POST.get('tooltype')
-    #         shape = request.POST.get('shape')
-    #         tabletsize = request.POST.get('tabletsize')
-    #         u1 = request.POST.get('u1')
-    #         u2 = request.POST.get('u2')
-    #         l1 = request.POST.get('l1')
-    #         l2 = request.POST.get('l2')
-    #         d = request.POST.get('d')
-    #         set = request.POST.get('set')
-    #         platingtype = request.POST.get('platingtype')
-    #         orderremark = request.POST.get('orderremark')
-    #         # rawmaterial = request.POST.get('rawmaterial')
-    #         # priority = request.POST.get('priority')
-            
-    #         # edd = request.POST.get('edd')
-    #         actualdeliverydate = request.POST.get('actualdeliverydate')
-    #         modeofdispatch = request.POST.get('modeofdispatch')
-    #         couriernumber = request.POST.get('couriernumber')
-
-    #         if orderdate or clientname or value or moc or tooltype or shape or tabletsize or u1 or u2 or l1 or l2 or d or set or platingtype or actualdeliverydate or modeofdispatch or couriernumber :
-    #             type="New Form"
-    #             formadd = ProductionData(orderDate=orderdate,orderNumber=ordernumber,clientName=clientname,value=value,moc=moc,toolType=tooltype,shape=shape,tabletSize=tabletsize,u1=u1,u2=u2,l1=l1,l2=l2,d=d,sett=set,platingType=platingtype,order_remarks=orderremark,actualDelivery=actualdeliverydate,dispachMode=modeofdispatch,couriesNumber=couriernumber)
-    #             log = UserLog(user_id=user_id,user_name=user_name,new_orderDate=orderdate,new_orderNumber=ordernumber ,new_clientName=clientname ,new_value=value ,new_moc=moc ,new_toolType=tooltype  ,new_shape=shape  ,new_tabletSize=tabletsize  ,new_u1=u1  ,new_u2=u2  ,new_l1=l1  ,new_l2=l2  ,new_d=d  ,new_sett=set  ,new_platingType=platingtype,new_order_remarks=orderremark,new_actualDelivery=actualdeliverydate ,new_dispachMode=modeofdispatch ,new_couriesNumber=couriernumber,Type=type)
-                
-    #             if formadd:
-    #                 formadd.save()
-    #                 log.save()
-    #                 return redirect('index1')
-
-    #     else:
-    #         orderdate = ""
-    #         ordernumber = ""
-    #         clientname = ""
-    #         value = ""
-    #         moc = ""
-    #         tooltype = ""
-    #         shape = ""
-    #         tabletsize = ""
-    #         u1 = ""
-    #         u2 = ""
-    #         l1 = ""
-    #         l2 = ""
-    #         d = ""
-    #         set = ""
-    #         platingtype = ""
-    #         rawmaterial = ""
-    #         priority = ""
-    #         status = ""
-    # params = {
-    #     "isloggedin":isloggedin,
-    #     "placeholder":placeholder
-    # }
-    params = {
-        "CustomerDetail":CustomerDetail.objects.all(),
-        "Moc":Moc.objects.all(),
-        "ToolType":ToolType.objects.all(),
-        "Shape":Shape.objects.all(),
-        "TabletSize":TabletSize.objects.all(),
-        "U1":U1.objects.all(),
-        "U2":U2.objects.all(),
-        "L1":L1.objects.all(),
-        "L2":L2.objects.all(),
-        "D":D.objects.all(),
-        "Set":Set.objects.all(),
-        "PlatingType":PlatingType.objects.all(),
-        "DispachMode":DispachMode.objects.all()
-    }
-    return render(request,"1add.html",params)
-
-
-
-
-def index2(request):
-    rawmaterial = ""
-    priority=""
-    update_punchBlankUsed = ""
-    update_dieBlankUsed = ""
-    errlogin=""
-    alerta = ""
-    a=""
-    user_name=""
-    tabledata= []
-    placeholderdata = []
-    update = ""
-    updateform = ""
-    mobile = ""
-    salary = ""
-    test = ""
-    updateplaceholder = []
-    blanklist = []
-    processlist = []
-    bodyTipMachininglist = []
-    headMachininglist = []
-    keywayTaperFinishlist = []
-    htlist = []
-    grindinglist = []
-    hardChromelist = []
-    qualityChecklist = []
-    packingDispachlist = []
-    rawmateriallist= []
-    blankdata = AutoAddManufacturing.objects.filter(blank__isnull = False).order_by('blank')
-    for i in blankdata:
-        blanklist.append(i.blank)
-    processdata = AutoAddManufacturing.objects.filter(process__isnull = False).order_by('process')
-    for i in processdata:
-        processlist.append(i.process)
-    bodyTipMachiningdata = AutoAddManufacturing.objects.filter(bodyTipMachining__isnull = False).order_by('bodyTipMachining')
-    for i in bodyTipMachiningdata:
-        bodyTipMachininglist.append(i.bodyTipMachining)
-    headMachiningdata = AutoAddManufacturing.objects.filter(headMachining__isnull = False).order_by('headMachining')
-    for i in headMachiningdata:
-        headMachininglist.append(i.headMachining)
-    keywayTaperFinishdata = AutoAddManufacturing.objects.filter(keywayTaperFinish__isnull = False).order_by('keywayTaperFinish')
-    for i in keywayTaperFinishdata:
-        keywayTaperFinishlist.append(i.keywayTaperFinish)
-    htdata = AutoAddManufacturing.objects.filter(ht__isnull = False).order_by('ht')
-    for i in htdata:
-        htlist.append(i.ht)
-    grindingdata = AutoAddManufacturing.objects.filter(grinding__isnull = False).order_by('grinding')
-    for i in grindingdata:
-        grindinglist.append(i.grinding)
-    hardChromedata = AutoAddManufacturing.objects.filter(hardChrome__isnull = False).order_by('hardChrome')
-    for i in hardChromedata:
-        hardChromelist.append(i.hardChrome)
-    qualityCheckdata = AutoAddManufacturing.objects.filter(qualityCheck__isnull = False).order_by('qualityCheck')
-    for i in qualityCheckdata:
-        qualityChecklist.append(i.qualityCheck)
-    packingDispachdata = AutoAddManufacturing.objects.filter(packingDispach__isnull = False).order_by('packingDispach')
-    for i in packingDispachdata:
-        packingDispachlist.append(i.packingDispach)
-    dispatchlist = []
-    dispatchdata = AutoAddDispatch.objects.filter(dispachMode__isnull = False).order_by('dispachMode')
-    for i in dispatchdata:
-        dispatchlist.append(i.dispachMode)
-    rawmaterialdata = AutoAddMain.objects.filter(rawMaterial__isnull = False)
-    for i in rawmaterialdata:
-        rawmateriallist.append(i.rawMaterial)
-    placeholder = {
-        "blank" : blanklist,
-        "process":processlist,
-        "bodyTipMachining":bodyTipMachininglist,
-        "headMachining":headMachininglist,
-        "keywayTaperFinish":keywayTaperFinishlist,
-        "ht":htlist,
-        "grinding":grindinglist,
-        "hardChrome":hardChromelist,
-        "qualityCheck":qualityChecklist,
-        "packingDispach":packingDispachlist,
-        "dispachMode" : dispatchlist,
-        "rawmaterial":rawmateriallist
-    }
-    
-    if request.method == 'POST':
-        test = request.POST.get('abc')
-        print("test data is :",test)
-        rawmaterial = request.POST.get('rawmaterial')
-        priority = request.POST.get('priority')
-        print(rawmaterial , priority)
-        dwgnumber = request.POST.get('dwgnumber')
-        drgdate = request.POST.get('drgdate')
-        approvaldate = request.POST.get('approvaldate')
-        master = request.POST.get('master')
-        masterout = request.POST.get('masterout')
-        masterin = request.POST.get('masterin')
-        htdate = request.POST.get('htdate')
-        estimateddelivery = request.POST.get('estimateddelivery')
-        planningout = request.POST.get('planningout')
-        planningin = request.POST.get('planningin')
-        # print(dwgnumber)
-        # print(drgdate)
-        # print(approvaldate)
-        # print(master)
-        # print(masterout)
-        # print(masterin)
-        # print(htdate)
-        # print(estimateddelivery)
-        # print(planningout)
-        # print(planningin)
-
-        blank = request.POST.get('blank')
-        process = request.POST.get('process')
-        bodytipping = request.POST.get('bodytipping')
-        headmachine = request.POST.get('headmachine')
-        keyway = request.POST.get('keyway')
-        ht = request.POST.get('ht')
-        grinding = request.POST.get('grinding')
-        hardchrome = request.POST.get('hardchrome')
-        qualitycheck = request.POST.get('qualitycheck')
-        packingdispach = request.POST.get('packingdispach')
-
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        updateform = request.POST.get('updateform')
-        
-        if username and password:
-            query = User.objects.filter(Q(username=username))
-            if query:
-                for i in query:
-                    userid=i.id
-                    userlvl = UserLevel.objects.get(user_id=userid)
-                    level = userlvl.level
-                    # print("logged in userlevel is :",level)
-                    superuser = i.is_superuser
-                    if superuser == False and level == 2:
-                        authen = authenticate(username=username, password=password)
-                        if authen:
-                            login(request, authen)
-                        else:
-                            errlogin = "invalid"
-                    else:
-                        errlogin = "invalid"
-            else:
-                errlogin = "invalid"
-        # if username and password:
-        #     query = User.objects.filter(Q(username=username))
-        #     for i in query:
-        #         superuser = i.is_superuser
-        #         if superuser == False:
-        #             authen = authenticate(username=username, password=password)
-        #             if authen:
-        #                 login(request, authen)
-    else:
-        dwgnumber = ""
-        drgdate = ""
-        approvaldate = ""
-        master = ""
-        masterout = ""
-        masterin = ""
-        htdate = ""
-        estimateddelivery = ""
-        planningout = ""
-        planningin = ""
-
-        blank = ""
-        process = ""
-        bodytipping = ""
-        headmachine = ""
-        keyway = ""
-        ht = ""
-        grinding = ""
-        hardchrome = ""
-        qualitycheck = ""
-        packingdispach = ""
-    if request.user.is_user_role_2:
-        user_id = request.user.id
-        user_name = request.user.first_name
-        # print("logedin user name is :",user_name)
-        # print("loged in user is:",user_id)
-        lvl = 2
-        if lvl == 2:
-            a="yes"
-        else:
-            a='no'
-        
-        form = ProductionData.objects.all()
-        for xj in form:
-            data_id= xj.id
-            data_orderdate1  = xj.orderDate
-            data_orderdate = datetime.datetime.strptime(data_orderdate1, "%Y-%m-%d").strftime("%d-%m-%Y")
-            data_ordernumber    = xj.orderNumber
-            data_clientname =xj.clientName
-            data_value =xj.value
-            data_moc = xj.moc
-            data_tooltype =xj.toolType
-            data_shape =xj.shape
-            data_tabletsize =xj.tabletSize
-            data_u1 =xj.u1
-            data_u2 =xj.u2
-            data_l1 =xj.l1
-            data_l2 =xj.l2
-            data_d =xj.d
-            data_set =xj.sett
-            data_platingtype =xj.platingType
-            data_rawmaterial =xj.rawMaterial
-            data_priority =xj.priority
-            data_orderremark = xj.order_remarks
-            data_edd = xj.estimatedDelivery
-            data_actualdd=xj.actualDelivery
-            
-            # print("edd :",data_edd)
-            # print("actual edd :",data_actualdd)
-            data1 = xj.blank
-            data2 = xj.process
-            data3 = xj.bodyTipMachining
-            data4 = xj.headMachining
-            data5 = xj.keywayTaperFinish
-            data6 = xj.ht
-            data7 = xj.grinding
-            data8 = xj.hardChrome
-            data9 = xj.qualityCheck
-            data10 = xj.packingDispach
-            
-            
-            if data1 :
-                data1 = float(data1)
-            else:
-                data1 = 0
-            if data2 :
-                data2 = float(data2)
-            else:
-                data2 = 0
-            if data3 :
-                data3 = float(data3)
-            else:
-                data3 = 0
-            if data4 :
-                data4 = float(data4)
-            else:
-                data4 = 0
-            if data5 :
-                data5 = float(data5)
-            else:
-                data5 = 0
-            if data6 :
-                data6 = float(data6)
-            else:
-                data6 = 0
-            if data7 :
-                data7 = float(data7)
-            else:
-                data7 = 0
-            if data8 :
-                data8 = float(data8)
-            else:
-                data8 = 0
-            if data9 :
-                data9 = float(data9)
-            else:
-                data9 = 0
-            if data10 :
-                data10 = float(data10)
-            else:
-                data10 = 0
-            
-            totaldata = (((data1 + data2 + data3 + data4 + data5 + data6 + data7 + data8 + data9 + data10)/10) * 100)
-            # print("total is :",totaldata)
-            data_status = str(totaldata) + str("%") 
-            
-            if data_orderdate and data_ordernumber and data_clientname and data_value and data_moc and data_tooltype and data_shape and data_tabletsize and data_u1 and data_u2 and data_l1 and data_l2 and data_d and data_set and data_platingtype  :
-                obj = {
-                "id":data_id,
-                "orderdate" : data_orderdate,
-                "ordernumber" :data_ordernumber,
-                "clientname" :data_clientname,
-                "value" :data_value,
-                "moc" :data_moc,
-                "tooltype" :data_tooltype,
-                "shape" :data_shape,
-                "tabletsize" :data_tabletsize,
-                "u1" :data_u1,
-                "u2" :data_u2,
-                "l1" :data_l1,
-                "l2" :data_l2,
-                "d" :data_d,
-                "set" :data_set,
-                "platingtype" :data_platingtype,
-                "rawmaterial" :data_rawmaterial,
-                "priority" :data_priority,
-                "remarks":data_orderremark,
-                "status" :data_status,
-                'edd':data_edd,
-                'actualdeliverydate':data_actualdd
-            }
-            tabledata.append(obj)
-        
-        if test:
-            udata = ProductionData.objects.get(orderNumber = test)
-            print(udata)
-            data1 = udata.blank
-            data2 = udata.process
-            data3 = udata.bodyTipMachining
-            data4 = udata.headMachining
-            data5 = udata.keywayTaperFinish
-            data6 = udata.ht
-            data7 = udata.grinding
-            data8 = udata.hardChrome
-            data9 = udata.qualityCheck
-            data10 = udata.packingDispach
-            # print(data1)
-            # print(data2)
-            # print(data3)
-            # print(data4)
-            # print(data5)
-            # print(data6)
-            # print(data7)
-            # print(data8)
-            # print(data9)
-            # print(data10)
-            
-            if data1 :
-                data1 = float(data1)
-            else:
-                data1 = 0
-            if data2 :
-                data2 = float(data2)
-            else:
-                data2 = 0
-            if data3 :
-                data3 = float(data3)
-            else:
-                data3 = 0
-            if data4 :
-                data4 = float(data4)
-            else:
-                data4 = 0
-            if data5 :
-                data5 = float(data5)
-            else:
-                data5 = 0
-            if data6 :
-                data6 = float(data6)
-            else:
-                data6 = 0
-            if data7 :
-                data7 = float(data7)
-            else:
-                data7 = 0
-            if data8 :
-                data8 = float(data8)
-            else:
-                data8 = 0
-            if data9 :
-                data9 = float(data9)
-            else:
-                data9 = 0
-            if data10 :
-                data10 = float(data10)
-            else:
-                data10 = 0
-            
-            totaldata = (((data1 + data2 + data3 + data4 + data5 + data6 + data7 + data8 + data9 + data10)/10) * 100)
-            print("total is :",totaldata)
-            data_status = str(totaldata) + str("%")
-            if data_status:
-                udata.status = data_status
-                udata.save()
-            if udata.u1 and udata.l1:
-                udata.punchBlankUsed = int(udata.u1) + int(udata.l1)
-                udata.save()
-            if udata.d:
-                udata.dieBlankUsed = udata.d
-                udata.save()
-            
+    #     blank = ""
+    #     process = ""
+    #     bodytipping = ""
+    #     headmachine = ""
+    #     keyway = ""
+    #     ht = ""
+    #     grinding = ""
+    #     hardchrome = ""
+    #     qualitycheck = ""
+    #     packingdispach = ""
+    # if request.user.is_user_role_2:
+        # user_id = request.user.id
+        # user_name = request.user.first_name
+        # # print("logedin user name is :",user_name)
+        # # print("loged in user is:",user_id)
+        # lvl = 2
+        # if lvl == 2:
+        #     a="yes"
         # else:
-        #     print("no didnt get")
-        #     update = "no"
-        # if 'updateformid'  in request.session:
-        #     sessdata = request.session['updateformid']
-        # else:
-        #     sessdata = ""
-        if test:
-            check = ProductionData.objects.get(orderNumber=test)
-            request.session['id'] = check.id
-            punchblank = int(check.u1) + int(check.l1)
-            dieblank = int(check.d)
-            print("lala",punchblank,dieblank)
-            print("set",check.sett)
-            passdata = {
-                "set" : check.sett,
-                "rawmaterial" : check.rawMaterial,
-                "priority" : check.priority,
-                "dwgnumber" : check.dwgNumber,
-                "drgdate" : check.drgDate,
-                "approvaldate" : check.approvalDate,
-                "master" : check.master,
-                "masterout" : check.masterOut,
-                "masterin" : check.masterIn,
-                "punchblank":punchblank,
-                "dieblank":dieblank,
-                "htdate" : check.hitDate,
-                "estimateddelivery" : check.estimatedDelivery,
-                "planningout" : check.planningOut,
-                "planningin" : check.planningIn,
-                "orderdate" : check.orderDate,
-                "ordernumber" : check.orderNumber,
-                "clientname" :check.clientName,
-                "value" : check.value,
-                "moc" : check.moc,
-                "tooltype" : check.toolType,
-                "shape" : check.shape,
-                "tabletsize" : check.tabletSize,
-                "u1" : check.u1,
-                "u2" : check.u2,
-                "l1" : check.l1,
-                "l2" : check.l2,
-                "d" : check.d,
+        #     a='no'
+        
+        # form = ProductionData.objects.all()
+        # for xj in form:
+        #     data_id= xj.id
+        #     data_orderdate1  = xj.orderDate
+        #     data_orderdate = datetime.datetime.strptime(data_orderdate1, "%Y-%m-%d").strftime("%d-%m-%Y")
+        #     data_ordernumber    = xj.orderNumber
+        #     data_clientname =xj.clientName
+        #     data_value =xj.value
+        #     data_moc = xj.moc
+        #     data_tooltype =xj.toolType
+        #     data_shape =xj.shape
+        #     data_tabletsize =xj.tabletSize
+        #     data_u1 =xj.u1
+        #     data_u2 =xj.u2
+        #     data_l1 =xj.l1
+        #     data_l2 =xj.l2
+        #     data_d =xj.d
+        #     data_set =xj.sett
+        #     data_platingtype =xj.platingType
+        #     data_rawmaterial =xj.rawMaterial
+        #     data_priority =xj.priority
+        #     data_orderremark = xj.order_remarks
+        #     data_edd = xj.estimatedDelivery
+        #     data_actualdd=xj.actualDelivery
+            
+        #     # print("edd :",data_edd)
+        #     # print("actual edd :",data_actualdd)
+            # data1 = xj.blank
+            # data2 = xj.process
+            # data3 = xj.bodyTipMachining
+            # data4 = xj.headMachining
+            # data5 = xj.keywayTaperFinish
+            # data6 = xj.ht
+            # data7 = xj.grinding
+            # data8 = xj.hardChrome
+            # data9 = xj.qualityCheck
+            # data10 = xj.packingDispach
+            
+            
+            # if data1 :
+            #     data1 = float(data1)
+            # else:
+            #     data1 = 0
+            # if data2 :
+            #     data2 = float(data2)
+            # else:
+            #     data2 = 0
+            # if data3 :
+            #     data3 = float(data3)
+            # else:
+            #     data3 = 0
+            # if data4 :
+            #     data4 = float(data4)
+            # else:
+            #     data4 = 0
+            # if data5 :
+            #     data5 = float(data5)
+            # else:
+            #     data5 = 0
+            # if data6 :
+            #     data6 = float(data6)
+            # else:
+            #     data6 = 0
+            # if data7 :
+            #     data7 = float(data7)
+            # else:
+            #     data7 = 0
+            # if data8 :
+            #     data8 = float(data8)
+            # else:
+            #     data8 = 0
+            # if data9 :
+            #     data9 = float(data9)
+            # else:
+            #     data9 = 0
+            # if data10 :
+            #     data10 = float(data10)
+            # else:
+            #     data10 = 0
+            
+            # totaldata = (((data1 + data2 + data3 + data4 + data5 + data6 + data7 + data8 + data9 + data10)/10) * 100)
+            # # print("total is :",totaldata)
+            # data_status = str(totaldata) + str("%") 
+            
+        #     if data_orderdate and data_ordernumber and data_clientname and data_value and data_moc and data_tooltype and data_shape and data_tabletsize and data_u1 and data_u2 and data_l1 and data_l2 and data_d and data_set and data_platingtype  :
+        #         obj = {
+        #         "id":data_id,
+        #         "orderdate" : data_orderdate,
+        #         "ordernumber" :data_ordernumber,
+        #         "clientname" :data_clientname,
+        #         "value" :data_value,
+        #         "moc" :data_moc,
+        #         "tooltype" :data_tooltype,
+        #         "shape" :data_shape,
+        #         "tabletsize" :data_tabletsize,
+        #         "u1" :data_u1,
+        #         "u2" :data_u2,
+        #         "l1" :data_l1,
+        #         "l2" :data_l2,
+        #         "d" :data_d,
+        #         "set" :data_set,
+        #         "platingtype" :data_platingtype,
+        #         "rawmaterial" :data_rawmaterial,
+        #         "priority" :data_priority,
+        #         "remarks":data_orderremark,
+        #         "status" :data_status,
+        #         'edd':data_edd,
+        #         'actualdeliverydate':data_actualdd
+        #     }
+        #     tabledata.append(obj)
+        
+        # if test:
+        #     udata = ProductionData.objects.get(orderNumber = test)
+        #     print(udata)
+        #     data1 = udata.blank
+        #     data2 = udata.process
+        #     data3 = udata.bodyTipMachining
+        #     data4 = udata.headMachining
+        #     data5 = udata.keywayTaperFinish
+        #     data6 = udata.ht
+        #     data7 = udata.grinding
+        #     data8 = udata.hardChrome
+        #     data9 = udata.qualityCheck
+        #     data10 = udata.packingDispach
+        #     # print(data1)
+        #     # print(data2)
+        #     # print(data3)
+        #     # print(data4)
+        #     # print(data5)
+        #     # print(data6)
+        #     # print(data7)
+        #     # print(data8)
+        #     # print(data9)
+        #     # print(data10)
+            
+        #     if data1 :
+        #         data1 = float(data1)
+        #     else:
+        #         data1 = 0
+        #     if data2 :
+        #         data2 = float(data2)
+        #     else:
+        #         data2 = 0
+        #     if data3 :
+        #         data3 = float(data3)
+        #     else:
+        #         data3 = 0
+        #     if data4 :
+        #         data4 = float(data4)
+        #     else:
+        #         data4 = 0
+        #     if data5 :
+        #         data5 = float(data5)
+        #     else:
+        #         data5 = 0
+        #     if data6 :
+        #         data6 = float(data6)
+        #     else:
+        #         data6 = 0
+        #     if data7 :
+        #         data7 = float(data7)
+        #     else:
+        #         data7 = 0
+        #     if data8 :
+        #         data8 = float(data8)
+        #     else:
+        #         data8 = 0
+        #     if data9 :
+        #         data9 = float(data9)
+        #     else:
+        #         data9 = 0
+        #     if data10 :
+        #         data10 = float(data10)
+        #     else:
+        #         data10 = 0
+            
+        #     totaldata = (((data1 + data2 + data3 + data4 + data5 + data6 + data7 + data8 + data9 + data10)/10) * 100)
+        #     print("total is :",totaldata)
+        #     data_status = str(totaldata) + str("%")
+        #     if data_status:
+        #         udata.status = data_status
+        #         udata.save()
+        #     if udata.u1 and udata.l1:
+        #         udata.punchBlankUsed = int(udata.u1) + int(udata.l1)
+        #         udata.save()
+        #     if udata.d:
+        #         udata.dieBlankUsed = udata.d
+        #         udata.save()
+            
+        # # else:
+        # #     print("no didnt get")
+        # #     update = "no"
+        # # if 'updateformid'  in request.session:
+        # #     sessdata = request.session['updateformid']
+        # # else:
+        # #     sessdata = ""
+        # if test:
+        #     check = ProductionData.objects.get(orderNumber=test)
+        #     request.session['id'] = check.id
+        #     punchblank = int(check.u1) + int(check.l1)
+        #     dieblank = int(check.d)
+        #     print("lala",punchblank,dieblank)
+        #     print("set",check.sett)
+        #     passdata = {
+        #         "set" : check.sett,
+        #         "rawmaterial" : check.rawMaterial,
+        #         "priority" : check.priority,
+        #         "dwgnumber" : check.dwgNumber,
+        #         "drgdate" : check.drgDate,
+        #         "approvaldate" : check.approvalDate,
+        #         "master" : check.master,
+        #         "masterout" : check.masterOut,
+        #         "masterin" : check.masterIn,
+        #         "punchblank":punchblank,
+        #         "dieblank":dieblank,
+        #         "htdate" : check.hitDate,
+        #         "estimateddelivery" : check.estimatedDelivery,
+        #         "planningout" : check.planningOut,
+        #         "planningin" : check.planningIn,
+        #         "orderdate" : check.orderDate,
+        #         "ordernumber" : check.orderNumber,
+        #         "clientname" :check.clientName,
+        #         "value" : check.value,
+        #         "moc" : check.moc,
+        #         "tooltype" : check.toolType,
+        #         "shape" : check.shape,
+        #         "tabletsize" : check.tabletSize,
+        #         "u1" : check.u1,
+        #         "u2" : check.u2,
+        #         "l1" : check.l1,
+        #         "l2" : check.l2,
+        #         "d" : check.d,
                 
-                "platingtype" : check.platingType,
-                "orderremark" : check.order_remarks,
-                "actualdeliverydate" : check.actualDelivery,
-                "modeofdispatch" : check.dispachMode,
-                "couriernumber" : check.couriesNumber,               
-                "blank" : check.blank,
-                "process" : check.process,
-                "bodytipping" : check.bodyTipMachining,
-                "headmachine" : check.headMachining,
-                "keyway" : check.keywayTaperFinish,
-                "ht" : check.ht,
-                "grinding" : check.grinding,
-                "hardchrome" : check.hardChrome,
-                "qualitycheck" : check.qualityCheck,
-                "packingdispach" : check.packingDispach
+        #         "platingtype" : check.platingType,
+        #         "orderremark" : check.order_remarks,
+        #         "actualdeliverydate" : check.actualDelivery,
+        #         "modeofdispatch" : check.dispachMode,
+        #         "couriernumber" : check.couriesNumber,               
+        #         "blank" : check.blank,
+        #         "process" : check.process,
+        #         "bodytipping" : check.bodyTipMachining,
+        #         "headmachine" : check.headMachining,
+        #         "keyway" : check.keywayTaperFinish,
+        #         "ht" : check.ht,
+        #         "grinding" : check.grinding,
+        #         "hardchrome" : check.hardChrome,
+        #         "qualitycheck" : check.qualityCheck,
+        #         "packingdispach" : check.packingDispach
 
-            }
-            return JsonResponse({"passdata":passdata})
-        if 'id' in request.session:
-            sessdata = request.session['id']
-        if rawmaterial or priority or dwgnumber or drgdate or approvaldate or master or masterout or masterin or htdate or estimateddelivery or planningout or planningin or blank or process or bodytipping or headmachine or keyway or ht or grinding or hardchrome or qualitycheck or packingdispach :
-            print("yes satisfied")
-            print("logged in user is blah :",user_id,user_name)
-            form = ProductionData.objects.get(id = sessdata)
-            type="Updated"
-            # status=form.status,dwgNumber=form.dwgNumber,drgDate=form.drgDate,approvalDate=form.approvalDate,master=form.master,masterOut=form.masterOut,masterIn=form.masterIn,punchBlankUsed=form.punchBlankUsed,dieBlankUsed=form.dieBlankUsed,hitDate=form.hitDate,estimatedDelivery=form.estimatedDelivery,planningOut=form.planningOut,planningIn=form.planningIn,blank=form.blank,process=form.process,bodyTipMachining=form.bodyTipMachining,headMachining=form.headMachining,keywayTaperFinish=form.keywayTaperFinish,ht=form.ht,grinding=form.grinding,hardChrome=form.hardChrome,qualityCheck=form.qualityCheck,packingDispach=form.packingDispach
-            log = UserLog(formid=sessdata,user_id=user_id,user_name=user_name,rawMaterial=form.rawMaterial,priority=form.priority,dwgNumber=form.dwgNumber,drgDate=form.drgDate,approvalDate=form.approvalDate,master=form.master,masterOut=form.masterOut,masterIn=form.masterIn,hitDate=form.hitDate,estimatedDelivery=form.estimatedDelivery,planningOut=form.planningOut,planningIn=form.planningIn,blank=form.blank,process=form.process,bodyTipMachining=form.bodyTipMachining,headMachining=form.headMachining,keywayTaperFinish=form.keywayTaperFinish,ht=form.ht,grinding=form.grinding,hardChrome=form.hardChrome,qualityCheck=form.qualityCheck,packingDispach=form.packingDispach,new_rawMaterial=rawmaterial,new_priority=priority,new_dwgNumber=dwgnumber,new_drgDate=drgdate,new_approvalDate=approvaldate,new_master=master,new_masterOut=masterout,new_masterIn=masterin,new_hitDate=htdate,new_estimatedDelivery=estimateddelivery,new_planningOut=planningout,new_planningIn=planningin,new_blank=blank,new_process=process,new_bodyTipMachining=bodytipping,new_headMachining=headmachine,new_keywayTaperFinish=keyway,new_ht=ht,new_grinding=grinding,new_hardChrome=hardchrome,new_qualityCheck=qualitycheck,new_packingDispach=packingdispach,Type=type)
-            log.save()
-            if rawmaterial:
-                form.rawMaterial = rawmaterial
-                form.save()
-            if priority:
-                form.priority = priority
-                form.save()
-            if dwgnumber:
-                print("got dwgnumber")
-                form.dwgNumber = dwgnumber
-                form.save()
-            if drgdate:
-                form.drgDate = drgdate
-                form.save()
-            if approvaldate:
-                form.approvalDate = approvaldate
-                form.save()
-            if master:
-                form.master = master
-                form.save()
-            if masterout:
-                form.masterOut = masterout
-                form.save()
-            if masterin:
-                form.masterIn = masterin
-                form.save()
-            if htdate:
-                form.hitDate = htdate
-                form.save()
-            if estimateddelivery:
-                form.estimatedDelivery = estimateddelivery
-                form.save()
-            if planningout:
-                form.planningOut = planningout
-                form.save()
-            if planningin:
-                form.planningIn = planningin
-                form.save()
-            if blank:
-                print("yes blank")
-                form.blank = blank
-                form.save()
-            if process:
-                form.process = process
-                form.save()
-            if bodytipping:
-                form.bodyTipMachining = bodytipping
-                form.save()
-            if headmachine:
-                form.headMachining = headmachine
-                form.save()
-            if keyway:
-                form.keywayTaperFinish = keyway
-                form.save()
-            if ht:
-                form.ht = ht
-                form.save()
-            if grinding:
-                form.grinding = grinding
-                form.save()
-            if hardchrome:
-                form.hardChrome = hardchrome
-                form.save()
-            if qualitycheck:
-                form.qualityCheck = qualitycheck
-                form.save()
-            if packingdispach:
-                form.packingDispach = packingdispach
-                form.save()
-            alerta = "yes"
-            return redirect('index2')
-        else:
-            print("not satisfied")
-    
-    return render(request,"dashboard_user2.html",{"errlogin":errlogin,"alerta":alerta,"data":a,"name":user_name,"tabledata":tabledata,"update":update,"updateplaceholder":updateplaceholder,"placeholder":placeholder})
+        #     }
+        #     return JsonResponse({"passdata":passdata})
+        # if 'id' in request.session:
+        #     sessdata = request.session['id']
+        # if rawmaterial or priority or dwgnumber or drgdate or approvaldate or master or masterout or masterin or htdate or estimateddelivery or planningout or planningin or blank or process or bodytipping or headmachine or keyway or ht or grinding or hardchrome or qualitycheck or packingdispach :
+        #     print("yes satisfied")
+        #     print("logged in user is blah :",user_id,user_name)
+        #     form = ProductionData.objects.get(id = sessdata)
+        #     type="Updated"
+        #     # status=form.status,dwgNumber=form.dwgNumber,drgDate=form.drgDate,approvalDate=form.approvalDate,master=form.master,masterOut=form.masterOut,masterIn=form.masterIn,punchBlankUsed=form.punchBlankUsed,dieBlankUsed=form.dieBlankUsed,hitDate=form.hitDate,estimatedDelivery=form.estimatedDelivery,planningOut=form.planningOut,planningIn=form.planningIn,blank=form.blank,process=form.process,bodyTipMachining=form.bodyTipMachining,headMachining=form.headMachining,keywayTaperFinish=form.keywayTaperFinish,ht=form.ht,grinding=form.grinding,hardChrome=form.hardChrome,qualityCheck=form.qualityCheck,packingDispach=form.packingDispach
+        #     log = UserLog(formid=sessdata,user_id=user_id,user_name=user_name,rawMaterial=form.rawMaterial,priority=form.priority,dwgNumber=form.dwgNumber,drgDate=form.drgDate,approvalDate=form.approvalDate,master=form.master,masterOut=form.masterOut,masterIn=form.masterIn,hitDate=form.hitDate,estimatedDelivery=form.estimatedDelivery,planningOut=form.planningOut,planningIn=form.planningIn,blank=form.blank,process=form.process,bodyTipMachining=form.bodyTipMachining,headMachining=form.headMachining,keywayTaperFinish=form.keywayTaperFinish,ht=form.ht,grinding=form.grinding,hardChrome=form.hardChrome,qualityCheck=form.qualityCheck,packingDispach=form.packingDispach,new_rawMaterial=rawmaterial,new_priority=priority,new_dwgNumber=dwgnumber,new_drgDate=drgdate,new_approvalDate=approvaldate,new_master=master,new_masterOut=masterout,new_masterIn=masterin,new_hitDate=htdate,new_estimatedDelivery=estimateddelivery,new_planningOut=planningout,new_planningIn=planningin,new_blank=blank,new_process=process,new_bodyTipMachining=bodytipping,new_headMachining=headmachine,new_keywayTaperFinish=keyway,new_ht=ht,new_grinding=grinding,new_hardChrome=hardchrome,new_qualityCheck=qualitycheck,new_packingDispach=packingdispach,Type=type)
+        #     log.save()
+        #     if rawmaterial:
+        #         form.rawMaterial = rawmaterial
+        #         form.save()
+        #     if priority:
+        #         form.priority = priority
+        #         form.save()
+        #     if dwgnumber:
+        #         print("got dwgnumber")
+        #         form.dwgNumber = dwgnumber
+        #         form.save()
+        #     if drgdate:
+        #         form.drgDate = drgdate
+        #         form.save()
+        #     if approvaldate:
+        #         form.approvalDate = approvaldate
+        #         form.save()
+        #     if master:
+        #         form.master = master
+        #         form.save()
+        #     if masterout:
+        #         form.masterOut = masterout
+        #         form.save()
+        #     if masterin:
+        #         form.masterIn = masterin
+        #         form.save()
+        #     if htdate:
+        #         form.hitDate = htdate
+        #         form.save()
+        #     if estimateddelivery:
+        #         form.estimatedDelivery = estimateddelivery
+        #         form.save()
+        #     if planningout:
+        #         form.planningOut = planningout
+        #         form.save()
+        #     if planningin:
+        #         form.planningIn = planningin
+        #         form.save()
+        #     if blank:
+        #         print("yes blank")
+        #         form.blank = blank
+        #         form.save()
+        #     if process:
+        #         form.process = process
+        #         form.save()
+        #     if bodytipping:
+        #         form.bodyTipMachining = bodytipping
+        #         form.save()
+        #     if headmachine:
+        #         form.headMachining = headmachine
+        #         form.save()
+        #     if keyway:
+        #         form.keywayTaperFinish = keyway
+        #         form.save()
+        #     if ht:
+        #         form.ht = ht
+        #         form.save()
+        #     if grinding:
+        #         form.grinding = grinding
+        #         form.save()
+        #     if hardchrome:
+        #         form.hardChrome = hardchrome
+        #         form.save()
+        #     if qualitycheck:
+        #         form.qualityCheck = qualitycheck
+        #         form.save()
+        #     if packingdispach:
+        #         form.packingDispach = packingdispach
+        #         form.save()
+        #     alerta = "yes"
+        #     return redirect('index2')
+        # else:
+        #     print("not satisfied")
+    params = {
+        "tabledata":ProductionData.objects.all(),
+        "RawMaterial":RawMaterial.objects.all(),
+        "Blank":Blank.objects.all(),
+        "Process":Process.objects.all(),
+        "BodyTipMachining":BodyTipMachining.objects.all(),
+        "HeadMachining":HeadMachining.objects.all(),
+        "KeywayTaperFinish":KeywayTaperFinish.objects.all(),
+        "HT":HT.objects.all(),
+        "Grinding":Grinding.objects.all(),
+        "HardChrome":HardChrome.objects.all(),
+        "QualityCheck":QualityCheck.objects.all(),
+        "PackingDispach":PackingDispach.objects.all(),
+    }
+    return render(request,"user2/dashboard_user2.html",params)
 
 
 
 
 
-
+@login_required
 def admin(request):
     display = ""
     if request.user.is_superuser:
-        display = "yes"
-    params = {
+        if request.method == "POST":
+            form_order_id = request.POST.get('abc')
+            if form_order_id:
+                print("Got Form Order Id :",form_order_id)
+                data = ProductionData.objects.get(orderNumber=form_order_id)
+                punchblank = int(data.u1.name) + int(data.l1.name)
+                dieblank = int(data.d.name)
+                data_serializer = ProductionDataSerializer(data,many=False)
+                return JsonResponse({"passdata":data_serializer.data,"punch_blank":punchblank,'die_blank':dieblank})
+            update_orderdate = request.POST.get('update_orderdate')
+            update_ordernumber = request.POST.get('update_ordernumber')
+            update_clientname = request.POST.get('update_clientname')
+            update_value = request.POST.get('update_value')
+            # print("value is :",value1)
+            update_moc = request.POST.get('update_moc')
+            update_tooltype = request.POST.get('update_tooltype')
+            update_shape = request.POST.get('update_shape')
+            update_tabletsize = request.POST.get('update_tabletsize')
+            update_u1 = request.POST.get('update_u1')
+            update_u2 = request.POST.get('update_u2')
+            update_l1 = request.POST.get('update_l1')
+            update_l2 = request.POST.get('update_l2')
+            update_d = request.POST.get('update_d')
+            update_set = request.POST.get('update_set')
+            update_platingtype = request.POST.get('update_platingtype')
+            update_orderremark = request.POST.get('update_orderremark')
+            update_form_id = request.POST.get('update_form_id')
+            update_actualdeliverydate = request.POST.get('update_actualdeliverydate')
+            update_modeofdispatch = request.POST.get('update_modeofdispatch')
+            update_couriernumber = request.POST.get('update_couriernumber')
+            rawmaterial = request.POST.get('update_rawmaterial')
+            priority = request.POST.get('update_priority')
+            dwgnumber = request.POST.get('update_dwgnumber')
+            drgdate = request.POST.get('update_drgdate')
+            approvaldate = request.POST.get('update_approvaldate')
+            master = request.POST.get('update_master')
+            masterout = request.POST.get('update_masterout')
+            masterin = request.POST.get('update_masterin')
+            htdate = request.POST.get('update_htdate')
+            estimateddelivery = request.POST.get('update_estimateddelivery')
+            planningout = request.POST.get('update_planningout')
+            planningin = request.POST.get('update_planningin')
+            blank = request.POST.get('update_blank')
+            process = request.POST.get('update_process')
+            bodytipping = request.POST.get('update_bodytipping')
+            headmachine = request.POST.get('update_headmachine')
+            keyway = request.POST.get('update_keyway')
+            ht = request.POST.get('update_ht')
+            grinding = request.POST.get('update_grinding')
+            hardchrome = request.POST.get('update_hardchrome')
+            qualitycheck = request.POST.get('update_qualitycheck')
+            packingdispach = request.POST.get('update_packingdispach')
+            if update_orderdate or update_ordernumber or update_clientname or update_value or update_moc or update_tooltype or update_shape or update_tabletsize or update_u1 or update_u2 or update_u2 or update_l1 or update_l2 or update_d or update_set or update_platingtype or update_orderremark or update_form_id or update_actualdeliverydate or update_modeofdispatch or update_couriernumber or rawmaterial or priority or dwgnumber or drgdate or approvaldate or master or masterout or masterin or htdate or estimateddelivery or planningout or planningin or blank or process or bodytipping or  headmachine or keyway or ht or grinding or hardchrome or qualitycheck or packingdispach:
+                print(update_orderdate , update_ordernumber , update_clientname , update_value , update_moc , update_tooltype , update_shape , update_tabletsize , update_u1 , update_u2 , update_l1 , update_l2 , update_d , update_set , update_platingtype , update_orderremark , update_form_id , update_actualdeliverydate , update_modeofdispatch , update_couriernumber)
+                update_form = ProductionData.objects.get(id=update_form_id)
+                update_form.orderDate = update_orderdate
+                update_form.orderNumber = update_ordernumber
+                update_form.clientName = CustomerDetail.objects.get(id=update_clientname)
+                update_form.value = update_value
+                update_form.moc = Moc.objects.get(id=update_moc)
+                update_form.toolType = ToolType.objects.get(id=update_tooltype)
+                update_form.shape = Shape.objects.get(id=update_shape)
+                update_form.tabletSize = TabletSize.objects.get(id=update_tabletsize)
+                update_form.u1 = U1.objects.get(id=update_u1)
+                update_form.u2 =U2.objects.get(id=update_u2)
+                update_form.l1 = L1.objects.get(id=update_l1)
+                update_form.l2= L2.objects.get(id=update_l2)
+                update_form.d = D.objects.get(id=update_d)
+                update_form.set = Set.objects.get(id=update_set)
+                update_form.platingType = PlatingType.objects.get(id=update_platingtype)
+                update_form.user_1_remarks = update_orderremark
+                update_form.actualDelivery = update_actualdeliverydate
+                update_form.dispachMode = DispachMode.objects.get(id=update_modeofdispatch)
+                update_form.couriesNumber = update_couriernumber
+                update_form.rawMaterial = RawMaterial.objects.get(id=rawmaterial)
+                update_form.priority = priority
+                update_form.dwgNumber = dwgnumber
+                update_form.drgDate = drgdate
+                update_form.approvalDate = approvaldate
+                update_form.master = master
+                update_form.masterOut = masterout
+                update_form.masterIn = masterin
+                update_form.hitDate = htdate
+                update_form.estimatedDelivery = estimateddelivery
+                update_form.planningOut = planningout
+                update_form.planningIn = planningin
+                update_form.blank = Blank.objects.get(id = blank)
+                update_form.process = Process.objects.get(id = process)
+                update_form.bodyTipMachining = BodyTipMachining.objects.get(id = bodytipping)
+                update_form.headMachining = HeadMachining.objects.get(id = headmachine)
+                update_form.keywayTaperFinish = KeywayTaperFinish.objects.get(id = keyway)
+                update_form.ht = HT.objects.get(id = ht)
+                update_form.grinding = Grinding.objects.get(id = grinding)
+                update_form.hardChrome = HardChrome.objects.get(id = hardchrome)
+                update_form.qualityCheck = QualityCheck.objects.get(id = qualitycheck)
+                update_form.packingDispach = PackingDispach.objects.get(id = packingdispach)
+                update_form.save()
+                return redirect('admin')
+        params = {
+            "tabledata":ProductionData.objects.all(),
+            "CustomerDetail":CustomerDetail.objects.all(),
+            "Moc":Moc.objects.all(),
+            "ToolType":ToolType.objects.all(),
+            "Shape":Shape.objects.all(),
+            "TabletSize":TabletSize.objects.all(),
+            "U1":U1.objects.all(),
+            "U2":U2.objects.all(),
+            "L1":L1.objects.all(),
+            "L2":L2.objects.all(),
+            "D":D.objects.all(),
+            "Set":Set.objects.all(),
+            "PlatingType":PlatingType.objects.all(),
+            "DispachMode":DispachMode.objects.all(),
+            "RawMaterial":RawMaterial.objects.all(),
+            "Blank":Blank.objects.all(),
+            "Process":Process.objects.all(),
+            "BodyTipMachining":BodyTipMachining.objects.all(),
+            "HeadMachining":HeadMachining.objects.all(),
+            "KeywayTaperFinish":KeywayTaperFinish.objects.all(),
+            "HT":HT.objects.all(),
+            "Grinding":Grinding.objects.all(),
+            "HardChrome":HardChrome.objects.all(),
+            "QualityCheck":QualityCheck.objects.all(),
+            "PackingDispach":PackingDispach.objects.all(),
 
-    }
-    return render(request,"admin.html",params)
+        }
+        return render(request,"admin/admin.html",params)
 
-def customer_detail(request):
+@login_required
+def add_customer(request):
     if request.user.is_authenticated:
         if request.method == "POST":
             customername = request.POST.get('customername')
@@ -1381,24 +946,20 @@ def customer_detail(request):
                     addcustomer.save()
                     return redirect('add_customer')
             
-    return render(request,"admin_addcustomer.html")
+    return render(request,"admin/admin_addcustomer.html")
 
+@login_required
 def customerCheck(request):
-    customername = ''
-    customeremail = ''
-    customermobile = ''
-    companyname = ''
-    companyaddress = ''
-    companystate = ''
-    companycity = ''
-    companypincode = ''
-    if request.user.is_authenticated:
+    if request.user.is_superuser:
         if request.method == "POST":
             custid=request.POST.get('custid')
-            print(custid)
-            request.session['custid'] = custid
-            
+            print("custid :",custid)
+            if custid:
+                custdata = CustomerDetail.objects.get(id=custid)
+                customer_detail_serializer = CustomerDetailSerializer(custdata,many=False)
+                return JsonResponse({"custdata":customer_detail_serializer.data})
             # print("data is :",request.session['custid'])
+            customerID = request.POST.get('customerID')
             customername = request.POST.get('customername')
             customeremail = request.POST.get('customeremail')
             customermobile = request.POST.get('customermobile')
@@ -1408,71 +969,35 @@ def customerCheck(request):
             companycity = request.POST.get('companycity')
             companypincode = request.POST.get('companypincode')
             
-                    
+            if customername or customeremail or customermobile or companyname or companyaddress or companystate or companycity or companypincode:
+                custdata = CustomerDetail.objects.get(id=customerID)
+                if customername:
+                    custdata.customerName=customername                     
+                if customeremail:
+                    custdata.customerEmail=customeremail                   
+                if customermobile:
+                    custdata.customerMobile=customermobile                      
+                if companyname:
+                    custdata.customerCompanyName=companyname
+                if companyaddress:
+                    custdata.customerCompanyAddress=companyaddress
+                if companystate:
+                    custdata.customerCompanyState=companystate
+                if companycity:
+                    custdata.customerCompanyCity=companycity
+                if companypincode:
+                    custdata.customerCompanyPincode=companypincode
+                custdata.save()
                     
                     
                 
-            if custid:
-                custdata = CustomerDetail.objects.get(id=custid)
-                obj = {
-                    "custname":custdata.customerName,
-                    "custmobile":custdata.customerMobile,
-                    "custemail":custdata.customerEmail,
-                    "custCompanyName":custdata.customerCompanyName,
-                    "custCompanyAddress":custdata.customerCompanyAddress,
-                    "custCompanyCiy":custdata.customerCompanyCity,
-                    "custCompanyState":custdata.customerCompanyState,
-                    'custCompanyPincode':custdata.customerCompanyPincode
-                }
-                return JsonResponse({"custdata":obj})
-        user_id = request.user.id
-        user_name = request.user.first_name
-        abcd = User.objects.get(id=user_id)
-        if abcd.is_superuser == True:
-            level = 5
-            a = "yes"
-        else:
-            level = ""
-            a="no"
-   
-    if a=="yes":
-        cust = CustomerDetail.objects.all()
-    if 'custid' in request.session:
-        sessdata = request.session['custid']
-        print(sessdata)
-    if customername or customeremail or customermobile or companyname or companyaddress or companystate or companycity or companypincode:
-        custdata = CustomerDetail.objects.get(id=sessdata)
-        if customername:
-            custdata.customerName=customername
-            custdata.save()                     
-        if customeremail:
-            custdata.customerEmail=customeremail
-            custdata.save()                   
-        if customermobile:
-            custdata.customerMobile=customermobile
-            custdata.save()                      
-        if companyname:
-            custdata.customerCompanyName=companyname
-            custdata.save()
-        if companyaddress:
-            custdata.customerCompanyAddress=companyaddress
-            custdata.save()
-        if companystate:
-            custdata.customerCompanyState=companystate
-            custdata.save()
-        if companycity:
-            custdata.customerCompanyCity=companycity
-            custdata.save()
-        if companypincode:
-            custdata.customerCompanyPincode=companypincode
-            custdata.save()
-    params={
-        "data":a,
-        'cust':cust
-    }
-    return render(request,"customerdetails.html",params)
+                  
+        params={
+            'cust':CustomerDetail.objects.all()
+        }
+        return render(request,"admin/customerdetails.html",params)
 
-
+@login_required
 def adduser(request):
     if request.user.is_superuser:
         data = "yes"
@@ -1506,14 +1031,14 @@ def adduser(request):
                     created = "yes" 
                     
                     
-    params = {
-        "user_match":user_match,
-        "created":created
-    }
-            
-    return render(request,"adduser.html",params)
+        params = {
+            "user_match":user_match,
+            "created":created
+        }
+                
+        return render(request,"admin/adduser.html",params)
 
-
+@login_required
 def add_data(request):
     data=""
     if request.user.is_superuser:
@@ -1740,198 +1265,192 @@ def add_data(request):
                 add_dispatchmode.save()
 
         
-    params = {
-        "data":data
-    }
-            
-    return render(request,"admin_adddata.html",params)
-    
+        params = {
+            "data":data
+        }
+                
+        return render(request,"admin/admin_adddata.html",params)
+
+@login_required
 def delete_data(request):
     data=""
     tabledata = []
     if request.user.is_superuser:
         if request.method == "POST":
             deleteform = request.POST.get('deleteform')
-        else:
-            deleteform = ""   
-        user_id = request.user.id
-        user_name=request.user.first_name
-        lvl = 5
-        if lvl == 5:
-            data = "yes"
-            form = ProductionData.objects.all()
-            for x in form:
-                data_id= x.id
-                data_orderdate1  = x.orderDate
-                data_orderdate = datetime.datetime.strptime(data_orderdate1, "%Y-%m-%d").strftime("%d-%m-%Y")
-                data_ordernumber    = x.orderNumber
-                data_clientname =x.clientName
-                data_value =x.value
-                data_moc = x.moc
-                data_tooltype =x.toolType
-                data_shape =x.shape
-                data_tabletsize =x.tabletSize
-                data_u1 =x.u1
-                data_u2 =x.u2
-                data_l1 =x.l1
-                data_l2 =x.l2
-                data_d =x.d
-                data_set =x.sett
-                data_platingtype =x.platingType
-                data_rawmaterial =x.rawMaterial
-                data_priority =x.priority
-                data_dwgNumber = x.dwgNumber
-                data_drgDate = x.drgDate
-                data_approvalDate = x.approvalDate
-                data_master = x.master
-                data_masterOut = x.masterOut
-                data_masterIn = x.masterIn
-                if data_u1 and data_u2:
-                    data_punchBlankUsed = int(data_u1)+ int(data_l1)
-                else:
-                    data_punchBlankUsed =0
-                # print(data_punchBlankUsed)
-                data_dieBlankUsed = data_d
-                data_hitDate = x.hitDate
-                data_estimatedDelivery = x.estimatedDelivery
-                data_planningOut=x.planningOut
-                data_planningIn=x.planningIn
-                data_blank=x.blank
-                data_process=x.process
-                data_bodyTipMachining=x.bodyTipMachining
-                data_headMachining=x.headMachining
-                data_keywayTaperFinish=x.keywayTaperFinish
-                data_ht=x.ht
-                data_grinding=x.grinding
-                data_hardChrome=x.hardChrome
-                data_qualityCheck=x.qualityCheck
-                data_packingDispach=x.packingDispach
-                data_estimatedDelivery=x.estimatedDelivery
-                data_actualDelivery=x.actualDelivery
-                data_dispachMode=x.dispachMode
-                data_couriesNumber=x.couriesNumber
-                data_remark=x.remark
-                data1 = x.blank
-                data2 = x.process
-                data3 = x.bodyTipMachining
-                data4 = x.headMachining
-                data5 = x.keywayTaperFinish
-                data6 = x.ht
-                data7 = x.grinding
-                data8 = x.hardChrome
-                data9 = x.qualityCheck
-                data10 = x.packingDispach
-                if data1 :
-                    data1 = float(data1)
-                else:
-                    data1 = 0
-                if data2 :
-                    data2 = float(data2)
-                else:
-                    data2 = 0
-                if data3 :
-                    data3 = float(data3)
-                else:
-                    data3 = 0
-                if data4 :
-                    data4 = float(data4)
-                else:
-                    data4 = 0
-                if data5 :
-                    data5 = float(data5)
-                else:
-                    data5 = 0
-                if data6 :
-                    data6 = float(data6)
-                else:
-                    data6 = 0
-                if data7 :
-                    data7 = float(data7)
-                else:
-                    data7 = 0
-                if data8 :
-                    data8 = float(data8)
-                else:
-                    data8 = 0
-                if data9 :
-                    data9 = float(data9)
-                else:
-                    data9 = 0
-                if data10 :
-                    data10 = float(data10)
-                else:
-                    data10 = 0
+            if deleteform:
+                deletedata = ProductionData.objects.get(id = deleteform)
+                if deletedata:
+                    deletedata.delete()
+                    type="Deleted"
+                    log = UserLog(formid=deleteform,user_id=request.user.id,user_name=request.user.username,Type=type)
+                    log.save()
+                    return redirect('admindelete')
+        
+            # form = ProductionData.objects.all()
+            # for x in form:
+            #     data_id= x.id
+            #     data_orderdate1  = x.orderDate
+            #     data_orderdate = datetime.datetime.strptime(data_orderdate1, "%Y-%m-%d").strftime("%d-%m-%Y")
+            #     data_ordernumber    = x.orderNumber
+            #     data_clientname =x.clientName
+            #     data_value =x.value
+            #     data_moc = x.moc
+            #     data_tooltype =x.toolType
+            #     data_shape =x.shape
+            #     data_tabletsize =x.tabletSize
+            #     data_u1 =x.u1
+            #     data_u2 =x.u2
+            #     data_l1 =x.l1
+            #     data_l2 =x.l2
+            #     data_d =x.d
+            #     data_set =x.set
+            #     data_platingtype =x.platingType
+            #     data_rawmaterial =x.rawMaterial
+            #     data_priority =x.priority
+            #     data_dwgNumber = x.dwgNumber
+            #     data_drgDate = x.drgDate
+            #     data_approvalDate = x.approvalDate
+            #     data_master = x.master
+            #     data_masterOut = x.masterOut
+            #     data_masterIn = x.masterIn
+            #     if data_u1 and data_u2:
+            #         data_punchBlankUsed = int(data_u1.name)+ int(data_l1.name)
+            #     else:
+            #         data_punchBlankUsed =0
+            #     # print(data_punchBlankUsed)
+            #     data_dieBlankUsed = data_d
+            #     data_hitDate = x.hitDate
+            #     data_estimatedDelivery = x.estimatedDelivery
+            #     data_planningOut=x.planningOut
+            #     data_planningIn=x.planningIn
+            #     data_blank=x.blank
+            #     data_process=x.process
+            #     data_bodyTipMachining=x.bodyTipMachining
+            #     data_headMachining=x.headMachining
+            #     data_keywayTaperFinish=x.keywayTaperFinish
+            #     data_ht=x.ht
+            #     data_grinding=x.grinding
+            #     data_hardChrome=x.hardChrome
+            #     data_qualityCheck=x.qualityCheck
+            #     data_packingDispach=x.packingDispach
+            #     data_estimatedDelivery=x.estimatedDelivery
+            #     data_actualDelivery=x.actualDelivery
+            #     data_dispachMode=x.dispachMode
+            #     data_couriesNumber=x.couriesNumber
+            #     data_remark=x.remark
+            #     data1 = x.blank
+            #     data2 = x.process
+            #     data3 = x.bodyTipMachining
+            #     data4 = x.headMachining
+            #     data5 = x.keywayTaperFinish
+            #     data6 = x.ht
+            #     data7 = x.grinding
+            #     data8 = x.hardChrome
+            #     data9 = x.qualityCheck
+            #     data10 = x.packingDispach
+            #     if data1 :
+            #         data1 = float(data1)
+            #     else:
+            #         data1 = 0
+            #     if data2 :
+            #         data2 = float(data2)
+            #     else:
+            #         data2 = 0
+            #     if data3 :
+            #         data3 = float(data3)
+            #     else:
+            #         data3 = 0
+            #     if data4 :
+            #         data4 = float(data4)
+            #     else:
+            #         data4 = 0
+            #     if data5 :
+            #         data5 = float(data5)
+            #     else:
+            #         data5 = 0
+            #     if data6 :
+            #         data6 = float(data6)
+            #     else:
+            #         data6 = 0
+            #     if data7 :
+            #         data7 = float(data7)
+            #     else:
+            #         data7 = 0
+            #     if data8 :
+            #         data8 = float(data8)
+            #     else:
+            #         data8 = 0
+            #     if data9 :
+            #         data9 = float(data9)
+            #     else:
+            #         data9 = 0
+            #     if data10 :
+            #         data10 = float(data10)
+            #     else:
+            #         data10 = 0
                 
-                totaldata = (((data1 + data2 + data3 + data4 + data5 + data6 + data7 + data8 + data9 + data10)/10) * 100)
-                # print(totaldata%2)
-                data_status = str(totaldata) + str("%")
+            #     totaldata = (((data1 + data2 + data3 + data4 + data5 + data6 + data7 + data8 + data9 + data10)/10) * 100)
+            #     # print(totaldata%2)
+            #     data_status = str(totaldata) + str("%")
 
-                # print("status is :",data_id,data_status)
-                if data_orderdate or data_ordernumber or data_clientname or data_value or data_moc or data_tooltype or data_shape or data_tabletsize or data_u1 or data_u2 or data_l1 or data_l2 or data_d or data_set or data_platingtype or data_rawmaterial or data_priority or data_status:
-                    obj = {
-                        "id":data_id,
-                        "orderdate" : data_orderdate,
-                        "ordernumber" :data_ordernumber,
-                        "clientname" :data_clientname,
-                        "value" :data_value,
-                        "moc" :data_moc,
-                        "tooltype" :data_tooltype,
-                        "shape" :data_shape,
-                        "tabletsize" :data_tabletsize,
-                        "u1" :data_u1,
-                        "u2" :data_u2,
-                        "l1" :data_l1,
-                        "l2" :data_l2,
-                        "d" :data_d,
-                        "set" :data_set,
-                        "platingtype" :data_platingtype,
-                        "rawmaterial" :data_rawmaterial,
-                        "priority" :data_priority,
-                        "status" :data_status,
-                        "dwgNumber" :  data_dwgNumber,
-                        "drgDate" :  data_drgDate,
-                        "approvalDate" :  data_approvalDate,
-                        "master" :  data_master,
-                        "masterOut" :  data_masterOut,
-                        "masterIn" :  data_masterIn,
-                        "punchBlankUsed" :  data_punchBlankUsed,
-                        "dieBlankUsed" :  data_dieBlankUsed,
-                        "hitDate" :  data_hitDate,
-                        "estimatedDelivery" :  data_estimatedDelivery,
-                        "planningOut": data_planningOut,
-                        "planningIn": data_planningIn,
-                        "blank": data_blank,
-                        "process": data_process,
-                        "bodyTipMachining": data_bodyTipMachining,
-                        "headMachining": data_headMachining,
-                        "keywayTaperFinish": data_keywayTaperFinish,
-                        "ht": data_ht,
-                        "grinding": data_grinding,
-                        "hardChrome": data_hardChrome,
-                        "qualityCheck": data_qualityCheck,
-                        "packingDispach": data_packingDispach,
-                        "estimatedDelivery": data_estimatedDelivery,
-                        "actualDelivery": data_actualDelivery,
-                        "dispachMode": data_dispachMode,
-                        "couriesNumber": data_couriesNumber,
-                        "remark": data_remark
+            #     # print("status is :",data_id,data_status)
+            #     if data_orderdate or data_ordernumber or data_clientname or data_value or data_moc or data_tooltype or data_shape or data_tabletsize or data_u1 or data_u2 or data_l1 or data_l2 or data_d or data_set or data_platingtype or data_rawmaterial or data_priority or data_status:
+            #         obj = {
+            #             "id":data_id,
+            #             "orderdate" : data_orderdate,
+            #             "ordernumber" :data_ordernumber,
+            #             "clientname" :data_clientname,
+            #             "value" :data_value,
+            #             "moc" :data_moc,
+            #             "tooltype" :data_tooltype,
+            #             "shape" :data_shape,
+            #             "tabletsize" :data_tabletsize,
+            #             "u1" :data_u1,
+            #             "u2" :data_u2,
+            #             "l1" :data_l1,
+            #             "l2" :data_l2,
+            #             "d" :data_d,
+            #             "set" :data_set,
+            #             "platingtype" :data_platingtype,
+            #             "rawmaterial" :data_rawmaterial,
+            #             "priority" :data_priority,
+            #             "status" :data_status,
+            #             "dwgNumber" :  data_dwgNumber,
+            #             "drgDate" :  data_drgDate,
+            #             "approvalDate" :  data_approvalDate,
+            #             "master" :  data_master,
+            #             "masterOut" :  data_masterOut,
+            #             "masterIn" :  data_masterIn,
+            #             "punchBlankUsed" :  data_punchBlankUsed,
+            #             "dieBlankUsed" :  data_dieBlankUsed,
+            #             "hitDate" :  data_hitDate,
+            #             "estimatedDelivery" :  data_estimatedDelivery,
+            #             "planningOut": data_planningOut,
+            #             "planningIn": data_planningIn,
+            #             "blank": data_blank,
+            #             "process": data_process,
+            #             "bodyTipMachining": data_bodyTipMachining,
+            #             "headMachining": data_headMachining,
+            #             "keywayTaperFinish": data_keywayTaperFinish,
+            #             "ht": data_ht,
+            #             "grinding": data_grinding,
+            #             "hardChrome": data_hardChrome,
+            #             "qualityCheck": data_qualityCheck,
+            #             "packingDispach": data_packingDispach,
+            #             "estimatedDelivery": data_estimatedDelivery,
+            #             "actualDelivery": data_actualDelivery,
+            #             "dispachMode": data_dispachMode,
+            #             "couriesNumber": data_couriesNumber,
+            #             "remark": data_remark
 
-                    }
-                    tabledata.append(obj)
-        if deleteform:
-            deletedata = ProductionData.objects.get(id = deleteform)
-            if deletedata:
-                deletedata.delete()
-                type="Deleted"
-                log = UserLog(formid=deleteform,user_id=user_id,user_name=user_name,Type=type)
-                log.save()
-                return redirect('admindelete')
+            #         }
+            #         tabledata.append(obj)
+        
     params = {
-        "data":data,
-        "tabledata":tabledata
+        "tabledata":ProductionData.objects.all()
     }
-    return render(request,"admindeleteform.html",params)
-
+    return render(request,"admin/admindeleteform.html",params)
 
 
 

@@ -1,0 +1,1586 @@
+{% include 'includes/masterpage.html' %}
+{% load custom_tags %}
+{% block title %} <title>Approval Pending Tasks</title> {% endblock title %}
+{% block content %}
+
+
+<!-- <div class="alert alert-primary text-center" role="alert" style="font-size: 25px;">
+    {% now "jS F Y" %}
+    {{current_time}}
+</div> -->
+
+
+<div class="content-wrapper">
+    <section class="content">
+    <table class="table table-dark " id="table_id2">
+        <thead>
+            <tr>
+                <th scope="col">Order Date</th>
+                <th scope="col">Order Number</th>
+                <th scope="col">Client Name</th>
+                <th scope="col">MOC</th>
+                <th scope="col">Tool Type / M.C</th>
+                <th scope="col">Shape</th>
+                <th scope="col">Tablet Size</th>
+                <th scope="col">U1</th>
+                <th scope="col">U2</th>
+                <th scope="col">L1</th>
+                <th scope="col">L2</th>
+                <th scope="col">D</th>
+                <th scope="col">Set</th>
+                <th scope="col">Plating Type</th>
+                <th scope="col">Value</th>
+                <th scope="col">Remarks</th>
+                
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in tabledata %}
+            <tr>
+                <td>{{data.orderDate}}</td>
+                <td>{{data.orderNumber}}</td>
+                <td>{{data.clientName.customerCompanyName}}</td>
+                <td>{{data.moc.name}}</td>
+                <td>{{data.toolType.name}}</td>
+                <td>{{data.shape.name}}</td>
+                <td>{{data.tabletSize.name}}</td>
+                <td>{{data.u1.name}}</td>
+                <td>{{data.u2.name}}</td>
+                <td>{{data.l1.name}}</td>
+                <td>{{data.l2.name}}</td>
+                <td>{{data.d.name}}</td>
+                <td>{{data.set.name}}</td>
+                <td>{{data.platingType.name}}</td>
+                <td>{{data.value}}</td>
+                <td>{{data.user_1_remarks}}</td>
+                <td>{{ data.id | testing}}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+
+    
+
+    <div class="modal" id="update_form_modal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" autocomplete="off" id="testform">
+                    {% csrf_token %}
+                    <div class="row" style="background-color: peru;">
+                        <div class="col-sm-5">
+
+                        </div>
+                        <div class="col-sm-7">
+                            <h2>Main Stage</h2>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_orderdate" id="orderdate">
+                                <label for="orderdate">Order Date</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="update_ordernumber" id="ordernumber">
+                                <label for="ordernumber">Order Number</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_clientname" aria-label="Default select example"
+                                    id="clientname">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in CustomerDetail %}
+                                    <option value="{{i.id}}">{{i.customerCompanyName}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="clientname">Name of Client</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="number" min="1" class="form-control" name="update_value" id="value">
+                                <label for="value">Value</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_moc" aria-label="Default select example" id="moc">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in Moc %}
+
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="moc">MOC</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_tooltype" aria-label="Default select example"
+                                    id="tooltype">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in ToolType %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="tooltype">Tool Type / M.C</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_shape" aria-label="Default select example"
+                                    id="shape">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in Shape %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="shape">Shape</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_tabletsize" aria-label="Default select example"
+                                    id="tabletsize">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in TabletSize %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="tabletsize">Tablet Size</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_u1" aria-label="Default select example" id="u1">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in U1 %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="u1">U1</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_u2" aria-label="Default select example" id="u2">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in U2 %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="u2">U2</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_l1" aria-label="Default select example" id="l1">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in L1 %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="l1">L1</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_l2" aria-label="Default select example" id="l2">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in L2 %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="l2">L2</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_d" aria-label="Default select example" id="d">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in D %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="d">D</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_set" aria-label="Default select example" id="set">
+                                    <option value="" selected>Please Select</option>
+                                    </option>
+                                    {% for i in Set %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="set">SET</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_platingtype" aria-label="Default select example"
+                                    id="platingtype">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in PlatingType %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="platingtype">Plating Type</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="update_orderremark" id="orderremark">
+                                <label for="orderremark">Remarks</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="background-color: peru;">
+                        <div class="col-sm-5">
+
+                        </div>
+                        <div class="col-sm-7">
+                            <h2>Planning Stage</h2>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_rawmaterial" aria-label="Default select example"
+                                    id="rawmaterial">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in RawMaterial %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="rawmaterial">Raw Material</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="update_priority" id="priority" placeholder="">
+                                <label for="priority">Priority</label>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-3">
+
+                        </div>
+
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="update_dwgnumber" id="dwgnumber">
+                                <label for="dwgnumber">DWG Number</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_drgdate" id="drgdate">
+                                <label for="drgdate">DRG Date</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_approvaldate" id="approvaldate">
+                                <label for="approvaldate">Approval Date</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_master" aria-label="Default select example"
+                                    id="master">
+                                    <option value="" selected>Please Select</option>
+                                    <option value="YES">YES</option>
+                                    <option value="NO">NO</option>
+                                </select>
+                                <label for="master">MASTER</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_masterout" id="masterout">
+                                <label for="masterout">Master Out</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_masterin" id="masterin">
+                                <label for="masterin">Master In</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="update_punchblank" id="punchblank" disabled>
+                                <label for="punchblank">Punch Blank Used</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="update_dieblank" id="dieblank" disabled>
+                                <label for="dieblank">Die Blank Used</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_htdate" id="htdate">
+                                <label for="htdate">HT Date</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_estimateddelivery" id="estimateddelivery">
+                                <label for="estimateddelivery">Estimated Delivery Date</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_planningout" id="planningout">
+                                <label for="planningout" placeholder="">Planning Out</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_planningin" id="planningin">
+                                <label for="planningin">Planning In</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="background-color: peru;">
+                        <div class="col-sm-5">
+
+                        </div>
+                        <div class="col-sm-7">
+                            <h2>Manufacturing Stage</h2>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_blank" aria-label="Default select example"
+                                    id="blank">
+                                    <!-- <option selected value="{{i.update_master}}" >{{i.update_master}}</option> -->
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in Blank %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="blank">Blank</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_process" aria-label="Default select example"
+                                    id="process">
+                                    <option value="" selected>Please Select</option>
+
+                                    {% for i in Process %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <label for="process">Process</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_bodytipping" aria-label="Default select example"
+                                    id="bodytipping">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in BodyTipMachining %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <label for="bodytipping">Body & Tipping Machine</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_headmachine" aria-label="Default select example"
+                                    id="headmachine">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in HeadMachining %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <label for="headmachine">Head Machine</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_keyway" aria-label="Default select example"
+                                    id="keyway">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in KeywayTaperFinish %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="keyway">Keyway Tapper Finish</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_ht" aria-label="Default select example" id="ht">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in HT %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <label for="ht">HT</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_grinding" aria-label="Default select example"
+                                    id="grinding">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in Grinding %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <label for="grinding">Grinding</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_hardchrome" aria-label="Default select example"
+                                    id="hardchrome">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in HardChrome %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <label for="hardchrome">Hard Chrome</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_qualitycheck" aria-label="Default select example"
+                                    id="qualitycheck">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in QualityCheck %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <label for="qualitycheck">Quality Check</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_packingdispach"
+                                    aria-label="Default select example" id="packingdispach">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in PackingDispach %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <label for="packingdispach">Packing Dispatch</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="background-color: peru;">
+                        <div class="col-sm-5">
+
+                        </div>
+                        <div class="col-sm-7">
+                            <h2>Dispatch Stage</h2>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-1">
+                            <!-- <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="edd" id="floatingInput1" placeholder=""
+                      value="{{i.update_eed}}">
+                    <label for="floatingInput1">Estimate Delivery Date</label>
+                  </div> -->
+                  <input type="text" class="form-control" name="update_form_id" id="update_form_id">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="update_actualdeliverydate" id="actualdeliverydate">
+                                <label for="actualdeliverydate">Actual Delivery Date</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="update_modeofdispatch"
+                                    aria-label="Default select example" id="modeofdispatch">
+                                    <option value="" selected>Please Select</option>
+                                    {% for i in DispachMode %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <label for="modeofdispatch">Mode of Dispatch</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-floating mb-3">
+                                {% if i.update_courierno == None %}
+                                <input type="text" class="form-control" name="update_couriernumber" id="couriernumber">
+                                <label for="couriernumber">Transport Courier Number</label>
+                            </div>
+                            {% else %}
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="update_couriernumber" id="couriernumber">
+                                <label for="couriernumber">Transport Courier Number</label>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                        <div class="col-sm-3">
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Modal 1 -->
+
+   
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script> -->
+    <div class="modal fade" id="UpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="something1"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container" id="container4">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="something">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+</div>
+{% endblock content %}
+{% block script %}
+<script type="text/javascript">
+    $(document).on('click', '#confirm-delete', function () {
+        return confirm('Are you sure you want to delete this??');
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#table_id2').DataTable({
+            scrollX: true,
+            'rowCallback': function (row, data, index) {
+                if (data[5] == 'MULTI-3-SET') {
+                    $(row).find('td:eq(0)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(1)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(2)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(3)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(4)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(5)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(6)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(7)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(8)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(9)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(10)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(11)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(12)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(14)').css('background-color', 'deeppink');
+                    $(row).find('td:eq(15)').css('background-color', 'deeppink');
+
+
+                }
+                if (data[5] == 'BULLET') {
+                    $(row).find('td:eq(0)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(1)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(2)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(3)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(4)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(5)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(6)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(7)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(8)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(9)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(10)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(11)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(12)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(14)').css('background-color', 'LightSkyBlue');
+                    $(row).find('td:eq(15)').css('background-color', 'LightSkyBlue');
+
+                }
+                if (data[5] == 'CAPSULE') {
+                    $(row).find('td:eq(0)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(1)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(2)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(3)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(4)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(5)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(6)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(7)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(8)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(9)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(10)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(11)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(12)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(14)').css('background-color', 'MediumTurquoise');
+                    $(row).find('td:eq(15)').css('background-color', 'MediumTurquoise');
+
+                }
+                if (data[5] == 'ROUND') {
+                    $(row).find('td:eq(0)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(1)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(2)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(3)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(4)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(5)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(6)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(7)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(8)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(9)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(10)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(11)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(12)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(14)').css('background-color', 'MintCream');
+                    $(row).find('td:eq(15)').css('background-color', 'MintCream');
+
+
+                    $(row).find('td:eq(0)').css('color', 'black');
+                    $(row).find('td:eq(1)').css('color', 'black');
+                    $(row).find('td:eq(2)').css('color', 'black');
+                    $(row).find('td:eq(3)').css('color', 'black');
+                    $(row).find('td:eq(4)').css('color', 'black');
+                    $(row).find('td:eq(5)').css('color', 'black');
+                    $(row).find('td:eq(6)').css('color', 'black');
+                    $(row).find('td:eq(7)').css('color', 'black');
+                    $(row).find('td:eq(8)').css('color', 'black');
+                    $(row).find('td:eq(9)').css('color', 'black');
+                    $(row).find('td:eq(10)').css('color', 'black');
+                    $(row).find('td:eq(11)').css('color', 'black');
+                    $(row).find('td:eq(12)').css('color', 'black');
+                    $(row).find('td:eq(14)').css('color', 'black');
+                    $(row).find('td:eq(15)').css('color', 'black');
+                    $(row).find('td:eq(16)').css('color', 'black');
+
+                }
+                if (data[5] == 'OVAL') {
+                    $(row).find('td:eq(0)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(1)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(2)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(3)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(4)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(5)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(6)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(7)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(8)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(9)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(10)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(11)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(12)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(14)').css('background-color', 'RoyalBlue');
+                    $(row).find('td:eq(15)').css('background-color', 'RoyalBlue');
+
+
+                    $(row).find('td:eq(0)').css('color', 'black');
+                    $(row).find('td:eq(1)').css('color', 'black');
+                    $(row).find('td:eq(2)').css('color', 'black');
+                    $(row).find('td:eq(3)').css('color', 'black');
+                    $(row).find('td:eq(4)').css('color', 'black');
+                    $(row).find('td:eq(5)').css('color', 'black');
+                    $(row).find('td:eq(6)').css('color', 'black');
+                    $(row).find('td:eq(7)').css('color', 'black');
+                    $(row).find('td:eq(8)').css('color', 'black');
+                    $(row).find('td:eq(9)').css('color', 'black');
+                    $(row).find('td:eq(10)').css('color', 'black');
+                    $(row).find('td:eq(11)').css('color', 'black');
+                    $(row).find('td:eq(12)').css('color', 'black');
+                    $(row).find('td:eq(14)').css('color', 'black');
+                    $(row).find('td:eq(15)').css('color', 'black');
+                    $(row).find('td:eq(16)').css('color', 'black');
+
+                }
+                if (data[5] == 'SHAPE-8') {
+                    $(row).find('td:eq(0)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(1)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(2)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(3)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(4)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(5)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(6)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(7)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(8)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(9)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(10)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(11)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(12)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(14)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(15)').css('background-color', 'RebeccaPurple');
+
+
+                    $(row).find('td:eq(0)').css('color', 'white');
+                    $(row).find('td:eq(1)').css('color', 'white');
+                    $(row).find('td:eq(2)').css('color', 'white');
+                    $(row).find('td:eq(3)').css('color', 'white');
+                    $(row).find('td:eq(4)').css('color', 'white');
+                    $(row).find('td:eq(5)').css('color', 'white');
+                    $(row).find('td:eq(6)').css('color', 'white');
+                    $(row).find('td:eq(7)').css('color', 'white');
+                    $(row).find('td:eq(8)').css('color', 'white');
+                    $(row).find('td:eq(9)').css('color', 'white');
+                    $(row).find('td:eq(10)').css('color', 'white');
+                    $(row).find('td:eq(11)').css('color', 'white');
+                    $(row).find('td:eq(12)').css('color', 'white');
+                    $(row).find('td:eq(14)').css('color', 'white');
+                    $(row).find('td:eq(15)').css('color', 'white');
+                    $(row).find('td:eq(16)').css('color', 'white');
+
+                }
+                if (data[5] == 'HEXAGON') {
+                    $(row).find('td:eq(0)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(1)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(2)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(3)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(4)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(5)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(6)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(7)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(8)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(9)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(10)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(11)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(12)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(14)').css('background-color', 'SteelBlue');
+                    $(row).find('td:eq(15)').css('background-color', 'SteelBlue');
+
+                    $(row).find('td:eq(0)').css('color', 'white');
+                    $(row).find('td:eq(1)').css('color', 'white');
+                    $(row).find('td:eq(2)').css('color', 'white');
+                    $(row).find('td:eq(3)').css('color', 'white');
+                    $(row).find('td:eq(4)').css('color', 'white');
+                    $(row).find('td:eq(5)').css('color', 'white');
+                    $(row).find('td:eq(6)').css('color', 'white');
+                    $(row).find('td:eq(7)').css('color', 'white');
+                    $(row).find('td:eq(8)').css('color', 'white');
+                    $(row).find('td:eq(9)').css('color', 'white');
+                    $(row).find('td:eq(10)').css('color', 'white');
+                    $(row).find('td:eq(11)').css('color', 'white');
+                    $(row).find('td:eq(12)').css('color', 'white');
+                    $(row).find('td:eq(14)').css('color', 'white');
+                    $(row).find('td:eq(15)').css('color', 'white');
+                    $(row).find('td:eq(16)').css('color', 'white');
+
+                }
+                if (data[5] == 'PENTAGON') {
+                    $(row).find('td:eq(0)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(1)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(2)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(3)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(4)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(5)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(6)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(7)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(8)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(9)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(10)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(11)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(12)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(14)').css('background-color', 'MediumSlateBlue');
+                    $(row).find('td:eq(15)').css('background-color', 'MediumSlateBlue');
+
+
+                    $(row).find('td:eq(0)').css('color', 'white');
+                    $(row).find('td:eq(1)').css('color', 'white');
+                    $(row).find('td:eq(2)').css('color', 'white');
+                    $(row).find('td:eq(3)').css('color', 'white');
+                    $(row).find('td:eq(4)').css('color', 'white');
+                    $(row).find('td:eq(5)').css('color', 'white');
+                    $(row).find('td:eq(6)').css('color', 'white');
+                    $(row).find('td:eq(7)').css('color', 'white');
+                    $(row).find('td:eq(8)').css('color', 'white');
+                    $(row).find('td:eq(9)').css('color', 'white');
+                    $(row).find('td:eq(10)').css('color', 'white');
+                    $(row).find('td:eq(11)').css('color', 'white');
+                    $(row).find('td:eq(12)').css('color', 'white');
+                    $(row).find('td:eq(14)').css('color', 'white');
+                    $(row).find('td:eq(15)').css('color', 'white');
+                    $(row).find('td:eq(16)').css('color', 'white');
+
+                }
+                if (data[5] == 'VIAGRA') {
+                    $(row).find('td:eq(0)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(1)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(2)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(3)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(4)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(5)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(6)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(7)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(8)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(9)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(10)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(11)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(12)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(14)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(15)').css('background-color', 'RebeccaPurple');
+
+
+                    $(row).find('td:eq(0)').css('color', 'white');
+                    $(row).find('td:eq(1)').css('color', 'white');
+                    $(row).find('td:eq(2)').css('color', 'white');
+                    $(row).find('td:eq(3)').css('color', 'white');
+                    $(row).find('td:eq(4)').css('color', 'white');
+                    $(row).find('td:eq(5)').css('color', 'white');
+                    $(row).find('td:eq(6)').css('color', 'white');
+                    $(row).find('td:eq(7)').css('color', 'white');
+                    $(row).find('td:eq(8)').css('color', 'white');
+                    $(row).find('td:eq(9)').css('color', 'white');
+                    $(row).find('td:eq(10)').css('color', 'white');
+                    $(row).find('td:eq(11)').css('color', 'white');
+                    $(row).find('td:eq(12)').css('color', 'white');
+                    $(row).find('td:eq(14)').css('color', 'white');
+                    $(row).find('td:eq(15)').css('color', 'white');
+                    $(row).find('td:eq(16)').css('color', 'white');
+                }
+                if (data[5] == 'MULTI-TIPS') {
+                    $(row).find('td:eq(0)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(1)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(2)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(3)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(4)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(5)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(6)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(7)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(8)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(9)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(10)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(11)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(12)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(14)').css('background-color', 'Khaki');
+                    $(row).find('td:eq(15)').css('background-color', 'Khaki');
+
+
+                    $(row).find('td:eq(0)').css('color', 'black');
+                    $(row).find('td:eq(1)').css('color', 'black');
+                    $(row).find('td:eq(2)').css('color', 'black');
+                    $(row).find('td:eq(3)').css('color', 'black');
+                    $(row).find('td:eq(4)').css('color', 'black');
+                    $(row).find('td:eq(5)').css('color', 'black');
+                    $(row).find('td:eq(6)').css('color', 'black');
+                    $(row).find('td:eq(7)').css('color', 'black');
+                    $(row).find('td:eq(8)').css('color', 'black');
+                    $(row).find('td:eq(9)').css('color', 'black');
+                    $(row).find('td:eq(10)').css('color', 'black');
+                    $(row).find('td:eq(11)').css('color', 'black');
+                    $(row).find('td:eq(12)').css('color', 'black');
+                    $(row).find('td:eq(14)').css('color', 'black');
+                    $(row).find('td:eq(15)').css('color', 'black');
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[5] == 'ALMOND') {
+                    $(row).find('td:eq(0)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(1)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(2)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(3)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(4)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(5)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(6)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(7)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(8)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(9)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(10)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(11)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(12)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(14)').css('background-color', 'RebeccaPurple');
+                    $(row).find('td:eq(15)').css('background-color', 'RebeccaPurple');
+
+
+                    $(row).find('td:eq(0)').css('color', 'white');
+                    $(row).find('td:eq(1)').css('color', 'white');
+                    $(row).find('td:eq(2)').css('color', 'white');
+                    $(row).find('td:eq(3)').css('color', 'white');
+                    $(row).find('td:eq(4)').css('color', 'white');
+                    $(row).find('td:eq(5)').css('color', 'white');
+                    $(row).find('td:eq(6)').css('color', 'white');
+                    $(row).find('td:eq(7)').css('color', 'white');
+                    $(row).find('td:eq(8)').css('color', 'white');
+                    $(row).find('td:eq(9)').css('color', 'white');
+                    $(row).find('td:eq(10)').css('color', 'white');
+                    $(row).find('td:eq(11)').css('color', 'white');
+                    $(row).find('td:eq(12)').css('color', 'white');
+                    $(row).find('td:eq(14)').css('color', 'white');
+                    $(row).find('td:eq(15)').css('color', 'white');
+                    $(row).find('td:eq(16)').css('color', 'white');
+                }
+                if (data[5] == 'TRIANGLE') {
+                    $(row).find('td:eq(0)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(1)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(2)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(3)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(4)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(5)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(6)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(7)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(8)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(9)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(10)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(11)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(12)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(14)').css('background-color', 'Indigo');
+                    $(row).find('td:eq(15)').css('background-color', 'Indigo');
+
+
+                    $(row).find('td:eq(0)').css('color', 'white');
+                    $(row).find('td:eq(1)').css('color', 'white');
+                    $(row).find('td:eq(2)').css('color', 'white');
+                    $(row).find('td:eq(3)').css('color', 'white');
+                    $(row).find('td:eq(4)').css('color', 'white');
+                    $(row).find('td:eq(5)').css('color', 'white');
+                    $(row).find('td:eq(6)').css('color', 'white');
+                    $(row).find('td:eq(7)').css('color', 'white');
+                    $(row).find('td:eq(8)').css('color', 'white');
+                    $(row).find('td:eq(9)').css('color', 'white');
+                    $(row).find('td:eq(10)').css('color', 'white');
+                    $(row).find('td:eq(11)').css('color', 'white');
+                    $(row).find('td:eq(12)').css('color', 'white');
+                    $(row).find('td:eq(13)').css('color', 'white');
+                    $(row).find('td:eq(15)').css('color', 'white');
+                    $(row).find('td:eq(16)').css('color', 'white');
+                }
+                if (data[5] == 'MULTI-2-SET') {
+                    $(row).find('td:eq(0)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(1)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(2)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(3)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(4)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(5)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(6)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(7)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(8)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(9)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(10)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(11)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(12)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(14)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(15)').css('background-color', 'MediumSpringGreen');
+
+
+                    $(row).find('td:eq(0)').css('color', 'black');
+                    $(row).find('td:eq(1)').css('color', 'black');
+                    $(row).find('td:eq(2)').css('color', 'black');
+                    $(row).find('td:eq(3)').css('color', 'black');
+                    $(row).find('td:eq(4)').css('color', 'black');
+                    $(row).find('td:eq(5)').css('color', 'black');
+                    $(row).find('td:eq(6)').css('color', 'black');
+                    $(row).find('td:eq(7)').css('color', 'black');
+                    $(row).find('td:eq(8)').css('color', 'black');
+                    $(row).find('td:eq(9)').css('color', 'black');
+                    $(row).find('td:eq(10)').css('color', 'black');
+                    $(row).find('td:eq(11)').css('color', 'black');
+                    $(row).find('td:eq(12)').css('color', 'black');
+                    $(row).find('td:eq(14)').css('color', 'black');
+                    $(row).find('td:eq(15)').css('color', 'black');
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[5] == 'MULTI-2-SET') {
+                    $(row).find('td:eq(0)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(1)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(2)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(3)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(4)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(5)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(6)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(7)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(8)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(9)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(10)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(11)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(12)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(14)').css('background-color', 'MediumSpringGreen');
+                    $(row).find('td:eq(15)').css('background-color', 'MediumSpringGreen');
+
+
+                    $(row).find('td:eq(0)').css('color', 'black');
+                    $(row).find('td:eq(1)').css('color', 'black');
+                    $(row).find('td:eq(2)').css('color', 'black');
+                    $(row).find('td:eq(3)').css('color', 'black');
+                    $(row).find('td:eq(4)').css('color', 'black');
+                    $(row).find('td:eq(5)').css('color', 'black');
+                    $(row).find('td:eq(6)').css('color', 'black');
+                    $(row).find('td:eq(7)').css('color', 'black');
+                    $(row).find('td:eq(8)').css('color', 'black');
+                    $(row).find('td:eq(9)').css('color', 'black');
+                    $(row).find('td:eq(10)').css('color', 'black');
+                    $(row).find('td:eq(11)').css('color', 'black');
+                    $(row).find('td:eq(12)').css('color', 'black');
+                    $(row).find('td:eq(14)').css('color', 'black');
+                    $(row).find('td:eq(15)').css('color', 'black');
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[5] == 'MULTI-4-SET') {
+                    $(row).find('td:eq(0)').css('background-color', 'orange');
+                    $(row).find('td:eq(1)').css('background-color', 'orange');
+                    $(row).find('td:eq(2)').css('background-color', 'orange');
+                    $(row).find('td:eq(3)').css('background-color', 'orange');
+                    $(row).find('td:eq(4)').css('background-color', 'orange');
+                    $(row).find('td:eq(5)').css('background-color', 'orange');
+                    $(row).find('td:eq(6)').css('background-color', 'orange');
+                    $(row).find('td:eq(7)').css('background-color', 'orange');
+                    $(row).find('td:eq(8)').css('background-color', 'orange');
+                    $(row).find('td:eq(9)').css('background-color', 'orange');
+                    $(row).find('td:eq(10)').css('background-color', 'orange');
+                    $(row).find('td:eq(11)').css('background-color', 'orange');
+                    $(row).find('td:eq(12)').css('background-color', 'orange');
+                    $(row).find('td:eq(14)').css('background-color', 'orange');
+                    $(row).find('td:eq(15)').css('background-color', 'orange');
+
+
+                    $(row).find('td:eq(0)').css('color', 'black');
+                    $(row).find('td:eq(1)').css('color', 'black');
+                    $(row).find('td:eq(2)').css('color', 'black');
+                    $(row).find('td:eq(3)').css('color', 'black');
+                    $(row).find('td:eq(4)').css('color', 'black');
+                    $(row).find('td:eq(5)').css('color', 'black');
+                    $(row).find('td:eq(6)').css('color', 'black');
+                    $(row).find('td:eq(7)').css('color', 'black');
+                    $(row).find('td:eq(8)').css('color', 'black');
+                    $(row).find('td:eq(9)').css('color', 'black');
+                    $(row).find('td:eq(10)').css('color', 'black');
+                    $(row).find('td:eq(11)').css('color', 'black');
+                    $(row).find('td:eq(12)').css('color', 'black');
+                    $(row).find('td:eq(14)').css('color', 'black');
+                    $(row).find('td:eq(15)').css('color', 'black');
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[5] == 'DIAMOND') {
+                    $(row).find('td:eq(0)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(1)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(2)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(3)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(4)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(5)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(6)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(7)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(8)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(9)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(10)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(11)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(12)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(14)').css('background-color', 'DarkViolet');
+                    $(row).find('td:eq(15)').css('background-color', 'DarkViolet');
+
+
+                    $(row).find('td:eq(0)').css('color', 'white');
+                    $(row).find('td:eq(1)').css('color', 'white');
+                    $(row).find('td:eq(2)').css('color', 'white');
+                    $(row).find('td:eq(3)').css('color', 'white');
+                    $(row).find('td:eq(4)').css('color', 'white');
+                    $(row).find('td:eq(5)').css('color', 'white');
+                    $(row).find('td:eq(6)').css('color', 'white');
+                    $(row).find('td:eq(7)').css('color', 'white');
+                    $(row).find('td:eq(8)').css('color', 'white');
+                    $(row).find('td:eq(9)').css('color', 'white');
+                    $(row).find('td:eq(10)').css('color', 'white');
+                    $(row).find('td:eq(11)').css('color', 'white');
+                    $(row).find('td:eq(12)').css('color', 'white');
+                    $(row).find('td:eq(14)').css('color', 'white');
+                    $(row).find('td:eq(15)').css('color', 'white');
+                    $(row).find('td:eq(16)').css('color', 'white');
+                }
+                if (data[16] == '100.0%') {
+
+                    $(row).find('td:eq(16)').css('background-color', 'darkgreen');
+
+                    $(row).find('td:eq(16)').css('color', 'white');
+                }
+                if (data[16] == '99.0%') {
+
+                    $(row).find('td:eq(16)').css('background-color', 'ForestGreen');
+
+                    $(row).find('td:eq(16)').css('color', 'white');
+                }
+                if (data[16] == '95.0%') {
+
+                    $(row).find('td:eq(16)').css('background-color', 'green');
+
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[16] == '90.0%') {
+                    $(row).find('td:eq(16)').css('background-color', 'PaleGreen');
+
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[16] == '80.0%' || data[16] == '75.0%') {
+                    $(row).find('td:eq(16)').css('background-color', 'LightBlue');
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[16] == '70.0%' || data[16] == '65.0%' || data[16] == '60.0%') {
+                    $(row).find('td:eq(16)').css('background-color', 'Lavender');
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[16] == '50.0%' || data[16] == '40.0%' || data[16] == '25.0%') {
+                    $(row).find('td:eq(16)').css('background-color', 'orange');
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[16] == '20.0%' || data[16] == '10.0%' || data[16] == '5.0%') {
+                    $(row).find('td:eq(16)').css('background-color', 'BurlyWood');
+                    $(row).find('td:eq(16)').css('color', 'black');
+                }
+                if (data[13] == 'CRN') {
+                    $(row).find('td:eq(13)').css('background-color', 'blue');
+                }
+                if (data[13] == 'HC') {
+                    $(row).find('td:eq(13)').css('background-color', 'darkgreen');
+                }
+                if (data[13] == 'NO') {
+                    $(row).find('td:eq(13)').css('background-color', 'red');
+                }
+            }
+        });
+        $('#table_id2').on('click', 'tr', function () {
+            var name = $('td', this).eq(1).text();
+
+            var data = table.row(this).data();
+            console.log(data);
+            // $('#exampleModal').modal("show");
+            $.ajax({
+                type: "POST",
+                url: "{% url 'admin' %}",
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                data: {
+                    'abc': name // from form
+                },
+                success: function (result) {
+                    openModal(result);
+                }
+            });
+        });
+    });
+    function openModal(response) {
+        
+        var data = response.passdata;
+        console.log("Data from Backend :",data);
+        // $('#clientnamelabel').html(response.passdata.clientname);
+        // $('#moclabel').html(response.passdata.moc);
+        // $('#tooltypelabel').html(response.passdata.tooltype);
+        // $('#shapelabel').html(response.passdata.shape);
+        // $('#tabletsizelabel').html(response.passdata.tabletsize);
+        // $('#u1label').html(response.passdata.u1);
+        // $('#u2label').html(response.passdata.u2);
+        // $('#l1label').html(response.passdata.l1);
+        // $('#l2label').html(response.passdata.l2);
+        // $('#dlabel').html(response.passdata.d);
+        // $('#setlabel').html(response.passdata.set);
+        // $('#platingtypelabel').html(response.passdata.platingtype);
+        // $('#modeofdispatchlabel').html(response.passdata.modeofdispatch);
+        // $('#rawmateriallabel').html(response.passdata.rawmaterial);
+        // $('#masterlabel').html(response.passdata.master);
+        // $('#blanklabel').html(response.passdata.blank);
+        // $('#processlabel').html(response.passdata.process);
+        // $('#bodytippinglabel').html(response.passdata.bodytipping);
+        // $('#headmachinelabel').html(response.passdata.headmachine);
+        // $('#keywaylabel').html(response.passdata.keyway);
+        // $('#htlabel').html(response.passdata.ht);
+        // $('#grindinglabel').html(response.passdata.grinding);
+        // $('#hardchromelabel').html(response.passdata.hardchrome);
+        // $('#qualitychecklabel').html(response.passdata.qualitycheck);
+        // $('#packingdispachlabel').html(response.passdata.packingdispach);
+
+
+
+        // $('#orderdate').val( product_data.passdata.orderdate);
+        // $('#ordernumber').val( product_data.passdata.ordernumber);
+
+        // $('#value').val( product_data.passdata.value);
+
+
+        // $('#orderremark').val( product_data.passdata.orderremark);
+        // $('#actualdeliverydate').val( product_data.passdata.actualdeliverydate);
+
+        // $('#couriernumber').val( product_data.passdata.couriernumber);
+
+        // $('#priority').val( product_data.passdata.priority);
+        // $('#dwgnumber').val( product_data.passdata.dwgnumber);
+        // $('#drgdate').val( product_data.passdata.drgdate);
+        // $('#approvaldate').val( product_data.passdata.approvaldate);
+
+        // $('#masterout').val( product_data.passdata.masterout);
+        // $('#masterin').val( product_data.passdata.masterin);
+        // $('#punchblank').val( product_data.passdata.punchblank);
+        // $('#dieblank').val( product_data.passdata.dieblank);
+        // $('#htdate').val( product_data.passdata.htdate);
+        // $('#estimateddelivery').val( product_data.passdata.estimateddelivery);
+        // $('#planningout').val( product_data.passdata.planningout);
+        // $('#planningin').val( product_data.passdata.planningin);
+        console.log(data.orderNumber)
+        $('#update_form_id').val(data.id)
+        $('#orderdate').val(data.orderDate);
+          $('#ordernumber').val(data.orderNumber);
+          $('#clientname').val(data.clientName);
+          $('#value').val(data.value);
+          $('#moc').val(data.moc);
+          $('#tooltype').val(data.toolType);
+          $('#shape').val(data.shape);
+          $('#tabletsize').val(data.tabletSize);
+          $('#u1').val(data.u1);
+          $('#u2').val(data.u2);
+          $('#l1').val(data.l1);
+          $('#l2').val(data.l2);
+          $('#d').val(data.d);
+          $('#set').val(data.set);
+          $('#platingtype').val(data.platingType);
+          $('#orderremark').val(data.user_1_remarks);
+          $('#form_id').val(data.id);
+          $('#actualdeliverydate').val(data.actualDelivery);
+          $('#modeofdispatch').val(data.dispachMode);
+          $('#couriernumber').val(data.couriesNumber);
+          $('#rawmaterial').val( data.rawMaterial);
+          $('#priority').val( data.priority);
+          $('#dwgnumber').val( data.dwgNumber);
+          $('#drgdate').val( data.drgDate);
+          $('#approvaldate').val( data.approvalDate);
+          $('#master').val( data.master);
+          $('#masterout').val( data.masterOut);
+          $('#masterin').val( data.masterIn);
+          
+          $('#htdate').val( data.hitDate);
+          $('#estimateddelivery').val( data.estimatedDelivery);
+          $('#planningout').val( data.planningOut);
+          $('#planningin').val( data.planningIn);
+          $('#blank').val( data.blank);
+          $('#process').val( data.process);
+          $('#bodytipping').val( data.bodyTipMachining);
+          $('#headmachine').val( data.headMachining);
+          $('#keyway').val( data.keywayTaperFinish);
+          $('#ht').val( data.ht);
+          $('#grinding').val( data.grinding);
+          $('#hardchrome').val( data.hardChrome);
+          $('#qualitycheck').val( data.qualityCheck);
+          $('#packingdispach').val( data.packingDispach);
+          $('#punchblank').val( response.punch_blank);
+          $('#dieblank').val(response.die_blank);
+          console.log(response)
+        $('#update_form_modal').modal('show');
+    };
+</script>
+<script>
+    $('#something').click(function () {
+        location.reload();
+    });
+</script>
+<script>
+    $('#something1').click(function () {
+        location.reload();
+    });
+</script>
+
+<!-- <div class="container mt-5">
+    <table class="table table-dark table-hover" id="table_id2">
+        <thead>
+            <tr>
+                <th scope="col">Order Date</th>
+                <th scope="col">Order Number</th>
+                <th scope="col">Client Name</th>
+                <th scope="col">Value</th>
+                <th scope="col">MOC</th>
+                <th scope="col">Tool Type</th>
+                <th scope="col">Shape</th>
+                <th scope="col">Tablet Size</th>
+                <th scope="col">U1</th>
+                <th scope="col">U2</th>
+                <th scope="col">L1</th>
+                <th scope="col">L2</th>
+                <th scope="col">D</th> 
+                <th scope="col">Set</th>
+                <th scope="col">Plating Type</th>
+                <th scope="col">Raw Material</th>
+                <th scope="col">Priority</th>
+                <th scope="col">dwgNumber</th>
+                <th scope="col">drgDate</th>
+                <th scope="col">approvalDate</th>
+                <th scope="col">master</th>
+                <th scope="col">masterOut</th>
+                <th scope="col">masterIn</th>
+                <th scope="col">punchBlankUsed</th>
+                <th scope="col">dieBlankUsed</th>
+                <th scope="col">hitDate</th>
+                <th scope="col">estimatedDelivery</th>
+                <th scope="col">planningOut</th>
+                <th scope="col">planningIn</th>
+                <th scope="col">blank</th>
+                <th scope="col">process</th>
+                <th scope="col">bodyTipMachining</th>
+                <th scope="col">headMachining</th>
+                <th scope="col">keywayTaperFinish</th>
+                <th scope="col">ht</th>
+                <th scope="col">grinding</th>
+                <th scope="col">hardChrome</th>
+                <th scope="col">qualityCheck</th>
+                <th scope="col">packingDispach</th>
+                <th scope="col">estimatedDelivery</th>
+                <th scope="col">actualDelivery</th>
+                <th scope="col">dispachMode</th>
+                <th scope="col">couriesNumber</th>
+                <th scope="col">remark</th>
+                
+                <th scope="col">Status</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in tabledata %}
+            <tr>
+                <th scope="row">{{data.orderdate}}</th>
+                <td>{{data.ordernumber}}</td>
+                <td>{{data.clientname}}</td>
+                <td>{{data.value}}</td>
+                <td>{{data.moc}}</td>
+                <td>{{data.tooltype}}</td>
+                <td>{{data.shape}}</td>
+                <td>{{data.u1}}</td>
+                <td>{{data.u2}}</td>
+                <td>{{data.l1}}</td>
+                <td>{{data.l2}}</td>
+                <td>{{data.d}}</td> 
+                <td>{{data.set}}</td>
+                <td>{{data.platingtype}}</td>
+                <td>{{data.rawmaterial}}</td>
+                <td>{{data.priority}}</td>
+                <td>{{data.status}}</td>
+                <td>{{data.dwgNumber}}</td>
+                <td>{{data.drgDate}}</td>
+                <td>{{data.approvalDate}}</td>
+                <td>{{data.master}}</td>
+                <td>{{data.masterOut}}</td>
+                <td>{{data.masterIn}}</td>
+                <td>{{data.punchBlankUsed}}</td>
+                <td>{{data.dieBlankUsed}}</td>
+                <td>{{data.hitDate}}</td>
+                <td>{{data.estimatedDelivery}}</td>
+                <td>{{data.planningOut}}</td>
+                <td>{{data.planningIn}}</td>
+                <td>{{data.blank}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.bodyTipMachining}}</td>
+                <td>{{data.headMachining}}</td>
+                <td>{{data.keywayTaperFinish}}</td>
+                <td>{{data.ht}}</td>
+                <td>{{data.grinding}}</td>
+                <td>{{data.hardChrome}}</td>
+                <td>{{data.qualityCheck}}</td>
+                <td>{{data.packingDispach}}</td>
+                <td>{{data.estimatedDelivery}}</td>
+                <td>{{data.actualDelivery}}</td>
+                <td>{{data.dispachMode}}</td>
+                <td>{{data.couriesNumber}}</td>
+                <td>{{data.remark}}</td>
+                
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <td><button class="btn btn-primary" type="submit" name="updateform"
+                            value="{{data.id}}">Update</button></td>
+                </form>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <td><button class="btn btn-danger" type="submit" name="deleteform" id="confirm-delete"
+                            value="{{data.id}}">Delete</button></td>
+                </form>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div> -->
+
+{% endblock script %}
+
+<!-- <table class="table table-dark" id="table_id2">
+    <thead>
+        <tr>
+            <th scope="col">Order Date</th>
+            <th scope="col">Order Number</th>
+            <th scope="col">Client Name</th>
+            <th scope="col">Value</th>
+            <th scope="col">MOC</th>
+            <th scope="col">Tool Type / M.C</th>
+            <th scope="col">Shape</th>
+            <th scope="col">Tablet Size</th>
+            <th scope="col">U1</th>
+            <th scope="col">U2</th>
+            <th scope="col">L1</th>
+            <th scope="col">L2</th>
+            <th scope="col">D</th> 
+            <th scope="col">Set</th>
+            <th scope="col">Plating Type</th>
+            <th scope="col">Raw Material</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Status</th>
+            <th scope="col">dwgNumber</th>
+            <th scope="col">drgDate</th>
+            <th scope="col">approvalDate</th>
+            <th scope="col">master</th>
+            <th scope="col">masterOut</th>
+            <th scope="col">masterIn</th>
+            <th scope="col">punchBlankUsed</th>
+            <th scope="col">dieBlankUsed</th>
+            <th scope="col">hitDate</th>
+            <th scope="col">estimatedDelivery</th>
+            <th scope="col">planningOut</th>
+            <th scope="col">planningIn</th>
+            <th scope="col">blank</th>
+            <th scope="col">process</th>
+            <th scope="col">bodyTipMachining</th>
+            <th scope="col">headMachining</th>
+            <th scope="col">keywayTaperFinish</th>
+            <th scope="col">ht</th>
+            <th scope="col">grinding</th>
+            <th scope="col">hardChrome</th>
+            <th scope="col">qualityCheck</th>
+            <th scope="col">packingDispach</th>
+            <th scope="col">estimatedDelivery</th>
+            <th scope="col">actualDelivery</th>
+            <th scope="col">dispachMode</th>
+            <th scope="col">couriesNumber</th>
+            <th scope="col">remark</th>
+            
+
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in tabledata %}
+        <tr>
+            <td>{{data.orderdate}}</td>
+            <td>{{data.ordernumber}}</td>
+            <td>{{data.clientname}}</td>
+            <td>{{data.value}}</td>
+            <td>{{data.moc}}</td>
+            <td>{{data.tooltype}}</td>
+            <td>{{data.shape}}</td>
+            <td>{{data.tabletsize}}</td>
+            <td>{{data.u1}}</td>
+            <td>{{data.u2}}</td>
+            <td>{{data.l1}}</td>
+            <td>{{data.l2}}</td>
+            <td>{{data.d}}</td> 
+            <td>{{data.set}}</td>
+            <td>{{data.platingtype}}</td>
+            <td>{{data.rawmaterial}}</td>
+            <td>{{data.priority}}</td>
+            <td>{{data.status}}</td>
+            <td>{{data.dwgNumber}}</td>
+            <td>{{data.drgDate}}</td>
+            <td>{{data.approvalDate}}</td>
+            <td>{{data.master}}</td>
+            <td>{{data.masterOut}}</td>
+            <td>{{data.masterIn}}</td>
+            <td>{{data.punchBlankUsed}}</td>
+            <td>{{data.dieBlankUsed}}</td>
+            <td>{{data.hitDate}}</td>
+            <td>{{data.estimatedDelivery}}</td>
+            <td>{{data.planningOut}}</td>
+            <td>{{data.planningIn}}</td>
+            <td>{{data.blank}}</td>
+            <td>{{data.process}}</td>
+            <td>{{data.bodyTipMachining}}</td>
+            <td>{{data.headMachining}}</td>
+            <td>{{data.keywayTaperFinish}}</td>
+            <td>{{data.ht}}</td>
+            <td>{{data.grinding}}</td>
+            <td>{{data.hardChrome}}</td>
+            <td>{{data.qualityCheck}}</td>
+            <td>{{data.packingDispach}}</td>
+            <td>{{data.estimatedDelivery}}</td>
+            <td>{{data.actualDelivery}}</td>
+            <td>{{data.dispachMode}}</td>
+            <td>{{data.couriesNumber}}</td>
+            <td>{{data.remark}}</td>
+            
+            <form action="" method="POST">
+                {% csrf_token %}
+                <td><button class="btn btn-primary" type="submit" name="updateform"
+                        value="{{data.id}}">Update</button></td>
+            </form>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <td><button class="btn btn-danger" type="submit" name="deleteform" id="confirm-delete"
+                        value="{{data.id}}">Delete</button></td>
+            </form>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> -->

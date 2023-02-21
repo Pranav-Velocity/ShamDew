@@ -1,46 +1,10 @@
-{% extends 'base2.html' %}
-{% load static %}
-{% block title%} {% endblock title %}
-{% block head %}
-
-{% endblock head %}
-
-
-{% block sidebaranchor %}
-<a href="{% url 'login' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-    <svg class="bi me-2" width="40" height="32">
-        <use xlink:href="#bootstrap"></use>
-    </svg>
-    <span class="fs-4">FORM DATA</span>
-  </a> 
-{% endblock sidebaranchor %}
-
-
-{% if user.is_authenticated %}
-{% if data == "yes" %}
-{% block sidebarlist %}
-<li class="nav-item">
-    <a href="{% url 'index2' %}" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-        HOME
-    </a>
-  </li>
-  <li class="nav-item">
-    <a href="/logout" class="nav-link text-white" aria-current="page">
-        <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#home"></use>
-        </svg>
-        LOGOUT
-    </a>
-  </li>
-{% endblock sidebarlist %}
-{% endif %}
-{% endif %}
-
-
+{% include 'includes/masterpage.html' %}
+{% load custom_tags %}
+{% block title %} <title>Approval Pending Tasks</title> {% endblock title %}
 {% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
 
 <!-- <div class="alert alert-primary text-center" role="alert" style="font-size: 25px;">
     {% now "jS F Y" %}
@@ -86,7 +50,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="rawmaterial" aria-label="Default select example" id="floatingInput16">
+          <select class="form-control" name="rawmaterial" aria-label="Default select example" id="floatingInput16">
             <option selected value="{{i.update_rawmaterial}}">{{i.update_rawmaterial}}</option>
             {% for i in placeholder.rawmaterial %}
             <option value="{{i}}">{{i}}</option>
@@ -133,7 +97,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="master" aria-label="Default select example" id="floatingInput3"
+          <select class="form-control" name="master" aria-label="Default select example" id="floatingInput3"
             >
             <option selected value="{{i.update_master}}" >{{i.update_master}}</option>
             <option value="YES" >YES</option>
@@ -215,7 +179,7 @@
     <div class="row" style="margin-top: 10px;">
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="blank" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="blank" aria-label="Default select example" id="floatingInput3">
             <!-- <option selected value="{{i.update_master}}" >{{i.update_master}}</option> -->
             <option selected value="" >{{i.update_blank}}</option>
             <option value="0.0"></option>
@@ -228,7 +192,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="process" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="process" aria-label="Default select example" id="floatingInput3">
             <option selected value="" >{{i.update_process}}</option>
             <option value="0.0"></option>
             {% for i in placeholder.process %}
@@ -241,7 +205,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="bodytipping" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="bodytipping" aria-label="Default select example" id="floatingInput3">
             <option selected value="" >{{i.update_bodytipping}}</option>
             <option value="0.0"></option>
             {% for i in placeholder.bodyTipMachining %}
@@ -254,7 +218,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="headmachine" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="headmachine" aria-label="Default select example" id="floatingInput3">
             <option selected value="" >{{i.update_headmachining}}</option>
             <option value="0.0"></option>
             {% for i in placeholder.headMachining %}
@@ -269,7 +233,7 @@
     <div class="row" style="margin-top: 10px;">
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="keyway" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="keyway" aria-label="Default select example" id="floatingInput3">
             <option selected value="" >{{i.update_keyway}}</option>
             <option value="0.0"></option>
             {% for i in placeholder.keywayTaperFinish %}
@@ -281,7 +245,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="ht" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="ht" aria-label="Default select example" id="floatingInput3">
             <option selected value="" >{{i.update_ht}}</option>
             <option value="0.0"></option>
             {% for i in placeholder.ht %}
@@ -294,7 +258,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="grinding" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="grinding" aria-label="Default select example" id="floatingInput3">
             <option selected value="" >{{i.update_grinding}}</option>
             <option value="0.0"></option>
             {% for i in placeholder.grinding %}
@@ -307,7 +271,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="hardchrome" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="hardchrome" aria-label="Default select example" id="floatingInput3">
             <option selected value="" >{{i.update_hardchrome}}</option>
             <option value="0.0"></option>
             {% for i in placeholder.hardChrome %}
@@ -325,7 +289,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="qualitycheck" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="qualitycheck" aria-label="Default select example" id="floatingInput3">
             <option selected value="" >{{i.update_qualitycheck}}</option>
             <option value="0.0"></option>
             {% for i in placeholder.qualityCheck %}
@@ -338,7 +302,7 @@
       </div>
       <div class="col-sm-3">
         <div class="form-floating mb-3">
-          <select class="form-select" name="packingdispach" aria-label="Default select example" id="floatingInput3">
+          <select class="form-control" name="packingdispach" aria-label="Default select example" id="floatingInput3">
             <option selected value="" >{{i.update_packingDispach}}</option>
             <option value="0.0"></option>
             {% for i in placeholder.packingDispach %}
@@ -371,70 +335,68 @@
   {% endif %}
   {% endif %}
 </div>
-{% if data == "yes" %}
-{% if user.is_authenticated %}
-{% if update != "yes" %}
+
 
 <table class="table table-dark " id="table_id">
   <thead>
     <tr>
       <th scope="col">Order Date</th>
-      <th scope="col">Order Number</th>
-      <th scope="col">Client Name</th>
-      <th scope="col">MOC</th>
-      <th scope="col">Tool Type / M.C</th>
-      <th scope="col">Shape</th>
-      <th scope="col">Tablet Size</th>
-      <th scope="col">U1</th>
-      <th scope="col">U2</th>
-      <th scope="col">L1</th>
-      <th scope="col">L2</th>
-      <th scope="col">D</th>
-      <th scope="col">Set</th>
-      <th scope="col">Plating Type</th>
-      <th scope="col">Remarks</th>
-      <th scope="col">Status</th>
+        <th scope="col">Order Number</th>
+        <th scope="col">Client Name</th>
+        <th scope="col">MOC</th>
+        <th scope="col">Tool Type / M.C</th>
+        <th scope="col">Shape</th>
+        <th scope="col">Tablet Size</th>
+        <th scope="col">U1</th>
+        <th scope="col">U2</th>
+        <th scope="col">L1</th>
+        <th scope="col">L2</th>
+        <th scope="col">D</th>
+        <th scope="col">Set</th>
+        <th scope="col">Plating Type</th>
+        <th scope="col">Remarks</th>
+        <th scope="col">Status</th>
+        
     </tr>
   </thead>
   <tbody>
     {% for data in tabledata %}
     <tr>
-      <td>{{data.orderdate}}</td>
-      <td>{{data.ordernumber}}</td>
-      <td>{{data.clientname}}</td>
-      <td>{{data.moc}}</td>
-      <td>{{data.tooltype}}</td>
-      <td>{{data.shape}}</td>
-      <td>{{data.tabletsize}}</td>
-      <td>{{data.u1}}</td>
-      <td>{{data.u2}}</td>
-      <td>{{data.l1}}</td>
-      <td>{{data.l2}}</td>
-      <td>{{data.d}}</td>
-      <td>{{data.set}}</td>
-      <td>{{data.platingtype}}</td>
-      <td>{{data.remarks}}</td>
-      <td>{{data.status}}</td>
+      <td>{{data.orderDate}}</td>
+        <td>{{data.orderNumber}}</td>
+        <td>{{data.clientName.customerCompanyName}}</td>
+        <td>{{data.moc.name}}</td>
+        <td>{{data.toolType.name}}</td>
+        <td>{{data.shape.name}}</td>
+        <td>{{data.tabletSize.name}}</td>
+        <td>{{data.u1.name}}</td>
+        <td>{{data.u2.name}}</td>
+        <td>{{data.l1.name}}</td>
+        <td>{{data.l2.name}}</td>
+        <td>{{data.d.name}}</td>
+        <td>{{data.set.name}}</td>
+        <td>{{data.platingType.name}}</td>
+        <td>{{data.user_1_remarks}}</td>
+        <td>{{ data.id | testing}}</td>
 
     </tr>
     {% endfor %}
   </tbody>
 </table>
 
-{% endif %}
-{% endif %}
-{% endif %}
-{% if errlogin == "invalid" %}
-<h1 class="d-flex justify-content-center" style="color: red;">Error login.. UserName or Password not matched!!</h1>
-{% endif %}
 
 
-<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+
+
+<div class="modal" id="update_form_modal" tabindex="-1">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
         <form action="" method="POST" autocomplete="off">
@@ -456,10 +418,9 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="rawmaterial" aria-label="Default select example" id="rawmaterial">
-                  <option id="rawmateriallabel" selected value="{{i.update_rawmaterial}}">{{i.update_rawmaterial}}</option>
-                  {% for i in placeholder.rawmaterial %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_rawmaterial" aria-label="Default select example" id="rawmaterial">
+                  {% for i in RawMaterial %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="rawmaterial">Raw Material</label>
@@ -468,8 +429,7 @@
             <div class="col-sm-3">
       
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" name="priority" id="priority" placeholder=""
-                    value="{{i.update_priority}}">
+                  <input type="text" class="form-control" name="update_priority" id="priority">
                   <label for="priority">Priority</label>
                 </div>
       
@@ -482,30 +442,25 @@
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="dwgnumber" id="dwgnumber" placeholder="" 
-                  value="{{i.update_dwgnumber}}">
+                <input type="text" class="form-control" name="update_dwgnumber" id="dwgnumber">
                 <label for="dwgnumber">DWG Number</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="drgdate" id="drgdate" placeholder="" 
-                  value="{{i.update_drgdate}}">
+                <input type="date" class="form-control" name="update_drgdate" id="drgdate">
                 <label for="drgdate">DRG Date</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="approvaldate" id="approvaldate" placeholder="" 
-                  value="{{i.update_approvalDate}}">
+                <input type="date" class="form-control" name="update_approvaldate" id="approvaldate">
                 <label for="approvaldate">Approval Date</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="master" aria-label="Default select example" id="master"
-                  >
-                  <option id="masterlabel" selected value="{{i.update_master}}" >{{i.update_master}}</option>
+                <select class="form-control" name="update_master" aria-label="Default select example" id="master">
                   <option value="YES" >YES</option>
                   <option value="NO" >NO</option>
                 </select>
@@ -516,29 +471,25 @@
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="masterout" id="masterout"  placeholder=""
-                  value="{{i.update_masterOut}}">
+                <input type="date" class="form-control" name="update_masterout" id="masterout">
                 <label for="masterout">Master Out</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="masterin" id="masterin"  placeholder=""
-                  value="{{i.update_masterIn}}">
+                <input type="date" class="form-control" name="update_masterin" id="masterin">
                 <label for="masterin">Master In</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="punchblank" id="punchblank" disabled placeholder=""
-                  value="{{i.update_punchBlankUsed}}">
+                <input type="text" class="form-control" name="punchblank" id="punchblank" disabled >
                 <label for="punchblank">Punch Blank Used</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="dieblank" id="dieblank" disabled placeholder=""
-                  value="{{i.update_dieBlankUsed}}">
+                <input type="text" class="form-control" name="dieblank" id="dieblank" disabled>
                 <label for="dieblank">Die Blank Used</label>
               </div>
             </div>
@@ -547,29 +498,25 @@
             <div class="col-sm-3">
       
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="htdate" id="htdate"  placeholder=""
-                  value="{{i.update_hitDate}}">
+                <input type="date" class="form-control" name="update_htdate" id="htdate">
                 <label for="htdate">HT Date</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="estimateddelivery"  id="estimateddelivery" placeholder=""
-                  value="{{i.update_estimatedDelivery}}">
+                <input type="date" class="form-control" name="update_estimateddelivery"  id="estimateddelivery">
                 <label for="estimateddelivery">Estimated Delivery Date</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="planningout" id="planningout"  placeholder=""
-                  value="{{i.update_planningOut}}">
+                <input type="date" class="form-control" name="update_planningout" id="planningout">
                 <label for="planningout"  placeholder="">Planning Out</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" name="planningin" id="planningin"  placeholder=""
-                  value="{{i.update_planningIn}}">
+                <input type="date" class="form-control" name="update_planningin" id="planningin">
                 <label for="planningin">Planning In</label>
               </div>
             </div>
@@ -585,12 +532,9 @@
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="blank" aria-label="Default select example" id="blank">
-                  <!-- <option selected value="{{i.update_master}}" >{{i.update_master}}</option> -->
-                  <option id="blanklabel" selected value="" >{{i.update_blank}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.blank %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_blank" aria-label="Default select example" id="blank">
+                  {% for i in Blank %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="blank">Blank</label>
@@ -598,11 +542,9 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="process" aria-label="Default select example" id="process">
-                  <option id="processlabel" selected value="" >{{i.update_process}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.process %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_process" aria-label="Default select example" id="process">
+                  {% for i in Process %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
       
                 </select>
@@ -611,11 +553,9 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="bodytipping" aria-label="Default select example" id="bodytipping">
-                  <option id="bodytippinglabel" selected value="" >{{i.update_bodytipping}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.bodyTipMachining %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_bodytipping" aria-label="Default select example" id="bodytipping">
+                  {% for i in BodyTipMachining %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
       
                 </select>
@@ -624,11 +564,9 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="headmachine" aria-label="Default select example" id="headmachine">
-                  <option id="headmachinelabel" selected value="" >{{i.update_headmachining}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.headMachining %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_headmachine" aria-label="Default select example" id="headmachine">
+                  {% for i in HeadMachining %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
       
                 </select>
@@ -639,11 +577,9 @@
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="keyway" aria-label="Default select example" id="keyway">
-                  <option id="keywaylabel" selected value="" >{{i.update_keyway}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.keywayTaperFinish %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_keyway" aria-label="Default select example" id="keyway">
+                  {% for i in KeywayTaperFinish %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
                 </select>
                 <label for="keyway">Keyway Tapper Finish</label>
@@ -651,11 +587,9 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="ht" aria-label="Default select example" id="ht">
-                  <option id="htlabel" selected value="" >{{i.update_ht}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.ht %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_ht" aria-label="Default select example" id="ht">
+                  {% for i in HT %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
       
                 </select>
@@ -664,11 +598,9 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="grinding" aria-label="Default select example" id="grinding">
-                  <option id="grindinglabel" selected value="" >{{i.update_grinding}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.grinding %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_grinding" aria-label="Default select example" id="grinding">
+                  {% for i in Grinding %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
       
                 </select>
@@ -677,11 +609,9 @@
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="hardchrome" aria-label="Default select example" id="hardchrome">
-                  <option id="hardchromelabel" selected value="" >{{i.update_hardchrome}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.hardChrome %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_hardchrome" aria-label="Default select example" id="hardchrome">
+                  {% for i in HardChrome %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
       
                 </select>
@@ -691,28 +621,23 @@
           </div>
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-3">
-      
+              <input type="text" class="form-control" name="update_form_id" id="update_form_id">
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="qualitycheck" aria-label="Default select example" id="qualitycheck">
-                  <option id="qualitychecklabel" selected value="" >{{i.update_qualitycheck}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.qualityCheck %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_qualitycheck" aria-label="Default select example" id="qualitycheck">
+                  {% for i in QualityCheck %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
-      
                 </select>
                 <label for="qualitycheck">Quality Check</label>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-floating mb-3">
-                <select class="form-select" name="packingdispach" aria-label="Default select example" id="packingdispach">
-                  <option id="packingdispachlabel" selected value="" >{{i.update_packingDispach}}</option>
-                  <option value="0.0">NONE</option>
-                  {% for i in placeholder.packingDispach %}
-                  <option value="{{i}}">{{i}}</option>
+                <select class="form-control" name="update_packingdispach" aria-label="Default select example" id="packingdispach">
+                  {% for i in PackingDispach %}
+                  <option value="{{i.id}}">{{i.name}}</option>
                   {% endfor %}
       
                 </select>
@@ -720,7 +645,7 @@
               </div>
             </div>
             <div class="col-sm-3">
-      
+              
             </div>
           </div>
           
@@ -739,7 +664,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -1329,49 +1254,38 @@ $('#table_id').on('click', 'tr', function () {
 
   function openModal(product_data){
           console.log(product_data);
-          $('#rawmateriallabel').html(product_data.passdata.rawmaterial);
-          $('#masterlabel').html(product_data.passdata.master);
-          $('#blanklabel').html(product_data.passdata.blank);
-          $('#processlabel').html(product_data.passdata.process);
-          $('#bodytippinglabel').html(product_data.passdata.bodytipping);
-          $('#headmachinelabel').html(product_data.passdata.headmachine);
-          $('#keywaylabel').html(product_data.passdata.keyway);
-          $('#htlabel').html(product_data.passdata.ht);
-          $('#grindinglabel').html(product_data.passdata.grinding);
-          $('#hardchromelabel').html(product_data.passdata.hardchrome);
-          $('#qualitychecklabel').html(product_data.passdata.qualitycheck);
-          $('#packingdispachlabel').html(product_data.passdata.packingdispach);
+         
           
 
 
-
-          $('#rawmaterial').attr("value", product_data.passdata.rawmaterial);
-          $('#priority').attr("value", product_data.passdata.priority);
-          $('#dwgnumber').attr("value", product_data.passdata.dwgnumber);
-          $('#drgdate').attr("value", product_data.passdata.drgdate);
-          $('#approvaldate').attr("value", product_data.passdata.approvaldate);
-          $('#master').attr("value", product_data.passdata.master);
-          $('#masterout').attr("value", product_data.passdata.masterout);
-          $('#masterin').attr("value", product_data.passdata.masterin);
-          $('#punchblank').attr("value", product_data.passdata.punchblank);
-          $('#dieblank').attr("value", product_data.passdata.dieblank);
-          $('#htdate').attr("value", product_data.passdata.htdate);
-          $('#estimateddelivery').attr("value", product_data.passdata.estimateddelivery);
-          $('#planningout').attr("value", product_data.passdata.planningout);
-          $('#planningin').attr("value", product_data.passdata.planningin);
-          $('#blank').attr("value", product_data.passdata.blank);
-          $('#process').attr("value", product_data.passdata.process);
-          $('#bodytipping').attr("value", product_data.passdata.bodytipping);
-          $('#headmachine').attr("value", product_data.passdata.headmachine);
-          $('#keyway').attr("value", product_data.passdata.keyway);
-          $('#ht').attr("value", product_data.passdata.ht);
-          $('#grinding').attr("value", product_data.passdata.grinding);
-          $('#hardchrome').attr("value", product_data.passdata.hardchrome);
-          $('#qualitycheck').attr("value", product_data.passdata.qualitycheck);
-          $('#packingdispach').attr("value", product_data.passdata.packingdispach);
+          $('#update_form_id').val(product_data.passdata.id)
+          $('#rawmaterial').val( product_data.passdata.rawMaterial);
+          $('#priority').val( product_data.passdata.priority);
+          $('#dwgnumber').val( product_data.passdata.dwgNumber);
+          $('#drgdate').val( product_data.passdata.drgDate);
+          $('#approvaldate').val( product_data.passdata.approvalDate);
+          $('#master').val( product_data.passdata.master);
+          $('#masterout').val( product_data.passdata.masterOut);
+          $('#masterin').val( product_data.passdata.masterIn);
+          $('#punchblank').val( product_data.punch_blank);
+          $('#dieblank').val( product_data.die_blank);
+          $('#htdate').val( product_data.passdata.hitDate);
+          $('#estimateddelivery').val( product_data.passdata.estimatedDelivery);
+          $('#planningout').val( product_data.passdata.planningOut);
+          $('#planningin').val( product_data.passdata.planningIn);
+          $('#blank').val( product_data.passdata.blank);
+          $('#process').val( product_data.passdata.process);
+          $('#bodytipping').val( product_data.passdata.bodyTipMachining);
+          $('#headmachine').val( product_data.passdata.headMachining);
+          $('#keyway').val( product_data.passdata.keywayTaperFinish);
+          $('#ht').val( product_data.passdata.ht);
+          $('#grinding').val( product_data.passdata.grinding);
+          $('#hardchrome').val( product_data.passdata.hardChrome);
+          $('#qualitycheck').val( product_data.passdata.qualityCheck);
+          $('#packingdispach').val( product_data.passdata.packingDispach);
           
           
-          $('#exampleModal').modal('show');
+          $('#update_form_modal').modal('show');
         };
 </script>
 
@@ -1947,5 +1861,3 @@ $('#table_id').on('click', 'tr', function () {
   });
 </script> -->
 {% endblock content %}
-{% block main_script %}
-{% endblock main_script %}
