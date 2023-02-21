@@ -592,7 +592,7 @@
             </form>
             `);
         }
-        if(type == "planningstage"){
+        else if(type == "planningstage"){
             $('#hidden_section').append(`
             
             <div class="row">
@@ -601,6 +601,101 @@
                         <option selected value="">Open this select menu</option>
                         <option value="punchblank">Punch Blank Used</option>
                         <option value="dieblank">Die Blank</option>
+                    </select>
+
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <table class="table" id="data_table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_table_body">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    
+                    <div class="col-md-4" id="input_field">
+                        
+                    </div>
+                    <div class="col-md-2" id="input_field_save">
+                        <button type="submit" class="btn btn-primary">Save</button
+                    </div>
+                    
+                </div>
+            </form>
+            `);
+        }
+        else if(type == "manufacturingstage"){
+            $('#hidden_section').append(`
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <select id="fields" class="form-control" aria-label="Default select example">
+                        <option selected value="">Open this select menu</option>
+                        <option value="blank">Blank</option>
+                        <option value="process">Process</option>
+                        <option value="bodytipmachining">Body Tip Machining</option>
+                        <option value="headmachining">Head Machining</option>
+                        <option value="keywaytaperfinish">Keyway Taper Finish</option>
+                        <option value="ht">HT</option>
+                        <option value="grinding">Grinding</option>
+                        <option value="hardchrome">Hard Chrome</option>
+                        <option value="qualitycheck">Quality Check</option>
+                        <option value="packingdispatch">Packing Dispatch</option>
+                        
+                    </select>
+
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <table class="table" id="data_table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_table_body">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    
+                    <div class="col-md-4" id="input_field">
+                        
+                    </div>
+                    <div class="col-md-2" id="input_field_save">
+                        <button type="submit" class="btn btn-primary">Save</button
+                    </div>
+                    
+                </div>
+            </form>
+            `);
+        }
+        else if(type == "dispatchstage"){
+            $('#hidden_section').append(`
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <select id="fields" class="form-control" aria-label="Default select example">
+                        <option selected value="">Open this select menu</option>
+                        <option value="dispatchmode">Dispatch Mode</option>
+                        
                     </select>
 
                 </div>

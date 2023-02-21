@@ -79,6 +79,63 @@ class DieBlankSerializer(serializers.ModelSerializer):
 
 
 
+class BlankSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blank
+        fields = '__all__'
+
+class ProcessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Process
+        fields = '__all__'
+
+class BodyTipMachiningSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BodyTipMachining
+        fields = '__all__'
+
+class HeadMachiningSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HeadMachining
+        fields = '__all__'
+
+class KeywayTaperFinishSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KeywayTaperFinish
+        fields = '__all__'
+
+class HTSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HT
+        fields = '__all__'
+
+class GrindingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grinding
+        fields = '__all__'
+
+class HardChromeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HardChrome
+        fields = '__all__'
+
+class QualityCheckSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QualityCheck
+        fields = '__all__'
+
+class PackingDispachSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PackingDispach
+        fields = '__all__'
+
+class DispachModeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DispachMode
+        fields = '__all__'
+
+
+
 
 
 
