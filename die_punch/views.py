@@ -855,47 +855,88 @@ def admin(request):
             if update_orderdate or update_ordernumber or update_clientname or update_value or update_moc or update_tooltype or update_shape or update_tabletsize or update_u1 or update_u2 or update_u2 or update_l1 or update_l2 or update_d or update_set or update_platingtype or update_orderremark or update_form_id or update_actualdeliverydate or update_modeofdispatch or update_couriernumber or rawmaterial or priority or dwgnumber or drgdate or approvaldate or master or masterout or masterin or htdate or estimateddelivery or planningout or planningin or blank or process or bodytipping or  headmachine or keyway or ht or grinding or hardchrome or qualitycheck or packingdispach:
                 print(update_orderdate , update_ordernumber , update_clientname , update_value , update_moc , update_tooltype , update_shape , update_tabletsize , update_u1 , update_u2 , update_l1 , update_l2 , update_d , update_set , update_platingtype , update_orderremark , update_form_id , update_actualdeliverydate , update_modeofdispatch , update_couriernumber)
                 update_form = ProductionData.objects.get(id=update_form_id)
-                update_form.orderDate = update_orderdate
-                update_form.orderNumber = update_ordernumber
-                update_form.clientName = CustomerDetail.objects.get(id=update_clientname)
-                update_form.value = update_value
-                update_form.moc = Moc.objects.get(id=update_moc)
-                update_form.toolType = ToolType.objects.get(id=update_tooltype)
-                update_form.shape = Shape.objects.get(id=update_shape)
-                update_form.tabletSize = TabletSize.objects.get(id=update_tabletsize)
-                update_form.u1 = U1.objects.get(id=update_u1)
-                update_form.u2 =U2.objects.get(id=update_u2)
-                update_form.l1 = L1.objects.get(id=update_l1)
-                update_form.l2= L2.objects.get(id=update_l2)
-                update_form.d = D.objects.get(id=update_d)
-                update_form.set = Set.objects.get(id=update_set)
-                update_form.platingType = PlatingType.objects.get(id=update_platingtype)
-                update_form.user_1_remarks = update_orderremark
-                update_form.actualDelivery = update_actualdeliverydate
-                update_form.dispachMode = DispachMode.objects.get(id=update_modeofdispatch)
-                update_form.couriesNumber = update_couriernumber
-                update_form.rawMaterial = RawMaterial.objects.get(id=rawmaterial)
-                update_form.priority = priority
-                update_form.dwgNumber = dwgnumber
-                update_form.drgDate = drgdate
-                update_form.approvalDate = approvaldate
-                update_form.master = master
-                update_form.masterOut = masterout
-                update_form.masterIn = masterin
-                update_form.hitDate = htdate
-                update_form.estimatedDelivery = estimateddelivery
-                update_form.planningOut = planningout
-                update_form.planningIn = planningin
-                update_form.blank = Blank.objects.get(id = blank)
-                update_form.process = Process.objects.get(id = process)
-                update_form.bodyTipMachining = BodyTipMachining.objects.get(id = bodytipping)
-                update_form.headMachining = HeadMachining.objects.get(id = headmachine)
-                update_form.keywayTaperFinish = KeywayTaperFinish.objects.get(id = keyway)
-                update_form.ht = HT.objects.get(id = ht)
-                update_form.grinding = Grinding.objects.get(id = grinding)
-                update_form.hardChrome = HardChrome.objects.get(id = hardchrome)
-                update_form.qualityCheck = QualityCheck.objects.get(id = qualitycheck)
-                update_form.packingDispach = PackingDispach.objects.get(id = packingdispach)
+                if update_orderdate:
+                    update_form.orderDate = update_orderdate
+                if update_ordernumber:
+                    update_form.orderNumber = update_ordernumber
+                if update_clientname:
+                    update_form.clientName = CustomerDetail.objects.get(id=update_clientname)
+                if update_value:
+                    update_form.value = update_value
+                if update_moc:
+                    update_form.moc = Moc.objects.get(id=update_moc)
+                if update_tooltype:
+                    update_form.toolType = ToolType.objects.get(id=update_tooltype)
+                if update_shape:
+                    update_form.shape = Shape.objects.get(id=update_shape)
+                if update_tabletsize:
+                    update_form.tabletSize = TabletSize.objects.get(id=update_tabletsize)
+                if update_u1:
+                    update_form.u1 = U1.objects.get(id=update_u1)
+                if update_u2:
+                    update_form.u2 =U2.objects.get(id=update_u2)
+                if update_l1:
+                    update_form.l1 = L1.objects.get(id=update_l1)
+                if update_l2:
+                    update_form.l2= L2.objects.get(id=update_l2)
+                if update_d:
+                    update_form.d = D.objects.get(id=update_d)
+                if update_set:
+                    update_form.set = Set.objects.get(id=update_set)
+                if update_platingtype:
+                    update_form.platingType = PlatingType.objects.get(id=update_platingtype)
+                if update_orderremark:
+                    update_form.user_1_remarks = update_orderremark
+                if update_actualdeliverydate:
+                    update_form.actualDelivery = update_actualdeliverydate
+                if update_modeofdispatch:
+                    update_form.dispachMode = DispachMode.objects.get(id=update_modeofdispatch)
+                if update_couriernumber:
+                    update_form.couriesNumber = update_couriernumber
+                if rawmaterial:
+                    update_form.rawMaterial = RawMaterial.objects.get(id=rawmaterial)
+                if priority:
+                    update_form.priority = priority
+                if dwgnumber:
+                    update_form.dwgNumber = dwgnumber
+                if drgdate:
+                    update_form.drgDate = drgdate
+                if approvaldate:
+                    update_form.approvalDate = approvaldate
+                if master:
+                    update_form.master = master
+                if masterout:
+                    update_form.masterOut = masterout
+                if masterin:
+                    update_form.masterIn = masterin
+                if htdate:
+                    update_form.hitDate = htdate
+                if estimateddelivery:
+                    update_form.estimatedDelivery = estimateddelivery
+                if planningout:
+                    update_form.planningOut = planningout
+                if planningin:
+                    update_form.planningIn = planningin
+                if blank:
+                    update_form.blank = Blank.objects.get(id = blank)
+                if process:
+                    update_form.process = Process.objects.get(id = process)
+                if bodytipping:
+                    update_form.bodyTipMachining = BodyTipMachining.objects.get(id = bodytipping)
+                if headmachine:
+                    update_form.headMachining = HeadMachining.objects.get(id = headmachine)
+                if keyway:
+                    update_form.keywayTaperFinish = KeywayTaperFinish.objects.get(id = keyway)
+                if ht:
+                    update_form.ht = HT.objects.get(id = ht)
+                if grinding:
+                    update_form.grinding = Grinding.objects.get(id = grinding)
+                if hardchrome:
+                    update_form.hardChrome = HardChrome.objects.get(id = hardchrome)
+                if qualitycheck:
+                    update_form.qualityCheck = QualityCheck.objects.get(id = qualitycheck)
+                if packingdispach:
+                    update_form.packingDispach = PackingDispach.objects.get(id = packingdispach)
                 update_form.save()
                 return redirect('admin')
         params = {
