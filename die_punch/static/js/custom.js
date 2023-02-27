@@ -49,3 +49,5 @@ $('INPUT[type="file"]').change(function(){
     $( document ).ready(function() {
         $('input').prop('autocomplete', 'off');
     });
+
+    $('body').toggleClass('sidebar-collapse');

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'system',
     'die_punch',
     'marketing',
     'rest_framework'
@@ -54,7 +55,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'system.urls'
 
-AUTH_USER_MODEL = 'die_punch.User'
+AUTH_USER_MODEL = 'system.User'
 
 TEMPLATES = [
     {

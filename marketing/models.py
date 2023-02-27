@@ -4,6 +4,7 @@ from die_punch.models import *
 
 class ClientDetails(models.Model):
     client = models.ForeignKey(CustomerDetail,on_delete=models.CASCADE)
+    enquiry_of = models.CharField(max_length=255, blank=True,default="")
     contact_no = models.BigIntegerField(blank=True,default=0,unique=True)
     contact_person = models.CharField(max_length=100,blank=True,default="")
     designtion = models.CharField(max_length=100,blank=True,default="")
@@ -15,7 +16,8 @@ class ClientDetails(models.Model):
         db_table = "client_details"
 
 class MarketingForm(models.Model):
-    client = models.ForeignKey(ClientDetails,on_delete=models.CASCADE)
+    client= models.ForeignKey(CustomerDetail,on_delete=models.CASCADE)
+    client_details = models.ForeignKey(ClientDetails,on_delete=models.CASCADE)
     enquiry_date = models.DateField(auto_now_add=False,blank=True,null=True)
     month = models.CharField(max_length=100,blank=True,default="")
     enquiry_received_by = models.CharField(max_length=100,blank=True,default="")

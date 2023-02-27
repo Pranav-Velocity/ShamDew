@@ -24,17 +24,23 @@
             </div>
             <div class="col-md-3">
                 <div class="mb-3">
+                    <label for="enquiry_of">Enquiry Of</label>
+                    <input type="text" class="form-control" name="enquiry_of" id="enquiry_of">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-3">
                     <label for="contact_number">Contact Number</label>
                     <input type="number" class="form-control" name="contact_number" id="contact_number">
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="mb-3">
                     <label for="contact_person">Contact Person</label>
                     <input type="text" class="form-control" name="contact_person" id="contact_person">
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="mb-3">
                     <label for="designation">Designation</label>
                     <input type="text" class="form-control" name="designation" id="designation">
@@ -191,12 +197,22 @@
                 <div class="mb-3">
                     <div class="mb-3">
                         <label for="status">Status</label>
-                        <input type="text" class="form-control" name="status" id="status">
+                        <select name="status" id="status" class="form-control">
+                            <option value="">Select Status</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
+
+
+        <!-- <div class="row mt-4">
             <div class="col-md-3">
                 <div class="mb-3">
                     <div class="mb-3">
@@ -337,7 +353,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <button class="btn btn-success mb-5" type="submit">Save Form</button>
       </form>
   </section>
