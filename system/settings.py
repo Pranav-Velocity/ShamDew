@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'die_punch',
+    'marketing',
     'rest_framework'
 ]
 

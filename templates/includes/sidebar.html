@@ -89,24 +89,63 @@
  
       
     {% elif request.user.is_user_role_1 %}
-    <li class="nav-item">
-      <a href="{%url 'index1'%}" class="nav-link">
-        <i class="nav-icon fas fa-chart-line"></i>
-        <p> 
-          Dashboard 
-        </p>
-      </a>
-    <li class="nav-item">
-      <a href="{%url 'adddata1'%}" class="nav-link">
+    {% if "die_punch" in permissions %}
+    <li class="nav-item has-treeview menu-collapsable">
+      <a href="#" class="nav-link">
         <i class="nav-icon fas fa-tasks"></i>
-        <p>
-          Add Form
-        </p>
-      </a>
+          <p>
+            Die Punch
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{% url 'index1' %}" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{%url 'adddata1'%}" class="nav-link">
+              <i class="nav-icon far fa-clock"></i>
+              <p>
+               Create Form
+              </p>
+            </a>
+          </li>
+        </ul>
     </li>
+    {% endif %}
+    {% if "marketing" in permissions %}
+    <li class="nav-item has-treeview menu-collapsable">
+      <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-tasks"></i>
+          <p>
+            Marketing
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{% url 'marketing_dashboard' %}" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{%url 'create_marketing_form'%}" class="nav-link">
+              <i class="nav-icon far fa-clock"></i>
+              <p>
+               Create Marketing Form
+              </p>
+            </a>
+          </li>
+        </ul>
+    </li>
+    {% endif %}
    
     
-    <br>
+    
     <li class="nav-item">
       <a href="{% url 'logout' %}" class="nav-link">
         <i class="nav-icon fas fa-sign-out-alt"></i>

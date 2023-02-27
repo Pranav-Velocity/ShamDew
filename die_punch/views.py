@@ -2,6 +2,7 @@ from django.http.response import JsonResponse
 from django.shortcuts import render,HttpResponse,redirect , HttpResponseRedirect
 from .models import *
 from .serializers import *
+from marketing.views import GetPermission
 from django.db.models import Q
 from django.contrib.auth import authenticate,get_user_model,login,logout
 from django.contrib.auth.decorators import user_passes_test
@@ -119,7 +120,8 @@ def index1(request):
             "D":D.objects.all(),
             "Set":Set.objects.all(),
             "PlatingType":PlatingType.objects.all(),
-            "DispachMode":DispachMode.objects.all()
+            "DispachMode":DispachMode.objects.all(),
+            "permissions":GetPermission(request.user)
         }
         return render(request,"user1/dashboard_user1.html",params)
 
@@ -193,7 +195,8 @@ def index1Add(request):
             "D":D.objects.all(),
             "Set":Set.objects.all(),
             "PlatingType":PlatingType.objects.all(),
-            "DispachMode":DispachMode.objects.all()
+            "DispachMode":DispachMode.objects.all(),
+            "permissions":GetPermission(request.user)
         }
         return render(request,"user1/1add.html",params)
 
